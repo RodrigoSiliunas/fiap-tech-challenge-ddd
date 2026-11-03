@@ -12,6 +12,10 @@ Back-end da Fase 1 do Tech Challenge SOAT (FIAP): monólito de uma oficina mecâ
 
 Documentação DDD no Miro: [https://miro.com/app/board/uXjVESOKEKE=/](https://miro.com/app/board/uXjVESOKEKE=/)
 
+Apresentação animada do sistema, em 2min42s. O player começa mudo: ative o som para ouvir a trilha.
+
+https://github.com/user-attachments/assets/afca7c58-2fbc-46e6-b7f6-e5c62567ec00
+
 ## Sumário
 
 - [Objetivo](#objetivo)
