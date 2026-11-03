@@ -1,9 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 108" role="img">
-  <title>Oficina Mecânica</title>
-  <desc>Cabeçalho: back-end da ordem de serviço, SOAT Tech Challenge, Fase 1.</desc>
-  <rect width="960" height="108" fill="#1e3a5f"/>
-  <rect width="8" height="108" fill="#d4a017"/>
-  <text x="36" y="48" font-family="sans-serif" font-size="28" font-weight="700" fill="#f7f4ee">Oficina Mecânica</text>
-  <text x="36" y="78" font-family="sans-serif" font-size="15" fill="#d5dde8">Back-end da ordem de serviço · SOAT Tech Challenge · Fase 1</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 400" width="1280" height="400" role="img" aria-labelledby="titulo-banner descricao-banner">
+  <title id="titulo-banner">Oficina Mecânica — Tech Challenge SOAT, Fase 1</title>
+  <desc id="descricao-banner">Sistema integrado de atendimento e execução de serviços. Python 3.12, FastAPI, DDD, PostgreSQL 16, Docker e JWT. Linha do status da ordem de serviço, de Recebida a Entregue.</desc>
+  <defs>
+    <clipPath id="cartao"><rect width="1280" height="400" rx="24"/></clipPath>
+    <linearGradient id="fundoBanner" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#070d1a"/><stop offset=".55" stop-color="#0c1830"/><stop offset="1" stop-color="#0a1222"/>
+    </linearGradient>
+    <radialGradient id="brilhoAmbar" cx="1040" cy="40" r="460" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f5a524" stop-opacity=".22"/><stop offset="1" stop-color="#f5a524" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="brilhoAzul" cx="200" cy="400" r="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4c9aff" stop-opacity=".20"/><stop offset="1" stop-color="#4c9aff" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grade" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#1a2947" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="feixe" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".06"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="ouro" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f5a524"/><stop offset="1" stop-color="#ff7a45"/>
+    </linearGradient>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4f7fb"/><stop offset="1" stop-color="#9fb0c8"/>
+    </linearGradient>
+    <linearGradient id="titulo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#cfdbec"/>
+    </linearGradient>
+    <linearGradient id="trilho" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4c9aff" stop-opacity=".25"/><stop offset=".5" stop-color="#f5a524" stop-opacity=".45"/>
+      <stop offset="1" stop-color="#2fd08f" stop-opacity=".35"/>
+    </linearGradient>
+    <filter id="desfoque" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="6"/></filter>
+    <mask id="chaveMascara" maskUnits="userSpaceOnUse" x="-80" y="-120" width="160" height="260">
+      <rect x="-80" y="-120" width="160" height="260" fill="#000"/>
+      <circle cx="0" cy="-58" r="36" fill="#fff"/>
+      <rect x="-12" y="-40" width="24" height="150" rx="12" fill="#fff"/>
+      <rect x="-13" y="-104" width="26" height="40" rx="3" fill="#000"/>
+      <circle cx="0" cy="96" r="6.5" fill="#000"/>
+    </mask>
+  </defs>
+  <style>
+    text { font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    .k2 { font-size: 15px; font-weight: 700; letter-spacing: 4px; }
+    .giro { transform-box: fill-box; transform-origin: center; animation: girar 32s linear infinite; }
+    .giro-inv { transform-box: fill-box; transform-origin: center; animation: girar 20s linear infinite reverse; }
+    .feixe { animation: varrer 10s ease-in-out infinite; }
+    .grade { animation: deriva 14s linear infinite; }
+    .pulso { animation: pulso 6s linear infinite; }
+    .acende { opacity: 0; animation: acende 6s linear infinite backwards; }
+    @keyframes girar { to { transform: rotate(360deg); } }
+    @keyframes varrer { 0% { transform: translateX(-420px); } 55%, 100% { transform: translateX(1760px); } }
+    @keyframes deriva { to { transform: translate(40px, 40px); } }
+    @keyframes pulso { 0% { transform: translateX(0); opacity: 0; } 6% { transform: translateX(0); opacity: 1; }
+                       88% { transform: translateX(756px); opacity: 1; } 100% { transform: translateX(756px); opacity: 0; } }
+    @keyframes acende { 0% { opacity: 0; } 2% { opacity: 1; } 22% { opacity: 0; } 100% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      .giro, .giro-inv, .feixe, .grade, .pulso, .acende { animation: none; }
+    }
+  </style>
+  <g clip-path="url(#cartao)">
+    <rect width="1280" height="400" fill="url(#fundoBanner)"/>
+    <g class="grade" opacity=".55"><rect x="-40" y="-40" width="1360" height="480" fill="url(#grade)"/></g>
+    <rect width="1280" height="400" fill="url(#brilhoAmbar)"/>
+    <rect width="1280" height="400" fill="url(#brilhoAzul)"/>
+    <g class="feixe"><rect x="0" y="-60" width="260" height="520" fill="url(#feixe)" transform="skewX(-18)"/></g>
+  </g>
+  <rect x=".5" y=".5" width="1279" height="399" rx="24" fill="none" stroke="#22314f"/>
+  <rect x="40" y="0" width="1200" height="3" rx="1.5" fill="url(#ouro)"/>
+  <circle cx="214" cy="186" r="150" fill="#f5a524" fill-opacity=".05"/>
+  <g class="giro"><path d="M200.6 86.9 L205.0 68.3 L223.0 68.3 L227.4 86.9 L244.9 90.9 L256.9 76.1 L273.2 83.9 L269.1 102.5 L283.1 113.7 L300.4 105.6 L311.6 119.7 L299.8 134.7 L307.6 150.9 L326.7 151.1 L330.7 168.6 L313.6 177.0 L313.6 195.0 L330.7 203.4 L326.7 220.9 L307.6 221.1 L299.8 237.3 L311.6 252.3 L300.4 266.4 L283.1 258.3 L269.1 269.5 L273.2 288.1 L256.9 295.9 L244.9 281.1 L227.4 285.1 L223.0 303.7 L205.0 303.7 L200.6 285.1 L183.1 281.1 L171.1 295.9 L154.8 288.1 L158.9 269.5 L144.9 258.3 L127.6 266.4 L116.4 252.3 L128.2 237.3 L120.4 221.1 L101.3 220.9 L97.3 203.4 L114.4 195.0 L114.4 177.0 L97.3 168.6 L101.3 151.1 L120.4 150.9 L128.2 134.7 L116.4 119.7 L127.6 105.6 L144.9 113.7 L158.9 102.5 L154.8 83.9 L171.1 76.1 L183.1 90.9Z" fill="url(#ouro)" fill-opacity=".10" stroke="url(#ouro)" stroke-width="3" stroke-linejoin="round"/></g>
+  <circle cx="214" cy="186" r="72" fill="#0b1426" stroke="#f5a524" stroke-opacity=".45" stroke-width="2"/>
+  <circle cx="214" cy="186" r="58" fill="none" stroke="#f5a524" stroke-opacity=".18" stroke-dasharray="3 7"/>
+  <g class="giro-inv"><path d="M322.5 250.7 L324.5 238.3 L335.5 238.3 L337.5 250.7 L347.0 253.8 L355.9 244.9 L364.9 251.4 L359.2 262.6 L365.1 270.7 L377.5 268.8 L380.9 279.3 L369.7 285.0 L369.7 295.0 L380.9 300.7 L377.5 311.2 L365.1 309.3 L359.2 317.4 L364.9 328.6 L355.9 335.1 L347.0 326.2 L337.5 329.3 L335.5 341.7 L324.5 341.7 L322.5 329.3 L313.0 326.2 L304.1 335.1 L295.1 328.6 L300.8 317.4 L294.9 309.3 L282.5 311.2 L279.1 300.7 L290.3 295.0 L290.3 285.0 L279.1 279.3 L282.5 268.8 L294.9 270.7 L300.8 262.6 L295.1 251.4 L304.1 244.9 L313.0 253.8Z" fill="#4c9aff" fill-opacity=".10" stroke="#4c9aff" stroke-width="2.5" stroke-linejoin="round"/></g>
+  <circle cx="330" cy="290" r="17" fill="#0b1426" stroke="#4c9aff" stroke-opacity=".6" stroke-width="2"/>
+  <g transform="translate(214 186) rotate(40)"><rect x="-80" y="-120" width="160" height="260" fill="url(#metal)" mask="url(#chaveMascara)"/></g>
+  <text class="k2" x="440" y="112" fill="#f5a524">TECH CHALLENGE · SOAT · FASE 1</text>
+  <text x="436" y="186" font-size="66" font-weight="700" fill="url(#titulo)" letter-spacing="-1">Oficina Mecânica</text>
+  <text x="440" y="226" font-size="21" fill="#b7c4d9">Sistema integrado de atendimento e execução de serviços</text>
+  <rect x="440.0" y="250" width="131.1" height="30" rx="15" fill="#111d35" stroke="#2a3b5c"/><circle cx="456.0" cy="265" r="4" fill="#4c9aff"/><text x="468.0" y="269.6" font-size="13.5" font-weight="600" fill="#dbe4f1">Python 3.12</text>
+  <rect x="581.1" y="250" width="98.7" height="30" rx="15" fill="#111d35" stroke="#2a3b5c"/><circle cx="597.1" cy="265" r="4" fill="#2fd08f"/><text x="609.1" y="269.6" font-size="13.5" font-weight="600" fill="#dbe4f1">FastAPI</text>
+  <rect x="689.8" y="250" width="66.3" height="30" rx="15" fill="#111d35" stroke="#2a3b5c"/><circle cx="705.8" cy="265" r="4" fill="#f5a524"/><text x="717.8" y="269.6" font-size="13.5" font-weight="600" fill="#dbe4f1">DDD</text>
+  <rect x="766.1" y="250" width="147.3" height="30" rx="15" fill="#111d35" stroke="#2a3b5c"/><circle cx="782.1" cy="265" r="4" fill="#38bdf8"/><text x="794.1" y="269.6" font-size="13.5" font-weight="600" fill="#dbe4f1">PostgreSQL 16</text>
+  <rect x="923.4" y="250" width="90.6" height="30" rx="15" fill="#111d35" stroke="#2a3b5c"/><circle cx="939.4" cy="265" r="4" fill="#4c9aff"/><text x="951.4" y="269.6" font-size="13.5" font-weight="600" fill="#dbe4f1">Docker</text>
+  <rect x="1024.0" y="250" width="66.3" height="30" rx="15" fill="#111d35" stroke="#2a3b5c"/><circle cx="1040.0" cy="265" r="4" fill="#a78bfa"/><text x="1052.0" y="269.6" font-size="13.5" font-weight="600" fill="#dbe4f1">JWT</text>
+  <rect x="440" y="338" width="756" height="4" rx="2" fill="url(#trilho)"/>
+  <circle class="acende" style="animation-delay:0.36s" cx="440.0" cy="340" r="16" fill="#4c9aff" filter="url(#desfoque)"/>
+  <circle cx="440.0" cy="340" r="8" fill="#0b1426" stroke="#4c9aff" stroke-width="2.5"/>
+  <circle cx="440.0" cy="340" r="3" fill="#4c9aff"/>
+  <text x="440.0" y="374" text-anchor="middle" font-size="12" font-weight="600" fill="#93a4bf">Recebida</text>
+  <circle class="acende" style="animation-delay:1.34s" cx="591.2" cy="340" r="16" fill="#4c9aff" filter="url(#desfoque)"/>
+  <circle cx="591.2" cy="340" r="8" fill="#0b1426" stroke="#4c9aff" stroke-width="2.5"/>
+  <circle cx="591.2" cy="340" r="3" fill="#4c9aff"/>
+  <text x="591.2" y="374" text-anchor="middle" font-size="12" font-weight="600" fill="#93a4bf">Em diagnóstico</text>
+  <circle class="acende" style="animation-delay:2.33s" cx="742.4" cy="340" r="16" fill="#f5a524" filter="url(#desfoque)"/>
+  <circle cx="742.4" cy="340" r="8" fill="#0b1426" stroke="#f5a524" stroke-width="2.5"/>
+  <circle cx="742.4" cy="340" r="3" fill="#f5a524"/>
+  <text x="742.4" y="374" text-anchor="middle" font-size="12" font-weight="600" fill="#93a4bf">Aguardando aprovação</text>
+  <circle class="acende" style="animation-delay:3.31s" cx="893.6" cy="340" r="16" fill="#4c9aff" filter="url(#desfoque)"/>
+  <circle cx="893.6" cy="340" r="8" fill="#0b1426" stroke="#4c9aff" stroke-width="2.5"/>
+  <circle cx="893.6" cy="340" r="3" fill="#4c9aff"/>
+  <text x="893.6" y="374" text-anchor="middle" font-size="12" font-weight="600" fill="#93a4bf">Em execução</text>
+  <circle class="acende" style="animation-delay:4.30s" cx="1044.8" cy="340" r="16" fill="#4c9aff" filter="url(#desfoque)"/>
+  <circle cx="1044.8" cy="340" r="8" fill="#0b1426" stroke="#4c9aff" stroke-width="2.5"/>
+  <circle cx="1044.8" cy="340" r="3" fill="#4c9aff"/>
+  <text x="1044.8" y="374" text-anchor="middle" font-size="12" font-weight="600" fill="#93a4bf">Finalizada</text>
+  <circle class="acende" style="animation-delay:5.28s" cx="1196.0" cy="340" r="16" fill="#2fd08f" filter="url(#desfoque)"/>
+  <circle cx="1196.0" cy="340" r="8" fill="#0b1426" stroke="#2fd08f" stroke-width="2.5"/>
+  <circle cx="1196.0" cy="340" r="3" fill="#2fd08f"/>
+  <text x="1196.0" y="374" text-anchor="middle" font-size="12" font-weight="600" fill="#93a4bf">Entregue</text>
+  <g class="pulso"><circle cx="440" cy="340" r="10" fill="#f5a524" filter="url(#desfoque)"/><circle cx="440" cy="340" r="4.5" fill="#fff"/></g>
 </svg>
