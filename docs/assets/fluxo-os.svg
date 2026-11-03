@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 960" role="img">
+  <title>Fluxo da ordem de serviço</title>
+  <desc>Abertura com cliente e veículo, diagnóstico, itens, orçamento, consulta pública, aprovação com baixa de estoque ou rejeição, finalização e entrega.</desc>
+  <rect width="860" height="960" fill="#f6f3ec"/>
+  <text x="40" y="36" font-family="sans-serif" font-size="20" font-weight="700" fill="#1e3a5f">Fluxo da ordem de serviço</text>
+  <text x="40" y="58" font-family="sans-serif" font-size="13" fill="#5c6570">O status muda no comando. Não existe endpoint para gravar o status à mão.</text>
+
+  <rect x="150" y="76" width="560" height="86" rx="8" fill="#dbe7f5" stroke="#2c5282" stroke-width="1.5"/>
+  <text x="170" y="102" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e3a5f">Abrir a ordem de serviço</text>
+  <text x="170" y="124" font-family="sans-serif" font-size="13" fill="#243044">Identifica o cliente por CPF ou CNPJ.</text>
+  <text x="170" y="144" font-family="sans-serif" font-size="13" fill="#243044">Registra placa, marca, modelo e ano. Status: Recebida.</text>
+
+  <line x1="430" y1="162" x2="430" y2="184" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="424,184 436,184 430,194" fill="#3d4a5c"/>
+
+  <rect x="150" y="194" width="560" height="62" rx="8" fill="#dbe7f5" stroke="#2c5282" stroke-width="1.5"/>
+  <text x="170" y="220" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e3a5f">Iniciar diagnóstico</text>
+  <text x="170" y="240" font-family="sans-serif" font-size="13" fill="#243044">Status: Em diagnóstico</text>
+
+  <line x1="430" y1="256" x2="430" y2="278" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="424,278 436,278 430,288" fill="#3d4a5c"/>
+
+  <rect x="150" y="288" width="560" height="62" rx="8" fill="#dbe7f5" stroke="#2c5282" stroke-width="1.5"/>
+  <text x="170" y="314" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e3a5f">Incluir serviços e peças/insumos</text>
+  <text x="170" y="334" font-family="sans-serif" font-size="13" fill="#243044">Confere o saldo na inclusão. Não reserva estoque.</text>
+
+  <line x1="430" y1="350" x2="430" y2="372" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="424,372 436,372 430,382" fill="#3d4a5c"/>
+
+  <rect x="150" y="382" width="560" height="80" rx="8" fill="#f8ead2" stroke="#8a5a12" stroke-width="1.5"/>
+  <text x="170" y="408" font-family="sans-serif" font-size="15" font-weight="700" fill="#6b4208">Gerar orçamento</text>
+  <text x="170" y="430" font-family="sans-serif" font-size="13" fill="#243044">Soma dos preços gravados nas linhas. Exige ao menos um serviço.</text>
+  <text x="170" y="448" font-family="sans-serif" font-size="13" fill="#243044">Status: Aguardando aprovação</text>
+
+  <line x1="430" y1="462" x2="430" y2="484" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="424,484 436,484 430,494" fill="#3d4a5c"/>
+
+  <rect x="150" y="494" width="560" height="62" rx="8" fill="#e8eef2" stroke="#3d4f5f" stroke-width="1.5"/>
+  <text x="170" y="520" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e3a5f">Consulta do cliente</text>
+  <text x="170" y="540" font-family="sans-serif" font-size="13" fill="#243044">Id da OS e CPF ou CNPJ. Sem JWT.</text>
+
+  <line x1="430" y1="556" x2="430" y2="574" stroke="#3d4a5c" stroke-width="1.5"/>
+  <line x1="225" y1="574" x2="635" y2="574" stroke="#3d4a5c" stroke-width="1.5"/>
+  <line x1="225" y1="574" x2="225" y2="596" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="219,596 231,596 225,606" fill="#3d4a5c"/>
+  <line x1="635" y1="574" x2="635" y2="596" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="629,596 641,596 635,606" fill="#3d4a5c"/>
+
+  <rect x="40" y="606" width="370" height="100" rx="8" fill="#f8e0d8" stroke="#9b3d2f" stroke-width="1.5"/>
+  <text x="60" y="636" font-family="sans-serif" font-size="15" font-weight="700" fill="#7a2e24">Rejeitar orçamento</text>
+  <text x="60" y="660" font-family="sans-serif" font-size="13" fill="#243044">Status: Rejeitada</text>
+  <text x="60" y="680" font-family="sans-serif" font-size="13" fill="#243044">A OS encerra neste status.</text>
+
+  <rect x="450" y="606" width="370" height="100" rx="8" fill="#e5f0e4" stroke="#2f6b4f" stroke-width="1.5"/>
+  <text x="470" y="636" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e4d34">Aprovar orçamento</text>
+  <text x="470" y="660" font-family="sans-serif" font-size="13" fill="#243044">Status: Em execução</text>
+  <text x="470" y="680" font-family="sans-serif" font-size="13" fill="#243044">Baixa o estoque na mesma transação.</text>
+
+  <line x1="635" y1="706" x2="635" y2="728" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="629,728 641,728 635,738" fill="#3d4a5c"/>
+
+  <rect x="450" y="738" width="370" height="58" rx="8" fill="#dbe7f5" stroke="#2c5282" stroke-width="1.5"/>
+  <text x="470" y="762" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e3a5f">Finalizar serviço</text>
+  <text x="470" y="782" font-family="sans-serif" font-size="13" fill="#243044">Status: Finalizada</text>
+
+  <line x1="635" y1="796" x2="635" y2="818" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="629,818 641,818 635,828" fill="#3d4a5c"/>
+
+  <rect x="450" y="828" width="370" height="58" rx="8" fill="#e5f0e4" stroke="#2f6b4f" stroke-width="1.5"/>
+  <text x="470" y="852" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e4d34">Entregar veículo</text>
+  <text x="470" y="872" font-family="sans-serif" font-size="13" fill="#243044">Status: Entregue</text>
+
+  <text x="40" y="918" font-family="sans-serif" font-size="13" fill="#3f3a32">Itens só mudam em Em diagnóstico e em Aguardando aprovação. O total é recalculado.</text>
+  <text x="40" y="940" font-family="sans-serif" font-size="13" fill="#3f3a32">O veículo só abre outra OS depois de Entregue ou Rejeitada.</text>
+</svg>

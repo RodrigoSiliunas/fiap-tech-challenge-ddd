@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" role="img">
+  <title>Contextos delimitados</title>
+  <desc>Atendimento e OS no núcleo. Cadastro, Catálogo e Estoque são referenciados por id. Identidade fica no JWT administrativo.</desc>
+  <rect width="960" height="520" fill="#f6f3ec"/>
+  <text x="32" y="36" font-family="sans-serif" font-size="20" font-weight="700" fill="#1e3a5f">Contextos no monólito</text>
+  <text x="32" y="58" font-family="sans-serif" font-size="13" fill="#5c6570">Módulos do mesmo processo. A OS guarda só o id dos outros agregados.</text>
+
+  <rect x="32" y="78" width="896" height="132" rx="10" fill="#f8ead2" stroke="#8a5a12" stroke-width="1.5"/>
+  <text x="52" y="108" font-family="sans-serif" font-size="16" font-weight="700" fill="#6b4208">Atendimento / OS · núcleo</text>
+  <text x="52" y="134" font-family="sans-serif" font-size="14" fill="#243044">Agregado OrdemDeServico</text>
+  <text x="52" y="156" font-family="sans-serif" font-size="13" fill="#243044">Entidades internas: ItemServico, ItemPeca e Orcamento. Status em StatusOS.</text>
+  <text x="52" y="178" font-family="sans-serif" font-size="13" fill="#5c4a32">Cliente, veículo, serviço e peça não ficam aninhados na OS.</text>
+
+  <line x1="176" y1="210" x2="176" y2="236" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="170,236 182,236 176,246" fill="#3d4a5c"/>
+  <line x1="480" y1="210" x2="480" y2="236" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="474,236 486,236 480,246" fill="#3d4a5c"/>
+  <line x1="784" y1="210" x2="784" y2="236" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="778,236 790,236 784,246" fill="#3d4a5c"/>
+
+  <rect x="32" y="246" width="288" height="128" rx="8" fill="#dbe7f5" stroke="#2c5282" stroke-width="1.5"/>
+  <text x="48" y="274" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e3a5f">Cadastro</text>
+  <text x="48" y="300" font-family="sans-serif" font-size="13" fill="#243044">Cliente · Documento</text>
+  <text x="48" y="322" font-family="sans-serif" font-size="13" fill="#243044">Veiculo · Placa</text>
+  <text x="48" y="344" font-family="sans-serif" font-size="13" fill="#243044">Marca, modelo e ano</text>
+
+  <rect x="336" y="246" width="288" height="128" rx="8" fill="#e5f0e4" stroke="#2f6b4f" stroke-width="1.5"/>
+  <text x="352" y="274" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e4d34">Catálogo</text>
+  <text x="352" y="300" font-family="sans-serif" font-size="13" fill="#243044">Servico</text>
+  <text x="352" y="322" font-family="sans-serif" font-size="13" fill="#243044">Nome e preço de referência</text>
+  <text x="352" y="344" font-family="sans-serif" font-size="13" fill="#243044">A OS grava o preço da linha</text>
+
+  <rect x="640" y="246" width="288" height="128" rx="8" fill="#ece7f6" stroke="#5b4b8a" stroke-width="1.5"/>
+  <text x="656" y="274" font-family="sans-serif" font-size="15" font-weight="700" fill="#3d3470">Estoque</text>
+  <text x="656" y="300" font-family="sans-serif" font-size="13" fill="#243044">Peca (peça e insumo)</text>
+  <text x="656" y="322" font-family="sans-serif" font-size="13" fill="#243044">Saldo em Quantidade</text>
+  <text x="656" y="344" font-family="sans-serif" font-size="13" fill="#243044">Baixa na aprovação</text>
+
+  <rect x="32" y="398" width="896" height="90" rx="8" fill="#e8eef2" stroke="#3d4f5f" stroke-width="1.5"/>
+  <text x="52" y="430" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e3a5f">Identidade · subdomínio genérico</text>
+  <text x="52" y="456" font-family="sans-serif" font-size="13" fill="#243044">JWT nas rotas administrativas. A consulta pública pede o id da OS e o documento, sem token.</text>
+  <text x="52" y="476" font-family="sans-serif" font-size="13" fill="#5c6570">No MVP, atendente, mecânico e administrador usam o mesmo papel ADMIN.</text>
+</svg>

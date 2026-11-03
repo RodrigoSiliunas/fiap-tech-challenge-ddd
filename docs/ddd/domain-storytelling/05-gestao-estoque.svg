@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="500" viewBox="0 0 920 500">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="24" y="30" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="#111">05 — Gestão de estoque e catálogo</text>
+  <text x="24" y="50" font-family="Arial,sans-serif" font-size="11" fill="#666">Domain Storytelling — FIAP TC Fase 1 · Oficina Mecânica MVP</text>
+  <g transform="translate(40,180)">
+      <circle cx="30" cy="18" r="12" fill="#1565c0"/>
+      <path d="M10 55c0-14 9-22 20-22s20 8 20 22" fill="#1565c0"/>
+      <text x="30" y="78" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#222">Administrador</text>
+    </g>
+<g transform="translate(280,90)"><path d="M8 20l22-10 22 10v24l-22 10-22-10z" fill="none" stroke="#455a64" stroke-width="2.5"/><path d="M8 20l22 10 22-10M30 30v24" stroke="#455a64" stroke-width="2"/><text x="30" y="74" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#222">Peça</text></g>
+<g transform="translate(520,90)"><path d="M8 20l22-10 22 10v24l-22 10-22-10z" fill="none" stroke="#f9a825" stroke-width="2.5"/><path d="M8 20l22 10 22-10M30 30v24" stroke="#f9a825" stroke-width="2"/><text x="30" y="74" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#222">Estoque</text></g>
+<g transform="translate(280,300)"><path d="M38 12a10 10 0 0 0-14 14L10 40l8 8 14-14a10 10 0 0 0 6-22z" fill="none" stroke="#455a64" stroke-width="2.5"/><text x="30" y="74" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#222">Serviço</text></g>
+<g transform="translate(520,300)">
+      <rect x="5" y="8" width="50" height="32" rx="3" fill="none" stroke="#6a1b9a" stroke-width="3"/>
+      <rect x="0" y="45" width="60" height="6" rx="1" fill="#6a1b9a"/>
+      <text x="30" y="78" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#222">Sistema</text>
+    </g>
+<g transform="translate(760,180)"><path d="M8 18h18l6 6h24v28H8z" fill="none" stroke="#455a64" stroke-width="2.5"/><text x="30" y="74" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#222">Catálogo</text></g>
+<defs><marker id="m9320544" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#222"/></marker></defs>
+    <polyline points="95,198 200,120 280,120" fill="none" stroke="#222" stroke-width="1.8" marker-end="url(#m9320544)"/>
+    <circle cx="132.22829172399838" cy="170.34469757645834" r="11" fill="#fff" stroke="#222" stroke-width="1.5"/>
+        <text x="132.22829172399838" y="174.34469757645834" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#222">1</text><text x="198.07072930999593" y="112.8617439411459" text-anchor="middle" font-family="Arial" font-size="11" fill="#222">cadastra/atualiza</text>
+<defs><marker id="m4238469" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#222"/></marker></defs>
+    <polyline points="95,235 200,330 280,330" fill="none" stroke="#222" stroke-width="1.8" marker-end="url(#m4238469)"/>
+    <circle cx="131.15102971257838" cy="267.70807450185663" r="11" fill="#fff" stroke="#222" stroke-width="1.5"/>
+        <text x="131.15102971257838" y="271.70807450185663" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#222">2</text><text x="195.37757428144596" y="334.77018625464154" text-anchor="middle" font-family="Arial" font-size="11" fill="#222">cadastra/atualiza</text>
+<defs><marker id="m7952038" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#222"/></marker></defs>
+    <polyline points="70,185 70,70 550,70 550,88" fill="none" stroke="#222" stroke-width="1.8" marker-end="url(#m7952038)"/>
+    <circle cx="230.85000000000002" cy="70.0" r="11" fill="#fff" stroke="#222" stroke-width="1.5"/>
+        <text x="230.85000000000002" y="74.0" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#222">3</text><text x="292.15000000000003" y="58.0" text-anchor="middle" font-family="Arial" font-size="11" fill="#222">registra entrada</text>
+<defs><marker id="m1065235" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#222"/></marker></defs>
+    <polyline points="70,255 70,400 550,400 550,370" fill="none" stroke="#222" stroke-width="1.8" marker-end="url(#m1065235)"/>
+    <circle cx="187.0" cy="400.0" r="11" fill="#fff" stroke="#222" stroke-width="1.5"/>
+        <text x="187.0" y="404.0" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#222">4</text><text x="285.25000000000006" y="414.0" text-anchor="middle" font-family="Arial" font-size="11" fill="#222">ajusta</text>
+<defs><marker id="m4773044" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#222"/></marker></defs>
+    <polyline points="340,120 790,195" fill="none" stroke="#222" stroke-width="1.8" marker-end="url(#m4773044)"/>
+    
+<defs><marker id="m3836493" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#222"/></marker></defs>
+    <polyline points="340,330 790,235" fill="none" stroke="#222" stroke-width="1.8" marker-end="url(#m3836493)"/>
+    
+<rect x="40" y="430" width="640" height="45" rx="6" fill="#fff8e1" stroke="#f9a825"/><text x="52" y="452" font-family="Arial" font-size="11" fill="#333">Agregado Peça (qtd ≥ 0). Eventos: PecaCadastrada, EstoqueIncrementado/Ajustado.</text><text x="52" y="468" font-family="Arial" font-size="11" fill="#333">Baixa automática na aprovação da OS (história 03) — EstoqueDecrementado.</text>
+</svg>

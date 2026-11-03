@@ -8,6 +8,9 @@
 | `event-storming.png` | Board visual estilo sticky-notes |
 | `diagramas.md` | Context map, agregados, FSM, arquitetura |
 | `diagramas.pdf` | Export PDF dos diagramas |
+| `domain-storytelling/` | Domain Storytelling (`.egn` do Egon, sentenças, SVG e PNG) |
 | `mapeamento-codigo.md` | Relação entre estes artefatos e as classes do monólito |
 
 Convenção de cores: Aula 06 FIAP. Domínio em português no código (ver glossário).
+
+Os `.egn` de `domain-storytelling/` importam em [egon.io](https://egon.io/app/).
