@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Query, Response
 
 from app.api.deps import get_current_user, get_uow
 from app.api.presenters import cliente_out, pagina
-from app.api.schemas import ClienteIn, ClienteOut, ClienteUpdate, ListaClientesOut
+from app.api.schemas import ClienteIn, ClienteOut, ClienteUpdate, ListaClientesOut, respostas_erro
 from app.application.commands.cadastros import (
     AtualizarCliente,
     CadastrarCliente,
@@ -16,6 +16,7 @@ router = APIRouter(
     prefix="/clientes",
     tags=["Clientes"],
     dependencies=[Depends(get_current_user)],
+    responses=respostas_erro(401, 404, 409, 422),
 )
 
 

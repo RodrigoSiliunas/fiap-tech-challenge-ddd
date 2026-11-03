@@ -1,6 +1,8 @@
 """Percorre o fluxo feliz contra uma API já no ar. Uso: python scripts/demo_fluxo.py"""
 
 import json
+import secrets
+import string
 import sys
 import urllib.error
 import urllib.request
@@ -26,7 +28,20 @@ def chamar(method: str, path: str, body: dict | None = None, token: str | None =
         raise SystemExit(f"{method} {path} -> {exc.code} {detalhe}") from exc
 
 
+def placa_mercosul() -> str:
+    # Placa nova a cada execução: não colide com uma OS aberta com a placa do exemplo do Swagger.
+    letras = string.ascii_uppercase
+    return (
+        "".join(secrets.choice(letras) for _ in range(3))
+        + str(secrets.randbelow(10))
+        + secrets.choice(letras)
+        + f"{secrets.randbelow(100):02d}"
+    )
+
+
 def main() -> None:
+    placa = placa_mercosul()
+    print("Placa:", placa)
     token = chamar("POST", "/api/v1/auth/login", {"username": "admin", "password": "admin123"})["access_token"]
     servico = chamar(
         "POST",
@@ -48,7 +63,7 @@ def main() -> None:
             "nome": "Maria Silva",
             "email": "maria@example.com",
             "telefone": "11988887777",
-            "placa": "ABC1D23",
+            "placa": placa,
             "marca": "Fiat",
             "modelo": "Argo",
             "ano": 2022,

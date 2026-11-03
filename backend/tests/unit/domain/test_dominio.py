@@ -44,7 +44,10 @@ def test_cpf_e_cnpj_validos_e_formatados():
 
 @pytest.mark.parametrize(
     "bruto",
-    ["", "123", "111.111.111-11", "00000000000000", "529.982.247-24", "11.444.777/0001-60", "abc"],
+    [
+        "", "123", "111.111.111-11", "00000000000000", "529.982.247-24", "11.444.777/0001-60", "abc",
+        "CPF 529.982.247-25", "CPF529x982y247z25", "5a2b9c9d8e2f2g4h7i2j5k",
+    ],
 )
 def test_documento_invalido(bruto):
     with pytest.raises(DomainError) as erro:
@@ -68,7 +71,9 @@ def test_placas_antiga_e_mercosul():
     assert mercosul.formatada() == "ABC1D23"
 
 
-@pytest.mark.parametrize("bruto", ["", "ABC123", "ABCD123", "1234ABC", "AB12C34", "AAA00000"])
+@pytest.mark.parametrize(
+    "bruto", ["", "ABC123", "ABCD123", "1234ABC", "AB12C34", "AAA00000", "A-B-C 1/D.2_3", "ABC--1234"]
+)
 def test_placa_invalida(bruto):
     with pytest.raises(DomainError) as erro:
         Placa.criar(bruto)

@@ -12,6 +12,7 @@ from app.api.schemas import (
     PecaIn,
     PecaOut,
     PecaUpdate,
+    respostas_erro,
 )
 from app.application.commands.cadastros import (
     AjustarEstoque,
@@ -28,6 +29,7 @@ router = APIRouter(
     prefix="/pecas",
     tags=["Peças e insumos"],
     dependencies=[Depends(get_current_user)],
+    responses=respostas_erro(401, 404, 409, 422),
 )
 
 

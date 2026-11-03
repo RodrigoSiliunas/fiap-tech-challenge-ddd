@@ -11,6 +11,7 @@ from app.api.schemas import (
     IncluirServicoIn,
     ListaOrdensOut,
     OrdemDetalheOut,
+    respostas_erro,
 )
 from app.application.commands.ordens_servico import (
     AbrirOrdemDeServico,
@@ -31,6 +32,7 @@ router = APIRouter(
     prefix="/ordens-servico",
     tags=["Ordens de serviço"],
     dependencies=[Depends(get_current_user)],
+    responses=respostas_erro(401, 404, 409, 422),
 )
 
 

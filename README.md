@@ -38,9 +38,9 @@ Registrar o atendimento da oficina em um fluxo só: identificar o cliente, cadas
 
 A abertura da OS identifica o cliente pelo CPF ou CNPJ e registra o veículo com placa, marca, modelo e ano. Se o documento já existe, o cadastro é reaproveitado. A placa existente do mesmo cliente também é reaproveitada. Placa e documento não mudam depois do cadastro.
 
-A OS entra em **Recebida**. O diagnóstico libera a inclusão de serviços e de peças/insumos (os dois usam o agregado `Peca`). O orçamento é a soma dos preços gravados nas linhas, não um valor digitado. Para gerá-lo é preciso ao menos um serviço. A OS passa a **Aguardando aprovação**.
+A OS entra em **Recebida**. O diagnóstico libera a inclusão de serviços e de peças/insumos (os dois usam o agregado `Peca`), porque é nele que a oficina define do que o veículo precisa. O orçamento é gerado pelo sistema: o valor é a soma dos preços gravados nas linhas, nunca digitado. Para gerá-lo é preciso ao menos um serviço. A OS passa a **Aguardando aprovação**, e o orçamento fica disponível na consulta do cliente.
 
-O cliente consulta e decide sem JWT, com o id da OS e o documento. Documento errado ou OS inexistente devolvem o mesmo 404. A aprovação vai para **Em execução** e baixa o estoque na mesma transação. A rejeição encerra em **Rejeitada**. A equipe então finaliza e entrega.
+Na abertura, o atendente entrega ao cliente o id da OS. Com ele e o documento, o cliente consulta e decide sem JWT. Documento errado ou OS inexistente devolvem o mesmo 404. A aprovação vai para **Em execução** e baixa o estoque na mesma transação. A rejeição encerra em **Rejeitada**, um status além dos seis do enunciado, criado para registrar a recusa: o estoque não é baixado e o veículo pode abrir outra OS. Depois da aprovação, a equipe finaliza e entrega.
 
 O agregado recusa transição fora da máquina abaixo. Não há rota para alterar o status direto.
 
@@ -52,7 +52,7 @@ Itens só podem ser alterados em Em diagnóstico e em Aguardando aprovação. Ne
 
 CPF, CNPJ e placa são validados no domínio. A placa aceita o padrão antigo (`ABC1234`) e o Mercosul (`ABC1D23`).
 
-O tempo médio de execução é a média de `finalizada_em - execucao_iniciada_em` nas OS Finalizada ou Entregue.
+O tempo médio de execução é a média de `finalizada_em - execucao_iniciada_em` nas OS Finalizada ou Entregue. A média é por OS, sem separar por tipo de serviço.
 
 ## Arquitetura
 
@@ -93,7 +93,7 @@ O desenho das camadas segue [`docs/ddd/diagramas.md`](docs/ddd/diagramas.md).
 
 ## Justificativa do banco
 
-PostgreSQL é o banco da aplicação. A aprovação do orçamento e a baixa de estoque precisam confirmar juntas: se a baixa falha, o status não muda. O modelo é relacional, com unicidade de CPF/CNPJ e de placa e com saldo que não pode ficar negativo. Transação, constraints e o serviço no Docker Compose cobrem isso.
+PostgreSQL é o banco da aplicação. A aprovação do orçamento e a baixa de estoque precisam confirmar juntas: se a baixa falha, o status não muda. O modelo é relacional, com unicidade de CPF/CNPJ e de placa e com saldo que não pode ficar negativo. Transação, constraints e o serviço no Docker Compose cobrem isso. Os comandos que alteram uma OS travam a linha dela até o commit (`SELECT ... FOR UPDATE`), então aprovação, rejeição e inclusão de itens simultâneas não se sobrescrevem.
 
 Os testes usam SQLite em memória, com o mesmo mapeamento SQLAlchemy, para rodar sem subir o Postgres. `OFICINA_TEST_DATABASE_URL` repete a suíte contra PostgreSQL.
 
@@ -118,7 +118,7 @@ docker compose down
 
 O volume `pgdata` mantém os dados. `docker compose down -v` apaga o volume.
 
-Para percorrer o fluxo com um cliente e uma placa novos, com a API no ar:
+Para percorrer o fluxo completo com a API no ar (cada execução usa uma placa nova; a cliente do exemplo é reaproveitada pelo CPF):
 
 ```bash
 python backend/scripts/demo_fluxo.py
@@ -137,7 +137,7 @@ Valores só do ambiente local, definidos no `docker-compose.yml` e no `backend/.
 | Usuário admin | `admin` |
 | Senha | `admin123` |
 | Banco | usuário `oficina`, senha `oficina`, database `oficina` |
-| JWT | segredo de desenvolvimento no `docker-compose.yml` |
+| JWT | segredo aleatório gerado a cada subida da API; defina `JWT_SECRET` para fixá-lo |
 
 O login é `POST /api/v1/auth/login`. O token vale para as rotas administrativas. A consulta e a decisão do cliente não usam esse token.
 
@@ -175,11 +175,11 @@ pytest --cov=app --cov-report=term-missing --cov-fail-under=80
 
 O atalho é `make test`, dentro de `backend/`.
 
-São 35 testes. Com Python 3.12.16, a cobertura de `app` é **96,13%** (2258 de 2349 linhas) e a de `app/domain`, **94,73%** (701 de 740). Abaixo de 80% o pytest falha.
+São 44 testes. Com Python 3.12.16 e SQLite passam 42; os 2 de concorrência só rodam contra PostgreSQL. A cobertura de `app` é **97,97%** (2318 de 2366 linhas) e a de `app/domain`, **98,52%** (733 de 744). Abaixo de 80% o pytest falha.
 
 Relatório: [`backend/docs/coverage/coverage-summary.txt`](backend/docs/coverage/coverage-summary.txt).
 
-O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda a suíte em `backend/` a cada push e pull request, com o mesmo limite de 80%, e publica o `coverage.xml`.
+O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda a suíte em `backend/` a cada push e pull request. Primeiro roda em SQLite, com o mesmo limite de 80%, e publica o `coverage.xml`. Depois roda contra PostgreSQL 16, onde entram também os testes de concorrência.
 
 Para repetir contra PostgreSQL, crie o database `oficina_test` e exporte a URL antes do pytest, ainda em `backend/`:
 
@@ -215,7 +215,7 @@ backend/
   scripts/                # demo_fluxo.py
   docs/
     coverage/             # saída da cobertura
-    security/             # relatório do pip-audit
+    security/             # análise de vulnerabilidades (pip-audit, Bandit e Trivy)
   Dockerfile
   pyproject.toml
   requirements.txt
@@ -274,14 +274,19 @@ Cinco histórias no formato do Egon, com as sentenças em [`docs/ddd/domain-stor
 
 Relatório em [`backend/docs/security/vulnerability-report.md`](backend/docs/security/vulnerability-report.md).
 
-`pip-audit` 2.10.1 em `backend/requirements.txt` e `backend/requirements-dev.txt`: nenhuma vulnerabilidade conhecida. Não houve achado alto ou crítico para corrigir.
+São três análises:
+
+- Dependências, com `pip-audit` 2.10.1: nenhuma vulnerabilidade conhecida.
+- Código, com Bandit 1.9.4: 3 achados de severidade baixa, avaliados e aceitos.
+- Imagem Docker, com Trivy 0.76.1: nenhuma vulnerabilidade crítica e nenhuma com correção publicada. O pip saiu da imagem, e com ele as CVEs que trazia; as 9 altas restantes estão em pacotes do Debian sem correção publicada.
 
 ## Proteção da branch main
 
-A `main` deve receber mudança só por pull request.
+A `main` só recebe mudança por pull request. A proteção é o ruleset **Proteção da main**, ativo e visível no GitHub em **Settings → Rules → Rulesets**:
 
-No GitHub: **Settings → Branches → Add branch protection rule**, branch `main`.
+- pull request obrigatório para chegar à `main`;
+- o check `tests` do workflow CI precisa passar antes do merge;
+- push forçado e exclusão da branch são bloqueados;
+- ninguém tem bypass, nem os administradores.
 
-- Require a pull request before merging
-- Require status checks to pass before merging, com o check `tests` do workflow CI
-- Do not allow bypassing the above settings
+O check exigido é o nome do job do CI (`tests`). Se o job for renomeado, o ruleset precisa ser atualizado junto.

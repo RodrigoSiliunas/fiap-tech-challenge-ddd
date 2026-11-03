@@ -6,6 +6,9 @@ from enum import Enum
 
 from app.domain.exceptions import DomainError
 
+# Só dígitos e a pontuação usual de CPF e CNPJ; qualquer outro caractere recusa a entrada.
+_FORMATO = re.compile(r"[\d./\- ]+")
+
 
 class TipoDocumento(str, Enum):
     CPF = "CPF"
@@ -56,7 +59,8 @@ class Documento:
     def criar(bruto: str) -> "Documento":
         if bruto is None or not str(bruto).strip():
             raise DomainError("CPF ou CNPJ é obrigatório", "documento_invalido")
-        digitos = re.sub(r"\D", "", str(bruto))
+        texto = str(bruto).strip()
+        digitos = re.sub(r"\D", "", texto) if _FORMATO.fullmatch(texto) else ""
         if len(digitos) == 11 and _cpf_valido(digitos):
             return Documento(digitos, TipoDocumento.CPF)
         if len(digitos) == 14 and _cnpj_valido(digitos):

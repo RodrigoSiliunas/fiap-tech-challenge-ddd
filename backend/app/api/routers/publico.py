@@ -4,11 +4,15 @@ from fastapi import APIRouter, Depends, Query
 
 from app.api.deps import get_uow
 from app.api.presenters import ordem_out
-from app.api.schemas import DecisaoOrcamentoIn, OrdemOut
+from app.api.schemas import DecisaoOrcamentoIn, OrdemOut, respostas_erro
 from app.application.commands.ordens_servico import AprovarOrcamento, RejeitarOrcamento
 from app.application.queries.ordens_servico import ConsultarAcompanhamento, ObterOrdemDeServico
 
-router = APIRouter(prefix="/publico/ordens-servico", tags=["Acompanhamento (cliente)"])
+router = APIRouter(
+    prefix="/publico/ordens-servico",
+    tags=["Acompanhamento (cliente)"],
+    responses=respostas_erro(404, 409, 422),
+)
 
 
 @router.get(
