@@ -1,0 +1,35 @@
+from datetime import timedelta
+
+import jwt
+import pytest
+
+from oficina.domain.exceptions import DomainError
+from oficina.domain.shared.clock import now
+from oficina.infrastructure.auth.jwt import create_token, decode_token
+from oficina.infrastructure.auth.passwords import hash_password, verify_password
+from oficina.config import get_settings
+
+
+def test_jwt_redondo_e_senha():
+    token = create_token("admin", "Administrador da Oficina")
+    payload = decode_token(token)
+    assert payload["sub"] == "admin"
+    assert payload["papel"] == "ADMIN"
+    senha = hash_password("admin123")
+    assert verify_password("admin123", senha)
+    assert not verify_password("errada", senha)
+    assert not verify_password("admin123", "nao-e-hash")
+
+
+def test_jwt_invalido_e_expirado():
+    with pytest.raises(DomainError):
+        decode_token("token-invalido")
+    settings = get_settings()
+    expirado = jwt.encode(
+        {"sub": "admin", "exp": now() - timedelta(minutes=5)},
+        settings.jwt_secret,
+        algorithm=settings.jwt_algorithm,
+    )
+    with pytest.raises(DomainError) as erro:
+        decode_token(expirado)
+    assert erro.value.codigo == "nao_autenticado"
