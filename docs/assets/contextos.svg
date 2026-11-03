@@ -1,44 +1,95 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" role="img">
-  <title>Contextos delimitados</title>
-  <desc>Atendimento e OS no núcleo. Cadastro, Catálogo e Estoque são referenciados por id. Identidade fica no JWT administrativo.</desc>
-  <rect width="960" height="520" fill="#f6f3ec"/>
-  <text x="32" y="36" font-family="sans-serif" font-size="20" font-weight="700" fill="#1e3a5f">Contextos no monólito</text>
-  <text x="32" y="58" font-family="sans-serif" font-size="13" fill="#5c6570">Módulos do mesmo processo. A OS guarda só o id dos outros agregados.</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 578" width="960" height="578" role="img" aria-labelledby="titulo descricao">
+  <title id="titulo">Contextos no monólito</title>
+  <desc id="descricao">Atendimento/OS no núcleo; Cadastro, Catálogo e Estoque como suporte, referenciados por id; Identidade com JWT como subdomínio genérico.</desc>
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1120"/><stop offset="1" stop-color="#0f1a2e"/>
+    </linearGradient>
+    <linearGradient id="topo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f5a524"/><stop offset=".55" stop-color="#ff7a45"/><stop offset="1" stop-color="#4c9aff"/>
+    </linearGradient>
+    <pattern id="pontos" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1.1" fill="#1b2843"/>
+    </pattern>
+    <filter id="sombra" x="-10%" y="-15%" width="120%" height="150%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity=".35"/>
+    </filter>
+    <marker id="seta" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10z" fill="#7385a1"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    .k { font-size: 12px; font-weight: 700; letter-spacing: 3px; fill: #f5a524; }
+    .t { font-size: 26px; font-weight: 700; fill: #eef2f8; }
+    .s { font-size: 14px; fill: #a9b7cc; }
+    .bt { font-size: 17px; font-weight: 700; fill: #eef2f8; }
+    .p { font-family: 'Cascadia Code', 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; font-size: 12.5px; }
+    .d { font-size: 13.5px; fill: #a9b7cc; }
+    .m { font-size: 12.5px; fill: #7385a1; }
+    .lbl { font-size: 11.5px; font-weight: 600; fill: #a9b7cc; }
+    .chip { font-size: 10.5px; font-weight: 700; letter-spacing: 1.5px; }
+    .seta { stroke: #7385a1; stroke-width: 1.8; fill: none; }
+  </style>
+  <rect width="960" height="578" rx="20" fill="url(#fundo)"/>
+  <rect width="960" height="578" rx="20" fill="url(#pontos)" opacity=".6"/>
+  <rect x="28" y="0" width="904" height="3" rx="1.5" fill="url(#topo)"/>
+  <text class="k" x="36" y="42">CONTEXTOS DELIMITADOS</text>
+  <text class="t" x="36" y="74">Contextos no monólito</text>
+  <text class="s" x="36" y="98">Módulos do mesmo processo. A OS guarda só o id dos outros agregados.</text>
+  <path class="seta" d="M176 250 V296" marker-end="url(#seta)"/>
+  <rect x="145.0" y="259.0" width="62" height="28" rx="12" fill="#16233d" stroke="#26354f"/>
+  <text class="lbl" x="176" y="277.0" text-anchor="middle">por id</text>
+  <path class="seta" d="M480 250 V296" marker-end="url(#seta)"/>
+  <rect x="449.0" y="259.0" width="62" height="28" rx="12" fill="#16233d" stroke="#26354f"/>
+  <text class="lbl" x="480" y="277.0" text-anchor="middle">por id</text>
+  <path class="seta" d="M784 250 V296" marker-end="url(#seta)"/>
+  <rect x="753.0" y="259.0" width="62" height="28" rx="12" fill="#16233d" stroke="#26354f"/>
+  <text class="lbl" x="784" y="277.0" text-anchor="middle">por id</text>
+  <rect x="36" y="126" width="888" height="124" rx="14" fill="#111c31" stroke="#f5a524" stroke-opacity="0.85" filter="url(#sombra)"/>
+  <rect x="37" y="140" width="4" height="96" rx="2" fill="#f5a524"/>
+  <circle cx="78" cy="162" r="19" fill="#f5a524" fill-opacity=".14" stroke="#f5a524" stroke-opacity=".55"/>
+  <g transform="translate(68.0 152.0) scale(0.8333)" fill="none" stroke="#f5a524" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><rect x="9" y="2.5" width="6" height="3.5" rx="1"/><path d="M8.5 11h7M8.5 15h5"/></g>
+  <text class="bt" x="110" y="160">Atendimento / OS</text>
+  <text class="d" x="110" y="183">Agregado <tspan class="p" fill="#f5a524">OrdemDeServico</tspan></text>
+  <text class="d" x="110" y="203">Entidades internas: <tspan class="p" fill="#f5a524">ItemServico</tspan>, <tspan class="p" fill="#f5a524">ItemPeca</tspan> e <tspan class="p" fill="#f5a524">Orcamento</tspan>. Status em <tspan class="p" fill="#f5a524">StatusOS</tspan>.</text>
+  <text class="d" x="110" y="223">Cliente, veículo, serviço e peça não ficam aninhados na OS.</text>
+  <rect x="840.6" y="144" width="65.4" height="20" rx="10" fill="#f5a524" fill-opacity=".14" stroke="#f5a524" stroke-opacity=".6"/><text class="chip" x="873.3" y="157.8" text-anchor="middle" fill="#f5a524">NÚCLEO</text>
+  <rect x="36" y="300" width="280" height="122" rx="14" fill="#111c31" stroke="#26354f" stroke-opacity="1" filter="url(#sombra)"/>
+  <rect x="37" y="314" width="4" height="94" rx="2" fill="#4c9aff"/>
+  <circle cx="78" cy="336" r="19" fill="#4c9aff" fill-opacity=".14" stroke="#4c9aff" stroke-opacity=".55"/>
+  <g transform="translate(68.0 326.0) scale(0.8333)" fill="none" stroke="#4c9aff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M5 20.5c.9-3.6 3.7-5.6 7-5.6s6.1 2 7 5.6"/></g>
+  <text class="bt" x="110" y="334">Cadastro</text>
+  <text class="d" x="110" y="357"><tspan class="p" fill="#4c9aff">Cliente</tspan> · <tspan class="p" fill="#4c9aff">Documento</tspan></text>
+  <text class="d" x="110" y="377"><tspan class="p" fill="#4c9aff">Veiculo</tspan> · <tspan class="p" fill="#4c9aff">Placa</tspan></text>
+  <text class="d" x="110" y="397">Marca, modelo e ano</text>
+  <rect x="225.1" y="318" width="72.9" height="20" rx="10" fill="#4c9aff" fill-opacity=".14" stroke="#4c9aff" stroke-opacity=".6"/><text class="chip" x="261.5" y="331.8" text-anchor="middle" fill="#4c9aff">SUPORTE</text>
+  <rect x="340" y="300" width="280" height="122" rx="14" fill="#111c31" stroke="#26354f" stroke-opacity="1" filter="url(#sombra)"/>
+  <rect x="341" y="314" width="4" height="94" rx="2" fill="#2fd08f"/>
+  <circle cx="382" cy="336" r="19" fill="#2fd08f" fill-opacity=".14" stroke="#2fd08f" stroke-opacity=".55"/>
+  <g transform="translate(372.0 326.0) scale(0.8333)" fill="none" stroke="#2fd08f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12.6V4.2c0-.4.3-.7.7-.7h8.4c.2 0 .4.1.5.2l7.4 7.4c.3.3.3.7 0 1l-8.4 8.4c-.3.3-.7.3-1 0l-7.4-7.4c-.1-.1-.2-.3-.2-.5z"/><circle cx="8" cy="8" r="1.4"/></g>
+  <text class="bt" x="414" y="334">Catálogo</text>
+  <text class="d" x="414" y="357"><tspan class="p" fill="#2fd08f">Servico</tspan></text>
+  <text class="d" x="414" y="377">Nome e preço de referência</text>
+  <text class="d" x="414" y="397">A OS grava o preço da linha</text>
+  <rect x="529.1" y="318" width="72.9" height="20" rx="10" fill="#2fd08f" fill-opacity=".14" stroke="#2fd08f" stroke-opacity=".6"/><text class="chip" x="565.5" y="331.8" text-anchor="middle" fill="#2fd08f">SUPORTE</text>
+  <rect x="644" y="300" width="280" height="122" rx="14" fill="#111c31" stroke="#26354f" stroke-opacity="1" filter="url(#sombra)"/>
+  <rect x="645" y="314" width="4" height="94" rx="2" fill="#a78bfa"/>
+  <circle cx="686" cy="336" r="19" fill="#a78bfa" fill-opacity=".14" stroke="#a78bfa" stroke-opacity=".55"/>
+  <g transform="translate(676.0 326.0) scale(0.8333)" fill="none" stroke="#a78bfa" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 20.5 7.2v9.6L12 21.2 3.5 16.8V7.2z"/><path d="M3.8 7.4 12 11.8l8.2-4.4M12 11.8v9.2"/></g>
+  <text class="bt" x="718" y="334">Estoque</text>
+  <text class="d" x="718" y="357"><tspan class="p" fill="#a78bfa">Peca</tspan> (peça e insumo)</text>
+  <text class="d" x="718" y="377">Saldo em <tspan class="p" fill="#a78bfa">Quantidade</tspan></text>
+  <text class="d" x="718" y="397">Baixa na aprovação</text>
+  <rect x="833.1" y="318" width="72.9" height="20" rx="10" fill="#a78bfa" fill-opacity=".14" stroke="#a78bfa" stroke-opacity=".6"/><text class="chip" x="869.5" y="331.8" text-anchor="middle" fill="#a78bfa">SUPORTE</text>
+  <rect x="36" y="446" width="888" height="104" rx="14" fill="#111c31" stroke="#26354f" stroke-opacity="1" filter="url(#sombra)"/>
+  <rect x="37" y="460" width="4" height="76" rx="2" fill="#94a3b8"/>
+  <circle cx="78" cy="482" r="19" fill="#94a3b8" fill-opacity=".14" stroke="#94a3b8" stroke-opacity=".55"/>
+  <g transform="translate(68.0 472.0) scale(0.8333)" fill="none" stroke="#94a3b8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.8 19.5 5.6v5.9c0 4.6-3.1 8.2-7.5 9.7-4.4-1.5-7.5-5.1-7.5-9.7V5.6z"/><path d="m8.8 12 2.3 2.3 4.3-4.6"/></g>
+  <text class="bt" x="110" y="480">Identidade</text>
+  <text class="d" x="110" y="503">JWT nas rotas administrativas. A consulta pública pede o id da OS e o documento, sem token.</text>
+  <text class="d" x="110" y="523">No MVP, atendente, mecânico e administrador usam o mesmo papel ADMIN.</text>
+  <rect x="742.4" y="464" width="163.6" height="20" rx="10" fill="#94a3b8" fill-opacity=".14" stroke="#94a3b8" stroke-opacity=".6"/><text class="chip" x="824.2" y="477.8" text-anchor="middle" fill="#94a3b8">SUBDOMÍNIO GENÉRICO</text>
 
-  <rect x="32" y="78" width="896" height="132" rx="10" fill="#f8ead2" stroke="#8a5a12" stroke-width="1.5"/>
-  <text x="52" y="108" font-family="sans-serif" font-size="16" font-weight="700" fill="#6b4208">Atendimento / OS · núcleo</text>
-  <text x="52" y="134" font-family="sans-serif" font-size="14" fill="#243044">Agregado OrdemDeServico</text>
-  <text x="52" y="156" font-family="sans-serif" font-size="13" fill="#243044">Entidades internas: ItemServico, ItemPeca e Orcamento. Status em StatusOS.</text>
-  <text x="52" y="178" font-family="sans-serif" font-size="13" fill="#5c4a32">Cliente, veículo, serviço e peça não ficam aninhados na OS.</text>
-
-  <line x1="176" y1="210" x2="176" y2="236" stroke="#3d4a5c" stroke-width="1.5"/>
-  <polygon points="170,236 182,236 176,246" fill="#3d4a5c"/>
-  <line x1="480" y1="210" x2="480" y2="236" stroke="#3d4a5c" stroke-width="1.5"/>
-  <polygon points="474,236 486,236 480,246" fill="#3d4a5c"/>
-  <line x1="784" y1="210" x2="784" y2="236" stroke="#3d4a5c" stroke-width="1.5"/>
-  <polygon points="778,236 790,236 784,246" fill="#3d4a5c"/>
-
-  <rect x="32" y="246" width="288" height="128" rx="8" fill="#dbe7f5" stroke="#2c5282" stroke-width="1.5"/>
-  <text x="48" y="274" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e3a5f">Cadastro</text>
-  <text x="48" y="300" font-family="sans-serif" font-size="13" fill="#243044">Cliente · Documento</text>
-  <text x="48" y="322" font-family="sans-serif" font-size="13" fill="#243044">Veiculo · Placa</text>
-  <text x="48" y="344" font-family="sans-serif" font-size="13" fill="#243044">Marca, modelo e ano</text>
-
-  <rect x="336" y="246" width="288" height="128" rx="8" fill="#e5f0e4" stroke="#2f6b4f" stroke-width="1.5"/>
-  <text x="352" y="274" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e4d34">Catálogo</text>
-  <text x="352" y="300" font-family="sans-serif" font-size="13" fill="#243044">Servico</text>
-  <text x="352" y="322" font-family="sans-serif" font-size="13" fill="#243044">Nome e preço de referência</text>
-  <text x="352" y="344" font-family="sans-serif" font-size="13" fill="#243044">A OS grava o preço da linha</text>
-
-  <rect x="640" y="246" width="288" height="128" rx="8" fill="#ece7f6" stroke="#5b4b8a" stroke-width="1.5"/>
-  <text x="656" y="274" font-family="sans-serif" font-size="15" font-weight="700" fill="#3d3470">Estoque</text>
-  <text x="656" y="300" font-family="sans-serif" font-size="13" fill="#243044">Peca (peça e insumo)</text>
-  <text x="656" y="322" font-family="sans-serif" font-size="13" fill="#243044">Saldo em Quantidade</text>
-  <text x="656" y="344" font-family="sans-serif" font-size="13" fill="#243044">Baixa na aprovação</text>
-
-  <rect x="32" y="398" width="896" height="90" rx="8" fill="#e8eef2" stroke="#3d4f5f" stroke-width="1.5"/>
-  <text x="52" y="430" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e3a5f">Identidade · subdomínio genérico</text>
-  <text x="52" y="456" font-family="sans-serif" font-size="13" fill="#243044">JWT nas rotas administrativas. A consulta pública pede o id da OS e o documento, sem token.</text>
-  <text x="52" y="476" font-family="sans-serif" font-size="13" fill="#5c6570">No MVP, atendente, mecânico e administrador usam o mesmo papel ADMIN.</text>
 </svg>

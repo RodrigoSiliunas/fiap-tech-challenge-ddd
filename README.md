@@ -1,11 +1,12 @@
+<img src="docs/assets/banner.svg" alt="Oficina Mecânica: sistema integrado de atendimento e execução de serviços. Tech Challenge SOAT, Fase 1, com Python 3.12, FastAPI, DDD, PostgreSQL 16, Docker e JWT." width="100%">
+
 # Oficina Mecânica — Tech Challenge Fase 1
 
+[![CI](https://github.com/RodrigoSiliunas/fiap-tech-challenge-ddd/actions/workflows/ci.yml/badge.svg)](https://github.com/RodrigoSiliunas/fiap-tech-challenge-ddd/actions/workflows/ci.yml)
 ![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.162-009688?logo=fastapi&logoColor=white)
 ![PostgreSQL 16](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
-![cobertura](https://img.shields.io/badge/cobertura-96%25-brightgreen)
-
-<img src="docs/assets/banner.svg" alt="Oficina Mecânica. Back-end da ordem de serviço, SOAT Tech Challenge, Fase 1." width="960">
+![cobertura](https://img.shields.io/badge/cobertura-98%25-brightgreen)
 
 Back-end da Fase 1 do Tech Challenge SOAT (FIAP): monólito de uma oficina mecânica, com DDD.
 
@@ -44,9 +45,9 @@ Na abertura, o atendente entrega ao cliente o id da OS. Com ele e o documento, o
 
 O agregado recusa transição fora da máquina abaixo. Não há rota para alterar o status direto.
 
-<img src="docs/assets/status-os.svg" alt="Máquina de estados: Recebida, Em diagnóstico, Aguardando aprovação, Em execução, Finalizada e Entregue. De Aguardando aprovação também segue para Rejeitada." width="1068">
+<img src="docs/assets/status-os.svg" alt="Máquina de estados: Recebida, Em diagnóstico, Aguardando aprovação, Em execução, Finalizada e Entregue. De Aguardando aprovação também segue para Rejeitada." width="100%">
 
-<img src="docs/assets/fluxo-os.svg" alt="Fluxo da OS: abrir com cliente e veículo, diagnóstico, itens, orçamento, consulta pública, aprovar com baixa de estoque ou rejeitar, finalizar e entregar." width="860">
+<img src="docs/assets/fluxo-os.svg" alt="Fluxo da OS: abrir com cliente e veículo, diagnóstico, itens, orçamento, consulta pública, aprovar com baixa de estoque ou rejeitar, finalizar e entregar, com a rota de cada comando." width="760">
 
 Itens só podem ser alterados em Em diagnóstico e em Aguardando aprovação. Nesse segundo status, incluir ou remover item recalcula o orçamento. A inclusão de peça confere o saldo disponível e não reserva; a baixa ocorre na aprovação. Um veículo não abre outra OS enquanto a atual não estiver Entregue ou Rejeitada.
 
@@ -71,7 +72,7 @@ O entrypoint é `backend/app/main.py`. Os detalhes de cada pasta estão em [`bac
 
 Os contextos abaixo são módulos, não serviços separados. O orçamento é entidade da `OrdemDeServico`. Cliente, veículo, serviço e peça são agregados próprios, citados por id.
 
-<img src="docs/assets/contextos.svg" alt="Contextos: Atendimento/OS no núcleo; Cadastro, Catálogo e Estoque referenciados por id; Identidade com JWT à parte." width="960">
+<img src="docs/assets/contextos.svg" alt="Contextos: Atendimento/OS no núcleo; Cadastro, Catálogo e Estoque como suporte, referenciados por id; Identidade com JWT como subdomínio genérico." width="960">
 
 Os nomes de domínio no código estão em português, como no glossário (`OrdemDeServico`, `OrcamentoAprovado`, `Placa`). Pastas técnicas ficam em inglês.
 
