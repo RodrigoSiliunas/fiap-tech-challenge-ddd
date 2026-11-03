@@ -3,11 +3,11 @@ from datetime import timedelta
 import jwt
 import pytest
 
-from oficina.domain.exceptions import DomainError
-from oficina.domain.shared.clock import now
-from oficina.infrastructure.auth.jwt import create_token, decode_token
-from oficina.infrastructure.auth.passwords import hash_password, verify_password
-from oficina.config import get_settings
+from app.domain.exceptions import DomainError
+from app.domain.shared.clock import now
+from app.infrastructure.auth.jwt import create_token, decode_token
+from app.infrastructure.auth.passwords import hash_password, verify_password
+from app.config import get_settings
 
 
 def test_jwt_redondo_e_senha():

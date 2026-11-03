@@ -23,7 +23,7 @@ pythonpath = ["."]
 addopts = "-q"
 
 [tool.coverage.run]
-source = ["oficina"]
+source = ["app"]
 omit = ["tests/*"]
 branch = false
 

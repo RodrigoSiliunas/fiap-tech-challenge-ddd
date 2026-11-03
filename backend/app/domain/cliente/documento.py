@@ -4,7 +4,7 @@ import re
 from dataclasses import dataclass
 from enum import Enum
 
-from oficina.domain.exceptions import DomainError
+from app.domain.exceptions import DomainError
 
 
 class TipoDocumento(str, Enum):

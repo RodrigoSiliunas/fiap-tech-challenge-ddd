@@ -2,11 +2,11 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query
 
-from oficina.api.deps import get_uow
-from oficina.api.presenters import ordem_out
-from oficina.api.schemas import DecisaoOrcamentoIn, OrdemOut
-from oficina.application.commands.ordens_servico import AprovarOrcamento, RejeitarOrcamento
-from oficina.application.queries.ordens_servico import ConsultarAcompanhamento, ObterOrdemDeServico
+from app.api.deps import get_uow
+from app.api.presenters import ordem_out
+from app.api.schemas import DecisaoOrcamentoIn, OrdemOut
+from app.application.commands.ordens_servico import AprovarOrcamento, RejeitarOrcamento
+from app.application.queries.ordens_servico import ConsultarAcompanhamento, ObterOrdemDeServico
 
 router = APIRouter(prefix="/publico/ordens-servico", tags=["Acompanhamento (cliente)"])
 

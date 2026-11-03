@@ -5,13 +5,13 @@ from uuid import uuid4
 
 from sqlalchemy.orm import Session
 
-from oficina.config import get_settings
-from oficina.domain.peca.aggregate import Peca
-from oficina.domain.servico.aggregate import Servico
-from oficina.domain.shared.value_objects import Dinheiro, Quantidade
-from oficina.infrastructure.auth.passwords import hash_password
-from oficina.infrastructure.db.models import SequenciaModel, ServicoModel, UsuarioModel
-from oficina.infrastructure.db.repositories import (
+from app.config import get_settings
+from app.domain.peca.aggregate import Peca
+from app.domain.servico.aggregate import Servico
+from app.domain.shared.value_objects import Dinheiro, Quantidade
+from app.infrastructure.auth.passwords import hash_password
+from app.infrastructure.db.models import SequenciaModel, ServicoModel, UsuarioModel
+from app.infrastructure.db.repositories import (
     EventoRepository,
     SqlAlchemyPecaRepository,
     SqlAlchemyServicoRepository,

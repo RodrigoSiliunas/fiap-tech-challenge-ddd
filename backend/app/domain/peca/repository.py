@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from oficina.domain.peca.aggregate import Peca
+from app.domain.peca.aggregate import Peca
 
 
 class PecaRepository(ABC):

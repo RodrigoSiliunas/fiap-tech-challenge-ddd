@@ -5,7 +5,7 @@ from datetime import datetime
 from typing import ClassVar
 from uuid import UUID
 
-from oficina.domain.shared.clock import now
+from app.domain.shared.clock import now
 
 
 @dataclass(frozen=True, kw_only=True)

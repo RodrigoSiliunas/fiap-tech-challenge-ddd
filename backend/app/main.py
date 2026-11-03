@@ -6,9 +6,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 
-from oficina import __version__
-from oficina.api.errors import registrar_erros
-from oficina.api.routers import auth, clientes, metricas, ordens_servico, pecas, publico, servicos, veiculos
+from app import __version__
+from app.api.errors import registrar_erros
+from app.api.routers import auth, clientes, metricas, ordens_servico, pecas, publico, servicos, veiculos
 
 DESCRICAO = """
 API do **Sistema Integrado de Atendimento e Execução de Serviços** de uma oficina mecânica.
@@ -42,7 +42,7 @@ TAGS = [
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     if os.getenv("OFICINA_SKIP_STARTUP") != "1":
-        from oficina.infrastructure.db.session import init_db
+        from app.infrastructure.db.session import init_db
 
         init_db()
     yield

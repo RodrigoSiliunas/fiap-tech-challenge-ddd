@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from oficina.domain.servico.aggregate import Servico
+from app.domain.servico.aggregate import Servico
 
 
 class ServicoRepository(ABC):

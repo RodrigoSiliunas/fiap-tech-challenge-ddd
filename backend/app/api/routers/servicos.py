@@ -2,17 +2,17 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query, Response
 
-from oficina.api.deps import get_current_user, get_uow
-from oficina.api.presenters import pagina, servico_out
-from oficina.api.schemas import ListaServicosOut, ServicoIn, ServicoOut
-from oficina.application.commands.cadastros import (
+from app.api.deps import get_current_user, get_uow
+from app.api.presenters import pagina, servico_out
+from app.api.schemas import ListaServicosOut, ServicoIn, ServicoOut
+from app.application.commands.cadastros import (
     AtualizarServico,
     CadastrarServico,
     ExcluirServico,
     ListarServicos,
     ObterServico,
 )
-from oficina.domain.shared.value_objects import Dinheiro
+from app.domain.shared.value_objects import Dinheiro
 
 router = APIRouter(
     prefix="/servicos",

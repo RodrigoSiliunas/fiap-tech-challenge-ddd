@@ -5,7 +5,7 @@ from datetime import datetime
 from sqlalchemy import JSON, CheckConstraint, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
-from oficina.domain.ordem_servico.status import SituacaoOrcamento, StatusOS
+from app.domain.ordem_servico.status import SituacaoOrcamento, StatusOS
 
 
 class Base(DeclarativeBase):

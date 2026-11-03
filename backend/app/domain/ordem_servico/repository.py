@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from oficina.domain.ordem_servico.aggregate import OrdemDeServico
-from oficina.domain.ordem_servico.status import StatusOS
+from app.domain.ordem_servico.aggregate import OrdemDeServico
+from app.domain.ordem_servico.status import StatusOS
 
 
 class OrdemDeServicoRepository(ABC):

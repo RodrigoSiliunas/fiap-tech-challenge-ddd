@@ -4,7 +4,7 @@ import re
 from dataclasses import dataclass
 from enum import Enum
 
-from oficina.domain.exceptions import DomainError
+from app.domain.exceptions import DomainError
 
 _ANTIGA = re.compile(r"^[A-Z]{3}[0-9]{4}$")
 _MERCOSUL = re.compile(r"^[A-Z]{3}[0-9][A-Z][0-9]{2}$")

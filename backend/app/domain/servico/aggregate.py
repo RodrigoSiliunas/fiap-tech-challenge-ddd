@@ -4,12 +4,12 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from oficina.domain.servico.events import ServicoCatalogoAtualizado, ServicoCatalogoCadastrado
-from oficina.domain.shared.aggregate import RaizAgregado
-from oficina.domain.shared.clock import now
-from oficina.domain.shared.events import DomainEvent
-from oficina.domain.shared.validacao import validar_nome, validar_texto_opcional
-from oficina.domain.shared.value_objects import Dinheiro
+from app.domain.servico.events import ServicoCatalogoAtualizado, ServicoCatalogoCadastrado
+from app.domain.shared.aggregate import RaizAgregado
+from app.domain.shared.clock import now
+from app.domain.shared.events import DomainEvent
+from app.domain.shared.validacao import validar_nome, validar_texto_opcional
+from app.domain.shared.value_objects import Dinheiro
 
 
 @dataclass

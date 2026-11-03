@@ -6,8 +6,8 @@ from sqlalchemy import Engine, create_engine, event, text
 from sqlalchemy.exc import OperationalError
 from sqlalchemy.orm import Session, sessionmaker
 
-from oficina.config import get_settings
-from oficina.infrastructure.db.models import Base
+from app.config import get_settings
+from app.infrastructure.db.models import Base
 
 _engine: Engine | None = None
 _session_factory: sessionmaker[Session] | None = None
@@ -54,7 +54,7 @@ def reset_database_state() -> None:
 
 def init_db(retries: int = 15, delay_seconds: float = 2.0) -> None:
     """Cria tabelas e dados de demonstração. Repete enquanto o Postgres sobe."""
-    from oficina.infrastructure.seed import seed
+    from app.infrastructure.seed import seed
 
     last_error: OperationalError | None = None
     for attempt in range(1, retries + 1):

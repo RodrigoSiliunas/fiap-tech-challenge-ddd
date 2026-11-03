@@ -6,7 +6,7 @@ from decimal import Decimal
 from enum import Enum
 from uuid import UUID
 
-from oficina.domain.shared.events import DomainEvent
+from app.domain.shared.events import DomainEvent
 
 
 def _jsonable(value: object) -> object:

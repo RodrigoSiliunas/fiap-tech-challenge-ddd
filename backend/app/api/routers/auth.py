@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
-from oficina.api.deps import get_uow
-from oficina.api.schemas import LoginIn, TokenOut
-from oficina.application.commands.autenticar import AutenticarUsuario
+from app.api.deps import get_uow
+from app.api.schemas import LoginIn, TokenOut
+from app.application.commands.autenticar import AutenticarUsuario
 
 router = APIRouter(prefix="/auth", tags=["Autenticação"])
 

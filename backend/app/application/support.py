@@ -1,7 +1,7 @@
 """Funções comuns dos casos de uso."""
 
-from oficina.domain.exceptions import DomainError
-from oficina.domain.shared.aggregate import RaizAgregado
+from app.domain.exceptions import DomainError
+from app.domain.shared.aggregate import RaizAgregado
 
 
 def paginar(limite: int, offset: int) -> tuple[int, int]:

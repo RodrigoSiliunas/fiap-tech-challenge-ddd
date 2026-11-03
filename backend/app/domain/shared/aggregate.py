@@ -1,6 +1,6 @@
 """Mixin das raízes de agregado: registro e coleta de eventos."""
 
-from oficina.domain.shared.events import DomainEvent
+from app.domain.shared.events import DomainEvent
 
 
 class RaizAgregado:

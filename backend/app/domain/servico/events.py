@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import ClassVar
 
-from oficina.domain.shared.events import DomainEvent
+from app.domain.shared.events import DomainEvent
 
 
 @dataclass(frozen=True, kw_only=True)

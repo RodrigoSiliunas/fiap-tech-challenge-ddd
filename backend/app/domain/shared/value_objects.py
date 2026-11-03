@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from decimal import Decimal, ROUND_HALF_UP
 
-from oficina.domain.exceptions import DomainError
+from app.domain.exceptions import DomainError
 
 
 def _inteiro(valor: object, mensagem: str) -> int:

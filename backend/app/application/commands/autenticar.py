@@ -1,7 +1,7 @@
-from oficina.domain.exceptions import DomainError
-from oficina.infrastructure.auth.jwt import create_token
-from oficina.infrastructure.auth.passwords import verify_password
-from oficina.config import get_settings
+from app.domain.exceptions import DomainError
+from app.infrastructure.auth.jwt import create_token
+from app.infrastructure.auth.passwords import verify_password
+from app.config import get_settings
 
 
 class AutenticarUsuario:

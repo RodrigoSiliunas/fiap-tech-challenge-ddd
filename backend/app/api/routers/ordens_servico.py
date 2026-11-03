@@ -2,9 +2,9 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query
 
-from oficina.api.deps import get_current_user, get_uow
-from oficina.api.presenters import ordem_detalhe_out, pagina, resumo_ordem_out
-from oficina.api.schemas import (
+from app.api.deps import get_current_user, get_uow
+from app.api.presenters import ordem_detalhe_out, pagina, resumo_ordem_out
+from app.api.schemas import (
     AbrirOrdemIn,
     DiagnosticoIn,
     IncluirPecaIn,
@@ -12,7 +12,7 @@ from oficina.api.schemas import (
     ListaOrdensOut,
     OrdemDetalheOut,
 )
-from oficina.application.commands.ordens_servico import (
+from app.application.commands.ordens_servico import (
     AbrirOrdemDeServico,
     AbrirOrdemInput,
     EntregarVeiculo,
@@ -24,8 +24,8 @@ from oficina.application.commands.ordens_servico import (
     RemoverPecaDaOrdem,
     RemoverServicoDaOrdem,
 )
-from oficina.application.queries.ordens_servico import ListarOrdensDeServico, ObterOrdemDeServico
-from oficina.domain.ordem_servico.status import StatusOS
+from app.application.queries.ordens_servico import ListarOrdensDeServico, ObterOrdemDeServico
+from app.domain.ordem_servico.status import StatusOS
 
 router = APIRouter(
     prefix="/ordens-servico",

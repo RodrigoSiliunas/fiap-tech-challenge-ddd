@@ -18,13 +18,13 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from oficina.config import get_settings
-from oficina.infrastructure.auth.passwords import hash_password
-from oficina.infrastructure.db.models import Base
-from oficina.infrastructure.db.session import build_engine, reset_database_state
-from oficina.infrastructure.seed import seed
-from oficina.infrastructure.unit_of_work import SqlAlchemyUnitOfWork
-from oficina.main import create_app
+from app.config import get_settings
+from app.infrastructure.auth.passwords import hash_password
+from app.infrastructure.db.models import Base
+from app.infrastructure.db.session import build_engine, reset_database_state
+from app.infrastructure.seed import seed
+from app.infrastructure.unit_of_work import SqlAlchemyUnitOfWork
+from app.main import create_app
 
 get_settings.cache_clear()
 reset_database_state()
@@ -79,7 +79,7 @@ def client(database) -> Generator[TestClient, None, None]:
         finally:
             uow.close()
 
-    from oficina.api.deps import get_uow
+    from app.api.deps import get_uow
 
     app.dependency_overrides[get_uow] = override_uow
     with TestClient(app) as test_client:

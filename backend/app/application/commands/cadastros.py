@@ -2,15 +2,15 @@
 
 from uuid import UUID
 
-from oficina.application.support import concluir, exigir, paginar
-from oficina.domain.cliente.aggregate import Cliente
-from oficina.domain.cliente.documento import Documento
-from oficina.domain.exceptions import DomainError
-from oficina.domain.peca.aggregate import Peca
-from oficina.domain.servico.aggregate import Servico
-from oficina.domain.shared.value_objects import Dinheiro, Quantidade
-from oficina.domain.veiculo.aggregate import Veiculo
-from oficina.domain.veiculo.placa import Placa
+from app.application.support import concluir, exigir, paginar
+from app.domain.cliente.aggregate import Cliente
+from app.domain.cliente.documento import Documento
+from app.domain.exceptions import DomainError
+from app.domain.peca.aggregate import Peca
+from app.domain.servico.aggregate import Servico
+from app.domain.shared.value_objects import Dinheiro, Quantidade
+from app.domain.veiculo.aggregate import Veiculo
+from app.domain.veiculo.placa import Placa
 
 
 class CadastrarCliente:

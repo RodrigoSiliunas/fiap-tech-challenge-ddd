@@ -3,15 +3,15 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-from oficina.application.support import concluir, exigir
-from oficina.domain.cliente.aggregate import Cliente
-from oficina.domain.cliente.documento import Documento
-from oficina.domain.exceptions import DomainError
-from oficina.domain.ordem_servico.aggregate import OrdemDeServico
-from oficina.domain.services.politica_estoque import PoliticaBaixaEstoque, PoliticaDisponibilidadeEstoque
-from oficina.domain.shared.value_objects import Quantidade
-from oficina.domain.veiculo.aggregate import Veiculo
-from oficina.domain.veiculo.placa import Placa
+from app.application.support import concluir, exigir
+from app.domain.cliente.aggregate import Cliente
+from app.domain.cliente.documento import Documento
+from app.domain.exceptions import DomainError
+from app.domain.ordem_servico.aggregate import OrdemDeServico
+from app.domain.services.politica_estoque import PoliticaBaixaEstoque, PoliticaDisponibilidadeEstoque
+from app.domain.shared.value_objects import Quantidade
+from app.domain.veiculo.aggregate import Veiculo
+from app.domain.veiculo.placa import Placa
 
 
 @dataclass

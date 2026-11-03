@@ -2,7 +2,7 @@
 
 import re
 
-from oficina.domain.exceptions import DomainError
+from app.domain.exceptions import DomainError
 
 _EMAIL = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 
@@ -46,7 +46,7 @@ def validar_telefone(valor: str | None) -> str | None:
 
 
 def validar_ano(ano: int) -> int:
-    from oficina.domain.shared.clock import now
+    from app.domain.shared.clock import now
 
     if isinstance(ano, bool) or not isinstance(ano, int):
         raise DomainError("Ano do veículo inválido", "validacao")

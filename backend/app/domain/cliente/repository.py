@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from oficina.domain.cliente.aggregate import Cliente
-from oficina.domain.cliente.documento import Documento
+from app.domain.cliente.aggregate import Cliente
+from app.domain.cliente.documento import Documento
 
 
 class ClienteRepository(ABC):

@@ -3,10 +3,10 @@ from collections.abc import Generator
 from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from oficina.domain.exceptions import DomainError
-from oficina.infrastructure.auth.jwt import decode_token
-from oficina.infrastructure.db.session import get_session_factory
-from oficina.infrastructure.unit_of_work import SqlAlchemyUnitOfWork
+from app.domain.exceptions import DomainError
+from app.infrastructure.auth.jwt import decode_token
+from app.infrastructure.db.session import get_session_factory
+from app.infrastructure.unit_of_work import SqlAlchemyUnitOfWork
 
 _bearer = HTTPBearer(auto_error=False)
 

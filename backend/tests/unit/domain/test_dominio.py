@@ -6,20 +6,20 @@ from uuid import uuid4
 
 import pytest
 
-from oficina.domain.cliente.aggregate import Cliente
-from oficina.domain.cliente.documento import Documento, TipoDocumento
-from oficina.domain.exceptions import DomainError
-from oficina.domain.ordem_servico.aggregate import OrdemDeServico
-from oficina.domain.ordem_servico.status import StatusOS
-from oficina.domain.peca.aggregate import Peca
-from oficina.domain.servico.aggregate import Servico
-from oficina.domain.services.politica_estoque import PoliticaBaixaEstoque, PoliticaDisponibilidadeEstoque
-from oficina.domain.shared.clock import reset_clock, set_clock
-from oficina.domain.shared.validacao import validar_email, validar_telefone
-from oficina.domain.shared.value_objects import Dinheiro, Quantidade, somar_dinheiros
-from oficina.domain.veiculo.aggregate import Veiculo
-from oficina.domain.veiculo.placa import PadraoPlaca, Placa
-from oficina.application.support import paginar
+from app.domain.cliente.aggregate import Cliente
+from app.domain.cliente.documento import Documento, TipoDocumento
+from app.domain.exceptions import DomainError
+from app.domain.ordem_servico.aggregate import OrdemDeServico
+from app.domain.ordem_servico.status import StatusOS
+from app.domain.peca.aggregate import Peca
+from app.domain.servico.aggregate import Servico
+from app.domain.services.politica_estoque import PoliticaBaixaEstoque, PoliticaDisponibilidadeEstoque
+from app.domain.shared.clock import reset_clock, set_clock
+from app.domain.shared.validacao import validar_email, validar_telefone
+from app.domain.shared.value_objects import Dinheiro, Quantidade, somar_dinheiros
+from app.domain.veiculo.aggregate import Veiculo
+from app.domain.veiculo.placa import PadraoPlaca, Placa
+from app.application.support import paginar
 
 CPF = "529.982.247-25"
 CNPJ = "11.444.777/0001-61"

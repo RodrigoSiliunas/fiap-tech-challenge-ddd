@@ -3,12 +3,12 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-from oficina.application.commands.ordens_servico import _ordem_do_cliente
-from oficina.application.support import exigir, paginar
-from oficina.domain.cliente.aggregate import Cliente
-from oficina.domain.ordem_servico.aggregate import OrdemDeServico
-from oficina.domain.ordem_servico.status import StatusOS
-from oficina.domain.veiculo.aggregate import Veiculo
+from app.application.commands.ordens_servico import _ordem_do_cliente
+from app.application.support import exigir, paginar
+from app.domain.cliente.aggregate import Cliente
+from app.domain.ordem_servico.aggregate import OrdemDeServico
+from app.domain.ordem_servico.status import StatusOS
+from app.domain.veiculo.aggregate import Veiculo
 
 
 @dataclass

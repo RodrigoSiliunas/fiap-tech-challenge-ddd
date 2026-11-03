@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 
-from oficina.api.deps import get_current_user, get_uow
-from oficina.api.schemas import TempoMedioOut
-from oficina.application.queries.tempo_medio_execucao import CalcularTempoMedioExecucao
+from app.api.deps import get_current_user, get_uow
+from app.api.schemas import TempoMedioOut
+from app.application.queries.tempo_medio_execucao import CalcularTempoMedioExecucao
 
 router = APIRouter(
     prefix="/metricas",

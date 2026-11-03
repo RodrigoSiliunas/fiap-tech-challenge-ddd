@@ -4,12 +4,12 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from oficina.domain.cliente.documento import Documento
-from oficina.domain.cliente.events import ClienteAtualizado, ClienteCadastrado, ClienteIdentificado
-from oficina.domain.shared.aggregate import RaizAgregado
-from oficina.domain.shared.clock import now
-from oficina.domain.shared.events import DomainEvent
-from oficina.domain.shared.validacao import validar_email, validar_nome, validar_telefone
+from app.domain.cliente.documento import Documento
+from app.domain.cliente.events import ClienteAtualizado, ClienteCadastrado, ClienteIdentificado
+from app.domain.shared.aggregate import RaizAgregado
+from app.domain.shared.clock import now
+from app.domain.shared.events import DomainEvent
+from app.domain.shared.validacao import validar_email, validar_nome, validar_telefone
 
 
 @dataclass

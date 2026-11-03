@@ -1,100 +1,99 @@
-Comando: pytest --cov=oficina --cov-report=term-missing --cov-fail-under=80
+Comando: pytest --cov=app --cov-report=term-missing --cov-fail-under=80 (em backend/)
+Ambiente: Python 3.12.16 (imagem python:3.12-slim)
 Resultado: 35 passed
-Cobertura total: 96.17% (2257/2347 linhas)
-Domínio (oficina/domain): 95% (701/740 linhas)
+Cobertura total: 96.13% (2258/2349 linhas)
+Domínio (app/domain): 94.73% (701/740 linhas)
 Limite exigido: 80%
 
-=== oficina ===
-Name                                                  Stmts   Miss  Cover   Missing
------------------------------------------------------------------------------------
-oficina/__init__.py                                       1      0   100%
-oficina/api/deps.py                                      25      9    64%   15-23, 34
-oficina/api/errors.py                                    25      2    92%   19-20
-oficina/api/presenters.py                                55      1    98%   19
-oficina/api/routers/auth.py                               8      0   100%
-oficina/api/routers/clientes.py                          26      0   100%
-oficina/api/routers/metricas.py                           8      0   100%
-oficina/api/routers/ordens_servico.py                    55      0   100%
-oficina/api/routers/pecas.py                             34      2    94%   60-61
-oficina/api/routers/publico.py                           19      0   100%
-oficina/api/routers/servicos.py                          27      1    96%   42
-oficina/api/routers/veiculos.py                          26      1    96%   42
-oficina/api/schemas.py                                  233      2    99%   11, 120
-oficina/application/commands/autenticar.py               12      0   100%
-oficina/application/commands/cadastros.py               184     11    94%   112, 115, 164, 167, 192, 195-199, 209
-oficina/application/commands/ordens_servico.py          166      3    98%   212, 216-217
-oficina/application/queries/ordens_servico.py            48      0   100%
-oficina/application/queries/tempo_medio_execucao.py       9      0   100%
-oficina/application/support.py                           18      0   100%
-oficina/config.py                                        14      0   100%
-oficina/domain/cliente/aggregate.py                      33      0   100%
-oficina/domain/cliente/documento.py                      55      2    96%   22, 53
-oficina/domain/cliente/events.py                         17      0   100%
-oficina/domain/cliente/repository.py                      5      5     0%   1-8
-oficina/domain/exceptions.py                              5      0   100%
-oficina/domain/ordem_servico/aggregate.py               178      5    97%   134, 164, 213, 221, 234
-oficina/domain/ordem_servico/events.py                   56      0   100%
-oficina/domain/ordem_servico/repository.py                5      5     0%   1-8
-oficina/domain/ordem_servico/status.py                   21      0   100%
-oficina/domain/peca/aggregate.py                         50      5    90%   62-66
-oficina/domain/peca/events.py                            28      0   100%
-oficina/domain/peca/repository.py                         4      4     0%   1-7
-oficina/domain/services/politica_estoque.py              17      0   100%
-oficina/domain/servico/aggregate.py                      30      0   100%
-oficina/domain/servico/events.py                         13      0   100%
-oficina/domain/servico/repository.py                      4      4     0%   1-7
-oficina/domain/shared/aggregate.py                        9      0   100%
-oficina/domain/shared/clock.py                            9      0   100%
-oficina/domain/shared/events.py                          13      0   100%
-oficina/domain/shared/validacao.py                       40      2    95%   12, 52
-oficina/domain/shared/value_objects.py                   62      1    98%   52
-oficina/domain/veiculo/aggregate.py                      32      0   100%
-oficina/domain/veiculo/events.py                         17      0   100%
-oficina/domain/veiculo/placa.py                          32      1    97%   27
-oficina/domain/veiculo/repository.py                      5      5     0%   1-8
-oficina/infrastructure/auth/jwt.py                       16      0   100%
-oficina/infrastructure/auth/passwords.py                  8      0   100%
-oficina/infrastructure/db/models.py                     121      0   100%
-oficina/infrastructure/db/repositories.py               283     11    96%   51-53, 58, 99, 144, 182, 217, 275-276, 371
-oficina/infrastructure/db/session.py                     55     15    73%   19, 29, 35-36, 42-43, 50-51, 55, 68, 74, 76-79
-oficina/infrastructure/seed.py                           44      0   100%
-oficina/infrastructure/serialization.py                  22      3    86%   18, 20, 24
-oficina/infrastructure/unit_of_work.py                   33      0   100%
-oficina/main.py                                          34      2    94%   45-47
------------------------------------------------------------------------------------
-TOTAL                                                  2349    102    96%
+=== app ===
+Name                                              Stmts   Miss  Cover   Missing
+-------------------------------------------------------------------------------
+app/__init__.py                                       1      0   100%
+app/api/deps.py                                      25      9    64%   15-23, 34
+app/api/errors.py                                    25      2    92%   19-20
+app/api/presenters.py                                55      1    98%   19
+app/api/routers/auth.py                               8      0   100%
+app/api/routers/clientes.py                          26      0   100%
+app/api/routers/metricas.py                           8      0   100%
+app/api/routers/ordens_servico.py                    55      0   100%
+app/api/routers/pecas.py                             34      2    94%   60-61
+app/api/routers/publico.py                           19      0   100%
+app/api/routers/servicos.py                          27      1    96%   42
+app/api/routers/veiculos.py                          26      1    96%   42
+app/api/schemas.py                                  233      2    99%   11, 120
+app/application/commands/autenticar.py               12      0   100%
+app/application/commands/cadastros.py               184     11    94%   112, 115, 164, 167, 192, 195-199, 209
+app/application/commands/ordens_servico.py          166      3    98%   212, 216-217
+app/application/queries/ordens_servico.py            48      0   100%
+app/application/queries/tempo_medio_execucao.py       9      0   100%
+app/application/support.py                           18      0   100%
+app/config.py                                        14      0   100%
+app/domain/cliente/aggregate.py                      33      0   100%
+app/domain/cliente/documento.py                      55      2    96%   22, 53
+app/domain/cliente/events.py                         17      0   100%
+app/domain/cliente/repository.py                      5      5     0%   1-8
+app/domain/exceptions.py                              5      0   100%
+app/domain/ordem_servico/aggregate.py               178      5    97%   134, 164, 213, 221, 234
+app/domain/ordem_servico/events.py                   56      0   100%
+app/domain/ordem_servico/repository.py                5      5     0%   1-8
+app/domain/ordem_servico/status.py                   21      0   100%
+app/domain/peca/aggregate.py                         50      5    90%   62-66
+app/domain/peca/events.py                            28      0   100%
+app/domain/peca/repository.py                         4      4     0%   1-7
+app/domain/services/politica_estoque.py              17      0   100%
+app/domain/servico/aggregate.py                      30      0   100%
+app/domain/servico/events.py                         13      0   100%
+app/domain/servico/repository.py                      4      4     0%   1-7
+app/domain/shared/aggregate.py                        9      0   100%
+app/domain/shared/clock.py                            9      0   100%
+app/domain/shared/events.py                          13      0   100%
+app/domain/shared/validacao.py                       40      2    95%   12, 52
+app/domain/shared/value_objects.py                   62      1    98%   52
+app/domain/veiculo/aggregate.py                      32      0   100%
+app/domain/veiculo/events.py                         17      0   100%
+app/domain/veiculo/placa.py                          32      1    97%   27
+app/domain/veiculo/repository.py                      5      5     0%   1-8
+app/infrastructure/auth/jwt.py                       16      0   100%
+app/infrastructure/auth/passwords.py                  8      0   100%
+app/infrastructure/db/models.py                     121      0   100%
+app/infrastructure/db/repositories.py               283     11    96%   51-53, 58, 99, 144, 182, 217, 275-276, 371
+app/infrastructure/db/session.py                     55      4    93%   19, 29, 77, 79
+app/infrastructure/seed.py                           44      0   100%
+app/infrastructure/serialization.py                  22      3    86%   18, 20, 24
+app/infrastructure/unit_of_work.py                   33      0   100%
+app/main.py                                          34      2    94%   45-47
+-------------------------------------------------------------------------------
+TOTAL                                              2349     91    96%
 
-16 empty files skipped.
-
-=== oficina/domain ===
-Name                                          Stmts   Miss  Cover   Missing
----------------------------------------------------------------------------
-oficina/domain/cliente/aggregate.py              33      0   100%
-oficina/domain/cliente/documento.py              55      2    96%   22, 53
-oficina/domain/cliente/events.py                 17      0   100%
-oficina/domain/cliente/repository.py              5      5     0%   1-8
-oficina/domain/exceptions.py                      5      0   100%
-oficina/domain/ordem_servico/aggregate.py       178      5    97%   134, 164, 213, 221, 234
-oficina/domain/ordem_servico/events.py           56      0   100%
-oficina/domain/ordem_servico/repository.py        5      5     0%   1-8
-oficina/domain/ordem_servico/status.py           21      0   100%
-oficina/domain/peca/aggregate.py                 50      5    90%   62-66
-oficina/domain/peca/events.py                    28      0   100%
-oficina/domain/peca/repository.py                 4      4     0%   1-7
-oficina/domain/services/politica_estoque.py      17      0   100%
-oficina/domain/servico/aggregate.py              30      0   100%
-oficina/domain/servico/events.py                 13      0   100%
-oficina/domain/servico/repository.py              4      4     0%   1-7
-oficina/domain/shared/aggregate.py                9      0   100%
-oficina/domain/shared/clock.py                    9      0   100%
-oficina/domain/shared/events.py                  13      0   100%
-oficina/domain/shared/validacao.py               40      2    95%   12, 52
-oficina/domain/shared/value_objects.py           62      1    98%   52
-oficina/domain/veiculo/aggregate.py              32      0   100%
-oficina/domain/veiculo/events.py                 17      0   100%
-oficina/domain/veiculo/placa.py                  32      1    97%   27
-oficina/domain/veiculo/repository.py              5      5     0%   1-8
----------------------------------------------------------------------------
-TOTAL                                           740     39    95%
+=== app/domain ===
+Name                                      Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------------
+app/domain/cliente/aggregate.py              33      0   100%
+app/domain/cliente/documento.py              55      2    96%   22, 53
+app/domain/cliente/events.py                 17      0   100%
+app/domain/cliente/repository.py              5      5     0%   1-8
+app/domain/exceptions.py                      5      0   100%
+app/domain/ordem_servico/aggregate.py       178      5    97%   134, 164, 213, 221, 234
+app/domain/ordem_servico/events.py           56      0   100%
+app/domain/ordem_servico/repository.py        5      5     0%   1-8
+app/domain/ordem_servico/status.py           21      0   100%
+app/domain/peca/aggregate.py                 50      5    90%   62-66
+app/domain/peca/events.py                    28      0   100%
+app/domain/peca/repository.py                 4      4     0%   1-7
+app/domain/services/politica_estoque.py      17      0   100%
+app/domain/servico/aggregate.py              30      0   100%
+app/domain/servico/events.py                 13      0   100%
+app/domain/servico/repository.py              4      4     0%   1-7
+app/domain/shared/aggregate.py                9      0   100%
+app/domain/shared/clock.py                    9      0   100%
+app/domain/shared/events.py                  13      0   100%
+app/domain/shared/validacao.py               40      2    95%   12, 52
+app/domain/shared/value_objects.py           62      1    98%   52
+app/domain/veiculo/aggregate.py              32      0   100%
+app/domain/veiculo/events.py                 17      0   100%
+app/domain/veiculo/placa.py                  32      1    97%   27
+app/domain/veiculo/repository.py              5      5     0%   1-8
+-----------------------------------------------------------------------
+TOTAL                                       740     39    95%
 
 8 empty files skipped.

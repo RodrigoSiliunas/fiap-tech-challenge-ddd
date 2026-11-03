@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
-from oficina.domain.exceptions import DomainError
+from app.domain.exceptions import DomainError
 
 
 def _jsonavel(valor):

@@ -8,8 +8,8 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from uuid import UUID, uuid4
 
-from oficina.domain.exceptions import DomainError
-from oficina.domain.ordem_servico.events import (
+from app.domain.exceptions import DomainError
+from app.domain.ordem_servico.events import (
     DiagnosticoIniciado,
     ExecucaoIniciada,
     ItemPecaRemovido,
@@ -24,17 +24,17 @@ from oficina.domain.ordem_servico.events import (
     ServicosIncluidos,
     VeiculoEntregue,
 )
-from oficina.domain.ordem_servico.status import (
+from app.domain.ordem_servico.status import (
     STATUS_EDITAVEIS,
     TRANSICOES,
     SituacaoOrcamento,
     StatusOS,
 )
-from oficina.domain.shared.aggregate import RaizAgregado
-from oficina.domain.shared.clock import now
-from oficina.domain.shared.events import DomainEvent
-from oficina.domain.shared.validacao import validar_texto_opcional
-from oficina.domain.shared.value_objects import Dinheiro, Quantidade, somar_dinheiros
+from app.domain.shared.aggregate import RaizAgregado
+from app.domain.shared.clock import now
+from app.domain.shared.events import DomainEvent
+from app.domain.shared.validacao import validar_texto_opcional
+from app.domain.shared.value_objects import Dinheiro, Quantidade, somar_dinheiros
 
 
 @dataclass

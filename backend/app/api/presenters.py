@@ -2,14 +2,14 @@
 
 from datetime import datetime, timezone
 
-from oficina.application.queries.ordens_servico import DetalheOrdem, ResumoOrdem
-from oficina.domain.cliente.aggregate import Cliente
-from oficina.domain.ordem_servico.aggregate import Orcamento, OrdemDeServico
-from oficina.domain.ordem_servico.status import StatusOS
-from oficina.domain.peca.aggregate import Peca
-from oficina.domain.servico.aggregate import Servico
-from oficina.domain.shared.value_objects import Dinheiro
-from oficina.domain.veiculo.aggregate import Veiculo
+from app.application.queries.ordens_servico import DetalheOrdem, ResumoOrdem
+from app.domain.cliente.aggregate import Cliente
+from app.domain.ordem_servico.aggregate import Orcamento, OrdemDeServico
+from app.domain.ordem_servico.status import StatusOS
+from app.domain.peca.aggregate import Peca
+from app.domain.servico.aggregate import Servico
+from app.domain.shared.value_objects import Dinheiro
+from app.domain.veiculo.aggregate import Veiculo
 
 
 def instante(valor: datetime | None) -> str | None:

@@ -2,7 +2,7 @@
 
 from sqlalchemy.orm import Session, sessionmaker
 
-from oficina.infrastructure.db.repositories import (
+from app.infrastructure.db.repositories import (
     EventoRepository,
     SqlAlchemyClienteRepository,
     SqlAlchemyOrdemRepository,

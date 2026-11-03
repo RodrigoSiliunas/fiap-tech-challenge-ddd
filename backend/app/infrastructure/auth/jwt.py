@@ -4,9 +4,9 @@ from datetime import timedelta
 
 import jwt
 
-from oficina.config import get_settings
-from oficina.domain.exceptions import DomainError
-from oficina.domain.shared.clock import now
+from app.config import get_settings
+from app.domain.exceptions import DomainError
+from app.domain.shared.clock import now
 
 
 def create_token(username: str, nome: str) -> str:

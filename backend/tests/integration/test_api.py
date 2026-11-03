@@ -3,7 +3,7 @@
 from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 
-from oficina.infrastructure.db.models import OrdemModel
+from app.infrastructure.db.models import OrdemModel
 
 CPF = "529.982.247-25"
 CPF_2 = "111.444.777-35"

@@ -2,10 +2,10 @@
 
 from sqlalchemy.exc import OperationalError
 
-from oficina.config import get_settings
-from oficina.infrastructure.db.models import PecaModel, ServicoModel, UsuarioModel
-from oficina.infrastructure.db.session import get_engine, get_session_factory, init_db, reset_database_state
-from oficina.infrastructure.seed import seed
+from app.config import get_settings
+from app.infrastructure.db.models import PecaModel, ServicoModel, UsuarioModel
+from app.infrastructure.db.session import get_engine, get_session_factory, init_db, reset_database_state
+from app.infrastructure.seed import seed
 
 
 def test_seed_e_idempotente(tmp_path, admin_hash, monkeypatch):
@@ -42,7 +42,7 @@ def test_init_db_repete_quando_o_banco_recusa(tmp_path, monkeypatch):
             raise OperationalError("SELECT 1", {}, Exception("ainda subindo"))
         return engine
 
-    monkeypatch.setattr("oficina.infrastructure.db.session.get_engine", flaky)
+    monkeypatch.setattr("app.infrastructure.db.session.get_engine", flaky)
     init_db(retries=3, delay_seconds=0)
     assert tentativas["n"] >= 2
     reset_database_state()

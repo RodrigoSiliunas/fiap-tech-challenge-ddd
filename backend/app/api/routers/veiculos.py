@@ -2,10 +2,10 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query, Response
 
-from oficina.api.deps import get_current_user, get_uow
-from oficina.api.presenters import pagina, veiculo_out
-from oficina.api.schemas import ListaVeiculosOut, VeiculoIn, VeiculoOut, VeiculoUpdate
-from oficina.application.commands.cadastros import (
+from app.api.deps import get_current_user, get_uow
+from app.api.presenters import pagina, veiculo_out
+from app.api.schemas import ListaVeiculosOut, VeiculoIn, VeiculoOut, VeiculoUpdate
+from app.application.commands.cadastros import (
     AtualizarVeiculo,
     CadastrarVeiculo,
     ExcluirVeiculo,

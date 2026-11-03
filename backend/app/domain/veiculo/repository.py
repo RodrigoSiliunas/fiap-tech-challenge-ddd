@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from uuid import UUID
 
-from oficina.domain.veiculo.aggregate import Veiculo
-from oficina.domain.veiculo.placa import Placa
+from app.domain.veiculo.aggregate import Veiculo
+from app.domain.veiculo.placa import Placa
 
 
 class VeiculoRepository(ABC):

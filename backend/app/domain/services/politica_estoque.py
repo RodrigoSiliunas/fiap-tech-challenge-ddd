@@ -6,9 +6,9 @@
 
 from uuid import UUID
 
-from oficina.domain.exceptions import DomainError
-from oficina.domain.ordem_servico.aggregate import OrdemDeServico
-from oficina.domain.peca.aggregate import Peca
+from app.domain.exceptions import DomainError
+from app.domain.ordem_servico.aggregate import OrdemDeServico
+from app.domain.peca.aggregate import Peca
 
 
 class PoliticaDisponibilidadeEstoque:
