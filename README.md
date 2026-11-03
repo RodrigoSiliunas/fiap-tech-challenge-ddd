@@ -118,7 +118,7 @@ docker compose down
 
 O volume `pgdata` mantém os dados. `docker compose down -v` apaga o volume.
 
-Para percorrer o fluxo com um cliente e uma placa novos, com a API no ar:
+Para percorrer o fluxo completo com a API no ar (cada execução usa uma placa nova; a cliente do exemplo é reaproveitada pelo CPF):
 
 ```bash
 python backend/scripts/demo_fluxo.py
