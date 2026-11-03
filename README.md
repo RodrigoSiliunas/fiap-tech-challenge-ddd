@@ -282,10 +282,11 @@ São três análises:
 
 ## Proteção da branch main
 
-A `main` deve receber mudança só por pull request.
+A `main` só recebe mudança por pull request. A proteção é o ruleset **Proteção da main**, ativo e visível no GitHub em **Settings → Rules → Rulesets**:
 
-No GitHub: **Settings → Branches → Add branch protection rule**, branch `main`.
+- pull request obrigatório para chegar à `main`;
+- o check `tests` do workflow CI precisa passar antes do merge;
+- push forçado e exclusão da branch são bloqueados;
+- ninguém tem bypass, nem os administradores.
 
-- Require a pull request before merging
-- Require status checks to pass before merging, com o check `tests` do workflow CI
-- Do not allow bypassing the above settings
+O check exigido é o nome do job do CI (`tests`). Se o job for renomeado, o ruleset precisa ser atualizado junto.
