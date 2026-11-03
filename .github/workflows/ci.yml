@@ -10,6 +10,20 @@ jobs:
     defaults:
       run:
         working-directory: backend
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: oficina
+          POSTGRES_PASSWORD: oficina
+          POSTGRES_DB: oficina_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U oficina -d oficina_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -21,6 +35,10 @@ jobs:
           pip install -r requirements-dev.txt
       - name: Testes e cobertura
         run: pytest --cov=app --cov-report=term-missing --cov-report=xml --cov-fail-under=80
+      - name: Testes contra PostgreSQL
+        env:
+          OFICINA_TEST_DATABASE_URL: postgresql+psycopg://oficina:oficina@localhost:5432/oficina_test
+        run: pytest -rs
       - name: Publicar relatório de cobertura
         if: always()
         uses: actions/upload-artifact@v4
