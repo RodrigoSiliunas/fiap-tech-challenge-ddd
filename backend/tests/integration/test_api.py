@@ -165,6 +165,7 @@ def test_crud_cliente_veiculo_servico_peca(client, auth):
         headers=auth,
         json={"marca": "Ford", "modelo": "Ka Sedan", "ano": 2019},
     ).status_code == 200
+    assert client.get(f"/api/v1/veiculos/{veiculo_id}", headers=auth).json()["modelo"] == "Ka Sedan"
     listagem = client.get(f"/api/v1/veiculos?cliente_id={cliente_id}", headers=auth)
     assert listagem.status_code == 200
     assert listagem.json()["total"] >= 1
@@ -175,7 +176,16 @@ def test_crud_cliente_veiculo_servico_peca(client, auth):
         headers=auth,
         json={"nome": "Balanceamento computadorizado", "preco": "90.00", "descricao": "4 rodas"},
     ).status_code == 200
+    assert client.get(f"/api/v1/servicos/{servico['id']}", headers=auth).json()["nome"] == "Balanceamento computadorizado"
     peca = _peca(client, auth, "Pastilha", "180.00", 2)
+    peca_atualizada = client.put(
+        f"/api/v1/pecas/{peca['id']}",
+        headers=auth,
+        json={"nome": "Pastilha dianteira", "preco": "190.00", "descricao": "Jogo dianteiro"},
+    )
+    assert peca_atualizada.status_code == 200, peca_atualizada.text
+    assert peca_atualizada.json()["nome"] == "Pastilha dianteira"
+    assert peca_atualizada.json()["quantidade_estoque"] == 2
     entrada = client.post(
         f"/api/v1/pecas/{peca['id']}/entrada-estoque",
         headers=auth,
