@@ -12,3 +12,6 @@ build/
 .env
 .mypy_cache/
 .ruff_cache/
+
+# Enunciado do Tech Challenge: material de referência, fora do projeto
+Fase 1 - Tech Challenge.pdf

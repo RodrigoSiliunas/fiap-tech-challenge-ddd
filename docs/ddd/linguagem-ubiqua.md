@@ -14,9 +14,9 @@
 **Convenção consistente:**
 | Camada | Idioma | Exemplos |
 |--------|--------|----------|
-| Domínio (entidades, VOs, agregados, eventos, comandos) | Português | `OrdemDeServico`, `StatusOS`, `OrcamentoAprovado` |
-| Aplicação / API / Infra | Inglês técnico | `CriarOrdemDeServicoHandler`, `router`, `SQLAlchemy` |
-| Pacotes raiz | Inglês (estrutura) + domínio PT | `domain/ordem_servico/`, `application/commands/` |
+| Domínio e aplicação (entidades, VOs, agregados, eventos, comandos, consultas) | Português | `OrdemDeServico`, `StatusOS`, `OrcamentoAprovado`, `AbrirOrdemDeServico`, `ConsultarAcompanhamento` |
+| API / Infra | Inglês técnico | `router`, `get_uow`, `SqlAlchemyUnitOfWork` |
+| Pacotes | Inglês (estrutura) + domínio PT | `backend/app/domain/ordem_servico/`, `backend/app/application/commands/` |
 
 ---
 
@@ -33,15 +33,15 @@
 | **Serviço (catálogo)** | Tipo de serviço oferecido pela oficina (ex.: troca de óleo, alinhamento), com preço de referência. | Catálogo | `Servico` |
 | **Item de Serviço** | Linha da OS que referencia um serviço do catálogo (e preço aplicado naquele momento). | Atendimento | `ItemServico` |
 | **Peça / Insumo** | Material físico controlado em estoque, usado na execução de serviços. | Estoque | `Peca` |
-| **Item de Peça** | Linha da OS que reserva/consome quantidade de uma peça, com preço unitário. | Atendimento / Estoque | `ItemPeca` |
-| **Estoque** | Quantidade disponível de uma peça. Decrementa na aprovação/execução conforme política. | Estoque | `QuantidadeEstoque` (atributo do agregado `Peca`) |
+| **Item de Peça** | Linha da OS com a peça, a quantidade e o preço unitário. Não reserva estoque; a baixa acontece na aprovação do orçamento. | Atendimento / Estoque | `ItemPeca` |
+| **Estoque** | Quantidade disponível de uma peça. Decrementa na aprovação do orçamento, pela política de baixa. | Estoque | `Peca.quantidade_estoque` (`Quantidade`); baixa em `PoliticaBaixaEstoque` |
 | **Orçamento** | Soma automática dos itens de serviço e peças da OS, apresentada ao cliente para aprovação ou rejeição. | Atendimento | `Orcamento` (entidade interna do agregado OS) |
 | **Aprovação do orçamento** | Decisão do cliente que autoriza a execução. Dispara transição para Em execução e políticas de estoque. | Atendimento | evento `OrcamentoAprovado` |
 | **Rejeição do orçamento** | Decisão do cliente que recusa o orçamento. OS vai para status Rejeitada (fim do fluxo feliz). | Atendimento | evento `OrcamentoRejeitado` |
 | **Diagnóstico** | Fase em que a oficina avalia o veículo e pode ajustar serviços/peças antes de gerar o orçamento final. | Atendimento | status `EM_DIAGNOSTICO` |
-| **Tempo médio de execução** | Métrica calculada entre início da execução e finalização das OS concluídas. | Monitoramento (read model) | `TempoMedioExecucao` (modelo de leitura) |
+| **Tempo médio de execução** | Média de `finalizada_em - execucao_iniciada_em` das OS em Finalizada ou Entregue. | Monitoramento (read model) | `CalcularTempoMedioExecucao` (consulta) |
 | **Atendente / Mecânico** | Atores internos que operam a OS (abertura, diagnóstico, execução, finalização, entrega). | Atores | (atores do Event Storming; usuário autenticado via JWT) |
-| **Cliente (ator)** | Papel que consulta status e aprova/rejeita orçamento via API. | Atores | endpoint público/cliente |
+| **Cliente (ator)** | Papel que consulta status e aprova/rejeita orçamento via API. | Atores | rotas `/api/v1/publico/ordens-servico`, sem JWT |
 | **Dinheiro** | Valor monetário (centavos + moeda), imutável. | Transversal | `Dinheiro` |
 | **Quantidade** | Medida de unidades de peça (≥ 0), imutável. | Estoque / OS | `Quantidade` |
 

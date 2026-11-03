@@ -63,5 +63,5 @@
     <polyline points="900,100 1020,100" fill="none" stroke="#222" stroke-width="1.8"
               marker-end="url(#m4459880)"/>
     
-<rect x="40" y="380" width="520" height="40" rx="6" fill="#fff8e1" stroke="#f9a825"/><text x="52" y="402" font-family="Arial" font-size="11" fill="#333">Eventos: ServicoFinalizado, VeiculoEntregue · Read model: StatusOSView (API)</text>
+<rect x="40" y="380" width="520" height="40" rx="6" fill="#fff8e1" stroke="#f9a825"/><text x="52" y="402" font-family="Arial" font-size="11" fill="#333">Eventos: ServicoFinalizado, VeiculoEntregue · Read model: ConsultarAcompanhamento (API)</text>
 </svg>

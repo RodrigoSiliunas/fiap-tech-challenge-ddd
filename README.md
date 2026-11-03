@@ -9,7 +9,7 @@
 
 Back-end da Fase 1 do Tech Challenge SOAT (FIAP): monólito de uma oficina mecânica, com DDD.
 
-Documentação DDD (Miro ou equivalente): `COLOQUE_AQUI_O_LINK_DO_MIRO`
+Documentação DDD no Miro: [https://miro.com/app/board/uXjVESOKEKE=/](https://miro.com/app/board/uXjVESOKEKE=/)
 
 ## Sumário
 
@@ -62,10 +62,12 @@ Quatro camadas no mesmo deploy. O domínio não depende de FastAPI nem de SQLAlc
 
 | Camada | Pasta | Função |
 |--------|-------|--------|
-| Interface | `oficina/api` | FastAPI, DTOs, JWT, Swagger |
-| Aplicação | `oficina/application` | Comandos, consultas, uma transação por comando |
-| Domínio | `oficina/domain` | Agregados, entidades, value objects, eventos, políticas |
-| Infraestrutura | `oficina/infrastructure` | SQLAlchemy, repositórios, JWT, seed |
+| Interface | `backend/app/api` | FastAPI, DTOs, JWT, Swagger |
+| Aplicação | `backend/app/application` | Comandos, consultas, uma transação por comando |
+| Domínio | `backend/app/domain` | Agregados, entidades, value objects, eventos, políticas |
+| Infraestrutura | `backend/app/infrastructure` | SQLAlchemy, repositórios, JWT, seed |
+
+O entrypoint é `backend/app/main.py`. Os detalhes de cada pasta estão em [`backend/README.md`](backend/README.md).
 
 Os contextos abaixo são módulos, não serviços separados. O orçamento é entidade da `OrdemDeServico`. Cliente, veículo, serviço e peça são agregados próprios, citados por id.
 
@@ -98,7 +100,7 @@ Os testes usam SQLite em memória, com o mesmo mapeamento SQLAlchemy, para rodar
 ## Pré-requisitos
 
 - Docker e Docker Compose, para subir a API e o banco
-- Python 3.12, só para testes ou para rodar a API fora do container
+- Python 3.12 ou mais novo, só para testes ou para rodar a API fora do container
 
 ## Execução
 
@@ -119,14 +121,16 @@ O volume `pgdata` mantém os dados. `docker compose down -v` apaga o volume.
 Para percorrer o fluxo com um cliente e uma placa novos, com a API no ar:
 
 ```bash
-python scripts/demo_fluxo.py
+python backend/scripts/demo_fluxo.py
 ```
 
 A semente inclui Troca de óleo, Alinhamento, Balanceamento, Óleo 5W30, Filtro de óleo e Pastilha de freio.
 
+Para rodar a API fora do container, com o banco do compose, veja [`backend/README.md`](backend/README.md#executar-fora-do-docker).
+
 ## Credenciais de demonstração
 
-Valores só do ambiente local, definidos no `docker-compose.yml` e no `.env.example`.
+Valores só do ambiente local, definidos no `docker-compose.yml` e no `backend/.env.example`.
 
 | Uso | Valor |
 |-----|--------|
@@ -162,21 +166,22 @@ Em **Authorize**, cole o `access_token` sem o prefixo `Bearer`.
 ## Testes
 
 ```bash
+cd backend
 python -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate        # no Windows: .venv\Scripts\activate
 pip install -r requirements-dev.txt
-pytest --cov=oficina --cov-report=term-missing --cov-fail-under=80
+pytest --cov=app --cov-report=term-missing --cov-fail-under=80
 ```
 
-O atalho é `make test`.
+O atalho é `make test`, dentro de `backend/`.
 
-São 35 testes. Cobertura em `oficina`: **96,17%** (2257 de 2347 linhas). Em `oficina/domain`: **95%** (701 de 740). Abaixo de 80% o pytest falha.
+São 35 testes. Com Python 3.12.16, a cobertura de `app` é **96,13%** (2258 de 2349 linhas) e a de `app/domain`, **94,73%** (701 de 740). Abaixo de 80% o pytest falha.
 
-Relatório: [`docs/coverage/coverage-summary.txt`](docs/coverage/coverage-summary.txt).
+Relatório: [`backend/docs/coverage/coverage-summary.txt`](backend/docs/coverage/coverage-summary.txt).
 
-O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda a suíte em push e pull request, com o mesmo limite de 80%, e publica o `coverage.xml`.
+O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda a suíte em `backend/` a cada push e pull request, com o mesmo limite de 80%, e publica o `coverage.xml`.
 
-Para repetir contra PostgreSQL, crie o database `oficina_test` e exporte a URL antes do pytest:
+Para repetir contra PostgreSQL, crie o database `oficina_test` e exporte a URL antes do pytest, ainda em `backend/`:
 
 ```bash
 export OFICINA_TEST_DATABASE_URL=postgresql+psycopg://oficina:oficina@localhost:5432/oficina_test
@@ -188,35 +193,45 @@ A suíte recria o schema nesse banco.
 ## Estrutura de diretórios
 
 ```text
-oficina/
-  main.py                 # FastAPI, lifespan, rotas
-  api/                    # routers, schemas, erros
-  application/
-    commands/             # abrir OS, aprovar, CRUD, estoque
-    queries/              # listagem, acompanhamento, tempo médio
-  domain/
-    cliente/ veiculo/ servico/ peca/ ordem_servico/
-    services/             # políticas de estoque
-    shared/               # Dinheiro, Quantidade, eventos
-  infrastructure/
-    db/                   # modelos ORM e repositórios
-    auth/                 # JWT e bcrypt
-    seed.py
-tests/
-  unit/
-  integration/
+backend/
+  app/
+    main.py               # entrypoint: FastAPI, lifespan, rotas
+    config.py             # variáveis de ambiente
+    api/                  # routers, schemas, erros
+    application/
+      commands/           # abrir OS, aprovar, CRUD, estoque
+      queries/            # listagem, acompanhamento, tempo médio
+    domain/
+      cliente/ veiculo/ servico/ peca/ ordem_servico/
+      services/           # políticas de estoque
+      shared/             # Dinheiro, Quantidade, eventos
+    infrastructure/
+      db/                 # modelos ORM e repositórios
+      auth/               # JWT e bcrypt
+      seed.py
+  tests/
+    unit/
+    integration/
+  scripts/                # demo_fluxo.py
+  docs/
+    coverage/             # saída da cobertura
+    security/             # relatório do pip-audit
+  Dockerfile
+  pyproject.toml
+  requirements.txt
+  README.md               # detalhes do backend
 docs/
   assets/                 # diagramas SVG deste README
   ddd/                    # Event Storming, diagramas, glossário, domain storytelling, mapeamento
-  security/               # relatório do pip-audit
-  coverage/               # saída da cobertura
+docker-compose.yml        # API e PostgreSQL
+.github/workflows/ci.yml  # testes e cobertura
 ```
 
-Os testes ficam na raiz, fora da imagem Docker.
+Os testes ficam em `backend/tests`, fora da imagem Docker.
 
 ## Documentação DDD
 
-Link do quadro (Miro ou equivalente): `COLOQUE_AQUI_O_LINK_DO_MIRO`
+Board no Miro: [https://miro.com/app/board/uXjVESOKEKE=/](https://miro.com/app/board/uXjVESOKEKE=/)
 
 Arquivos no repositório, em [`docs/ddd/`](docs/ddd/):
 
@@ -257,9 +272,9 @@ Cinco histórias no formato do Egon, com as sentenças em [`docs/ddd/domain-stor
 
 ## Análise de vulnerabilidades
 
-Relatório em [`docs/security/vulnerability-report.md`](docs/security/vulnerability-report.md).
+Relatório em [`backend/docs/security/vulnerability-report.md`](backend/docs/security/vulnerability-report.md).
 
-`pip-audit` 2.10.1 em `requirements.txt` e `requirements-dev.txt`: nenhuma vulnerabilidade conhecida. Não houve achado alto ou crítico para corrigir.
+`pip-audit` 2.10.1 em `backend/requirements.txt` e `backend/requirements-dev.txt`: nenhuma vulnerabilidade conhecida. Não houve achado alto ou crítico para corrigir.
 
 ## Proteção da branch main
 

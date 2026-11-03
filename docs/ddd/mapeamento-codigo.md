@@ -1,16 +1,16 @@
 # Documentação DDD e o código
 
-Este arquivo liga a linguagem ubíqua, o Event Storming e os diagramas ao monólito em `oficina/`. Os nomes do domínio estão em português, como no glossário.
+Este arquivo liga a linguagem ubíqua, o Event Storming e os diagramas ao monólito em `backend/app/`. Os caminhos das tabelas são relativos a `backend/app/`. Os nomes do domínio estão em português, como no glossário.
 
 ## Contextos e módulos
 
 | Bounded context | Papel | Código |
 |-----------------|-------|--------|
-| Atendimento / OS (core) | Ordem, itens, orçamento, status | `oficina/domain/ordem_servico/` |
-| Cadastro (suporte) | Cliente e Veículo | `oficina/domain/cliente/`, `oficina/domain/veiculo/` |
-| Catálogo (suporte) | Serviço | `oficina/domain/servico/` |
-| Estoque (suporte) | Peça e quantidade | `oficina/domain/peca/` |
-| Identidade (genérico) | JWT administrativo | `oficina/infrastructure/auth/`, `oficina/api/deps.py` |
+| Atendimento / OS (core) | Ordem, itens, orçamento, status | `domain/ordem_servico/` |
+| Cadastro (suporte) | Cliente e Veículo | `domain/cliente/`, `domain/veiculo/` |
+| Catálogo (suporte) | Serviço | `domain/servico/` |
+| Estoque (suporte) | Peça e quantidade | `domain/peca/` |
+| Identidade (genérico) | JWT administrativo | `infrastructure/auth/`, `api/deps.py` |
 
 Os contextos são módulos do mesmo processo. Não há microsserviço nem kernel compartilhado: a OS referencia Cliente, Veículo, Serviço e Peça por id.
 
@@ -18,12 +18,12 @@ Os contextos são módulos do mesmo processo. Não há microsserviço nem kernel
 
 | Camada | Pasta | Responsabilidade |
 |--------|-------|------------------|
-| Interface | `oficina/api/` | Routers FastAPI, DTOs Pydantic, JWT, Swagger |
-| Aplicação | `oficina/application/` | Command handlers, consultas, transação |
-| Domínio | `oficina/domain/` | Agregados, objetos de valor, eventos, políticas |
-| Infraestrutura | `oficina/infrastructure/` | SQLAlchemy, PostgreSQL, repositórios, seed |
+| Interface | `api/` | Routers FastAPI, DTOs Pydantic, JWT, Swagger |
+| Aplicação | `application/` | Command handlers, consultas, transação |
+| Domínio | `domain/` | Agregados, objetos de valor, eventos, políticas |
+| Infraestrutura | `infrastructure/` | SQLAlchemy, PostgreSQL, repositórios, seed |
 
-A dependência permitida é a do diagrama: API → aplicação → domínio, e aplicação → infraestrutura. O ORM não entra no domínio.
+O entrypoint é `main.py` (`create_app()`), e `config.py` lê as variáveis de ambiente. A dependência permitida é a do diagrama: API → aplicação → domínio, e aplicação → infraestrutura. O ORM não entra no domínio.
 
 ## Agregados, entidades e objetos de valor
 
@@ -55,7 +55,7 @@ O orçamento permanece dentro da OrdemDeServico. Cliente e Veículo não são an
 | RejeitarOrcamento | `RejeitarOrcamento` | Rejeitada |
 | FinalizarServico | `FinalizarServico` | Finalizada |
 | EntregarVeiculo | `EntregarVeiculo` | Entregue |
-| ConsultarStatusOS | `application/queries/ordens_servico.py` `ConsultarAcompanhamento` | leitura |
+| ConsultarAcompanhamento | `application/queries/ordens_servico.py` `ConsultarAcompanhamento` | leitura |
 
 ## Comandos e eventos
 
