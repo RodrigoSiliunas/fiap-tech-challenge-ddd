@@ -38,9 +38,9 @@ Registrar o atendimento da oficina em um fluxo só: identificar o cliente, cadas
 
 A abertura da OS identifica o cliente pelo CPF ou CNPJ e registra o veículo com placa, marca, modelo e ano. Se o documento já existe, o cadastro é reaproveitado. A placa existente do mesmo cliente também é reaproveitada. Placa e documento não mudam depois do cadastro.
 
-A OS entra em **Recebida**. O diagnóstico libera a inclusão de serviços e de peças/insumos (os dois usam o agregado `Peca`). O orçamento é a soma dos preços gravados nas linhas, não um valor digitado. Para gerá-lo é preciso ao menos um serviço. A OS passa a **Aguardando aprovação**.
+A OS entra em **Recebida**. O diagnóstico libera a inclusão de serviços e de peças/insumos (os dois usam o agregado `Peca`), porque é nele que a oficina define do que o veículo precisa. O orçamento é gerado pelo sistema: o valor é a soma dos preços gravados nas linhas, nunca digitado. Para gerá-lo é preciso ao menos um serviço. A OS passa a **Aguardando aprovação**, e o orçamento fica disponível na consulta do cliente.
 
-O cliente consulta e decide sem JWT, com o id da OS e o documento. Documento errado ou OS inexistente devolvem o mesmo 404. A aprovação vai para **Em execução** e baixa o estoque na mesma transação. A rejeição encerra em **Rejeitada**. A equipe então finaliza e entrega.
+Na abertura, o atendente entrega ao cliente o id da OS. Com ele e o documento, o cliente consulta e decide sem JWT. Documento errado ou OS inexistente devolvem o mesmo 404. A aprovação vai para **Em execução** e baixa o estoque na mesma transação. A rejeição encerra em **Rejeitada**, um status além dos seis do enunciado, criado para registrar a recusa: o estoque não é baixado e o veículo pode abrir outra OS. Depois da aprovação, a equipe finaliza e entrega.
 
 O agregado recusa transição fora da máquina abaixo. Não há rota para alterar o status direto.
 
@@ -52,7 +52,7 @@ Itens só podem ser alterados em Em diagnóstico e em Aguardando aprovação. Ne
 
 CPF, CNPJ e placa são validados no domínio. A placa aceita o padrão antigo (`ABC1234`) e o Mercosul (`ABC1D23`).
 
-O tempo médio de execução é a média de `finalizada_em - execucao_iniciada_em` nas OS Finalizada ou Entregue.
+O tempo médio de execução é a média de `finalizada_em - execucao_iniciada_em` nas OS Finalizada ou Entregue. A média é por OS, sem separar por tipo de serviço.
 
 ## Arquitetura
 
@@ -93,7 +93,7 @@ O desenho das camadas segue [`docs/ddd/diagramas.md`](docs/ddd/diagramas.md).
 
 ## Justificativa do banco
 
-PostgreSQL é o banco da aplicação. A aprovação do orçamento e a baixa de estoque precisam confirmar juntas: se a baixa falha, o status não muda. O modelo é relacional, com unicidade de CPF/CNPJ e de placa e com saldo que não pode ficar negativo. Transação, constraints e o serviço no Docker Compose cobrem isso.
+PostgreSQL é o banco da aplicação. A aprovação do orçamento e a baixa de estoque precisam confirmar juntas: se a baixa falha, o status não muda. O modelo é relacional, com unicidade de CPF/CNPJ e de placa e com saldo que não pode ficar negativo. Transação, constraints e o serviço no Docker Compose cobrem isso. Os comandos que alteram uma OS travam a linha dela até o commit (`SELECT ... FOR UPDATE`), então aprovação, rejeição e inclusão de itens simultâneas não se sobrescrevem.
 
 Os testes usam SQLite em memória, com o mesmo mapeamento SQLAlchemy, para rodar sem subir o Postgres. `OFICINA_TEST_DATABASE_URL` repete a suíte contra PostgreSQL.
 
@@ -179,7 +179,7 @@ São 35 testes. Com Python 3.12.16, a cobertura de `app` é **96,13%** (2258 de 
 
 Relatório: [`backend/docs/coverage/coverage-summary.txt`](backend/docs/coverage/coverage-summary.txt).
 
-O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda a suíte em `backend/` a cada push e pull request, com o mesmo limite de 80%, e publica o `coverage.xml`.
+O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda a suíte em `backend/` a cada push e pull request. Primeiro roda em SQLite, com o mesmo limite de 80%, e publica o `coverage.xml`. Depois roda contra PostgreSQL 16, onde entram também os testes de concorrência.
 
 Para repetir contra PostgreSQL, crie o database `oficina_test` e exporte a URL antes do pytest, ainda em `backend/`:
 

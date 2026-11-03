@@ -71,7 +71,7 @@ Cada comando de escrita é um handler que abre uma unidade de trabalho, altera a
 | OrcamentoGerado, OrcamentoDisponibilizado, OrcamentoAprovado, OrcamentoRejeitado | mesmo arquivo |
 | ExecucaoIniciada, ServicoFinalizado, VeiculoEntregue | mesmo arquivo |
 
-`ItemServicoRemovido` e `ItemPecaRemovido` registram a retirada de linha durante o diagnóstico. O board mostra a inclusão; a remoção é o comando inverso, necessário para corrigir o orçamento antes da aprovação.
+`ItemServicoRemovido` e `ItemPecaRemovido` registram a retirada de linha durante o diagnóstico. A remoção é o comando inverso da inclusão e serve para corrigir o orçamento antes da aprovação.
 
 ## Políticas
 
@@ -85,7 +85,7 @@ Cada comando de escrita é um handler que abre uma unidade de trabalho, altera a
 | Recusar transição inválida | `OrdemDeServico._transicionar` |
 | Estoque nunca negativo | `Peca.baixar` e `CHECK` no banco |
 
-A aprovação e a baixa de estoque acontecem na mesma unidade de trabalho. Se a baixa falha, a transação desfaz a mudança de status.
+A aprovação e a baixa de estoque acontecem na mesma unidade de trabalho. Se a baixa falha, a transação desfaz a mudança de status. Todo comando que altera a OS lê a linha com lock (`_ordem` e `_ordem_do_cliente` em `application/commands/ordens_servico.py`), para comandos simultâneos não se sobrescreverem.
 
 ## Portas e adaptadores
 
