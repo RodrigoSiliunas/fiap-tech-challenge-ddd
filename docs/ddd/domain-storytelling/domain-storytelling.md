@@ -27,7 +27,7 @@ Formato `.egn`: wrapper `{ "domain": { name, actors, workObjects }, "dst": [ ...
 |----------|-------|---------------|
 | Grain | **coarse** | Cobre identificação + veículo + abertura da OS sem detalhar validações de CPF/placa |
 | Purity | **digitalized** | Atendente opera o Sistema; cadastro e OS são digitais |
-| Point in time | **to-be** | Fluxo do MVP a construir (brief FIAP) |
+| Point in time | **to-be** | Processo com o sistema do MVP (brief FIAP) |
 
 ### Sentenças numeradas
 
@@ -39,8 +39,8 @@ Formato `.egn`: wrapper `{ "domain": { name, actors, workObjects }, "dst": [ ...
 
 | Sentença | Comandos / eventos | Agregados |
 |----------|--------------------|-----------|
-| 1 | `IdentificarCliente` → `ClienteIdentificado` (ou `ClienteCadastrado`) | **Cliente** |
-| 2 | `RegistrarVeiculo` → `VeiculoRegistrado` | **Veículo** |
+| 1 | `AbrirOrdemDeServico` → `Cliente.cadastrar` (documento novo) e `Cliente.identificar` → `ClienteCadastrado` e `ClienteIdentificado` | **Cliente** |
+| 2 | `AbrirOrdemDeServico` → `Veiculo.registrar` (placa nova) → `VeiculoRegistrado` | **Veículo** |
 | 3 | `AbrirOrdemDeServico` → `OrdemDeServicoRecebida` (pivotal) | **OrdemDeServico** |
 
 Hotspot resolvido no ES: cliente inexistente → cadastrar na abertura.
@@ -72,10 +72,10 @@ Hotspot resolvido no ES: cliente inexistente → cadastrar na abertura.
 | Sentença | Comandos / eventos / políticas | Agregados |
 |----------|--------------------------------|-----------|
 | 1 | `IniciarDiagnostico` → `DiagnosticoIniciado` | **OrdemDeServico** |
-| 2 | `IncluirServicos` → `ServicosIncluidos` | **OrdemDeServico** (+ catálogo **Serviço**) |
-| 3 | `IncluirPecas` → `PecasIncluidas` | **OrdemDeServico** + leitura de **Peça** |
-| 4 | Política *Gerar orçamento automático* → `GerarOrcamento` → `OrcamentoGerado` | **OrdemDeServico** (`Orcamento` interno) |
-| 5 | Política *Disponibilizar ao cliente* → `OrcamentoDisponibilizado` | read model DetalheOrcamento |
+| 2 | `IncluirServicoNaOrdem` → `ServicosIncluidos` | **OrdemDeServico** (+ catálogo **Serviço**) |
+| 3 | `IncluirPecaNaOrdem` com `PoliticaDisponibilidadeEstoque` → `PecasIncluidas` | **OrdemDeServico** + leitura de **Peça** |
+| 4 | `GerarOrcamento`, disparado pelo mecânico; o agregado soma as linhas → `OrcamentoGerado` | **OrdemDeServico** (`Orcamento` interno) |
+| 5 | Política *Disponibilizar ao cliente* (`OrdemDeServico._publicar_orcamento`) → `OrcamentoDisponibilizado` | modelo de leitura `ConsultarAcompanhamento` |
 
 ---
 
@@ -109,7 +109,7 @@ Duas histórias no mesmo diagrama (Aula 02: condicionais viram histórias distin
 | Sentença | Comandos / eventos / políticas | Agregados |
 |----------|--------------------------------|-----------|
 | 1 | `AprovarOrcamento` → `OrcamentoAprovado` | **OrdemDeServico** |
-| 2–3 | Política *OrcamentoAprovado → BaixarEstoque + iniciar execução* → `EstoqueDecrementado` | **Peça** + **OrdemDeServico** |
+| 2–3 | Política *OrcamentoAprovado → `PoliticaBaixaEstoque` (`Peca.baixar`)* → `EstoqueDecrementado`; `ExecucaoIniciada` (Em execução) | **Peça** + **OrdemDeServico** |
 | 4–5 | `RejeitarOrcamento` → `OrcamentoRejeitado` (status **Rejeitada**) | **OrdemDeServico** |
 
 Decisão MVP (hotspot ES): baixa de estoque **na aprovação**, não na finalização.
@@ -142,7 +142,7 @@ Decisão MVP (hotspot ES): baixa de estoque **na aprovação**, não na finaliza
 |----------|--------------------|-------------------------|
 | 1–2 | `FinalizarServico` → `ServicoFinalizado` | **OrdemDeServico** |
 | 3–4 | `EntregarVeiculo` → `VeiculoEntregue` | **OrdemDeServico** |
-| 5 | `ConsultarStatusOS` (somente leitura) | **StatusOSView** (chave: id da OS + Documento) |
+| 5 | `ConsultarAcompanhamento` (somente leitura) | modelo de leitura `ConsultarAcompanhamento` (chave: id da OS + Documento) |
 
 FSM: `Em execução → Finalizada → Entregue`.
 
@@ -172,11 +172,11 @@ FSM: `Em execução → Finalizada → Entregue`.
 | Sentença | Comandos / eventos | Agregados |
 |----------|--------------------|-----------|
 | 1 | `CadastrarPeca` / `AtualizarPeca` → `PecaCadastrada` / `PecaAtualizada` | **Peça** |
-| 2 | `ServicoCatalogoCadastrado` / `Atualizado` | catálogo **Serviço** |
+| 2 | `CadastrarServico` / `AtualizarServico` → `ServicoCatalogoCadastrado` / `ServicoCatalogoAtualizado` | catálogo **Serviço** |
 | 3 | `RegistrarEntradaEstoque` → `EstoqueIncrementado` | **Peça** |
 | 4 | `AjustarEstoque` → `EstoqueAjustado` | **Peça** |
 
-A baixa automática (`BaixarEstoque` / `EstoqueDecrementado`) aparece na história 03, disparada por `OrcamentoAprovado`.
+A baixa automática (`PoliticaBaixaEstoque` / `EstoqueDecrementado`) aparece na história 03, disparada por `OrcamentoAprovado`.
 
 ---
 

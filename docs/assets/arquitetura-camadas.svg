@@ -8,14 +8,14 @@
 
   <rect x="230" y="86" width="500" height="70" rx="8" fill="#dbe7f5" stroke="#2c5282" stroke-width="1.5"/>
   <text x="250" y="114" font-family="sans-serif" font-size="16" font-weight="700" fill="#1e3a5f">Interface</text>
-  <text x="250" y="138" font-family="sans-serif" font-size="13" fill="#243044">oficina/api · FastAPI, DTOs, JWT e Swagger</text>
+  <text x="250" y="138" font-family="sans-serif" font-size="13" fill="#243044">backend/app/api · FastAPI, DTOs, JWT e Swagger</text>
 
   <line x1="480" y1="156" x2="480" y2="178" stroke="#3d4a5c" stroke-width="1.5"/>
   <polygon points="474,178 486,178 480,188" fill="#3d4a5c"/>
 
   <rect x="230" y="188" width="500" height="70" rx="8" fill="#e5f0e4" stroke="#2f6b4f" stroke-width="1.5"/>
   <text x="250" y="216" font-family="sans-serif" font-size="16" font-weight="700" fill="#1e4d34">Aplicação</text>
-  <text x="250" y="240" font-family="sans-serif" font-size="13" fill="#243044">oficina/application · comandos, consultas e transação</text>
+  <text x="250" y="240" font-family="sans-serif" font-size="13" fill="#243044">backend/app/application · comandos, consultas e transação</text>
 
   <line x1="230" y1="258" x2="230" y2="286" stroke="#3d4a5c" stroke-width="1.5"/>
   <polygon points="224,286 236,286 230,296" fill="#3d4a5c"/>
@@ -24,13 +24,13 @@
 
   <rect x="40" y="296" width="380" height="124" rx="8" fill="#f8ead2" stroke="#8a5a12" stroke-width="1.5"/>
   <text x="60" y="326" font-family="sans-serif" font-size="16" font-weight="700" fill="#6b4208">Domínio</text>
-  <text x="60" y="350" font-family="sans-serif" font-size="13" fill="#243044">oficina/domain</text>
+  <text x="60" y="350" font-family="sans-serif" font-size="13" fill="#243044">backend/app/domain</text>
   <text x="60" y="374" font-family="sans-serif" font-size="13" fill="#243044">Agregados, entidades e value objects</text>
   <text x="60" y="396" font-family="sans-serif" font-size="13" fill="#243044">Eventos de domínio e políticas</text>
 
   <rect x="540" y="296" width="380" height="124" rx="8" fill="#ece7f6" stroke="#5b4b8a" stroke-width="1.5"/>
   <text x="560" y="326" font-family="sans-serif" font-size="16" font-weight="700" fill="#3d3470">Infraestrutura</text>
-  <text x="560" y="350" font-family="sans-serif" font-size="13" fill="#243044">oficina/infrastructure</text>
+  <text x="560" y="350" font-family="sans-serif" font-size="13" fill="#243044">backend/app/infrastructure</text>
   <text x="560" y="374" font-family="sans-serif" font-size="13" fill="#243044">SQLAlchemy, repositórios e seed</text>
   <text x="560" y="396" font-family="sans-serif" font-size="13" fill="#243044">JWT e PostgreSQL</text>
 

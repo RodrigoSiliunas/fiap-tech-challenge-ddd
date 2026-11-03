@@ -5,7 +5,10 @@
 > hotspots (pontos de atenção) em rosa/losango, agregados agrupando comandos/eventos.
 
 **Domínio:** Sistema Integrado de Atendimento e Execução de Serviços de Oficina Mecânica.  
-**Escopo:** MVP — três fluxos obrigatórios do brief.
+**Escopo:** MVP — três fluxos obrigatórios do brief.  
+**Board:** [Miro](MIRO_BOARD_URL), com os mesmos fluxos em sticky notes. Export em `event-storming.pdf` e `event-storming.png`.
+
+Comandos, eventos, políticas e modelos de leitura têm os nomes do código em `backend/app/`. Quando um passo acontece dentro de outro comando, a tabela indica o método que o executa.
 
 Legenda de cores (convenção da disciplina):
 
@@ -34,52 +37,55 @@ flowchart LR
     A3[Mecânico]
   end
 
-  A1 -->|Identificar cliente| C1[IdentificarCliente]
-  C1 --> E1[ClienteIdentificado]
-  A1 -->|Registrar veículo| C2[RegistrarVeiculo]
-  C2 --> E2[VeiculoRegistrado]
-  A1 -->|Abrir OS| C3[AbrirOrdemDeServico]
-  C3 --> E3[OrdemDeServicoRecebida]
-  A3 -->|Iniciar diagnóstico| C4[IniciarDiagnostico]
-  C4 --> E4[DiagnosticoIniciado]
-  A3 -->|Incluir serviços| C5[IncluirServicos]
-  C5 --> E5[ServicosIncluidos]
-  A3 -->|Incluir peças| C6[IncluirPecas]
-  C6 --> E6[PecasIncluidas]
-  E5 --> P1{{Política: Gerar orçamento automático}}
-  E6 --> P1
-  P1 -->|GerarOrçamento| C7[GerarOrcamento]
-  C7 --> E7[OrcamentoGerado]
-  E7 --> P2{{Política: Disponibilizar ao cliente}}
+  A1 -->|Abrir OS| C1[AbrirOrdemDeServico]
+  C1 --> E1[ClienteCadastrado ou ClienteIdentificado]
+  C1 --> E2[VeiculoRegistrado]
+  C1 --> E3[OrdemDeServicoRecebida]
+  A3 -->|Iniciar diagnóstico| C2[IniciarDiagnostico]
+  C2 --> E4[DiagnosticoIniciado]
+  A3 -->|Incluir serviço| C3[IncluirServicoNaOrdem]
+  C3 --> E5[ServicosIncluidos]
+  A3 -->|Incluir peça| C4[IncluirPecaNaOrdem]
+  P1{{Política: PoliticaDisponibilidadeEstoque}} -.->|confere o saldo| C4
+  C4 --> E6[PecasIncluidas]
+  A3 -->|Gerar orçamento| C5[GerarOrcamento]
+  C5 --> E7[OrcamentoGerado]
+  E7 --> P2{{Política: disponibilizar ao cliente}}
   P2 --> E8[OrcamentoDisponibilizado]
-  E8 --> RM1[Modelo: Detalhe do orçamento]
-  A2 -->|Aprovar| C8[AprovarOrcamento]
-  C8 --> E9[OrcamentoAprovado]
-  A2 -->|Rejeitar| C9[RejeitarOrcamento]
-  C9 --> E10[OrcamentoRejeitado]
+  E8 --> RM1[Modelo de leitura: ConsultarAcompanhamento]
+  A2 -->|Aprovar| C6[AprovarOrcamento]
+  C6 --> E9[OrcamentoAprovado]
+  C6 --> E10[ExecucaoIniciada]
+  E9 --> P3{{Política: PoliticaBaixaEstoque}}
+  P3 --> E11[EstoqueDecrementado]
+  A2 -->|Rejeitar| C7[RejeitarOrcamento]
+  C7 --> E12[OrcamentoRejeitado]
 ```
 
 ### Elementos detalhados
 
 | Tipo | Nome | Observação |
 |------|------|------------|
-| Comando | IdentificarCliente | Por CPF/CNPJ; cria ou reutiliza Cliente |
-| Evento | ClienteIdentificado | |
-| Comando | RegistrarVeiculo | Placa, marca, modelo, ano |
-| Evento | VeiculoRegistrado | |
-| Comando | AbrirOrdemDeServico | Liga Cliente + Veículo; status = Recebida |
+| Comando | AbrirOrdemDeServico | Por CPF/CNPJ. Cadastra o cliente se o documento é novo (`Cliente.cadastrar`) ou o identifica (`Cliente.identificar`); registra o veículo se a placa é nova (`Veiculo.registrar`); status = Recebida |
+| Eventos | ClienteCadastrado / ClienteIdentificado | Cliente novo gera os dois; cliente existente, só o segundo |
+| Evento | VeiculoRegistrado | Só para placa nova |
 | Evento | OrdemDeServicoRecebida | **Evento pivotal** |
 | Comando | IniciarDiagnostico | Status → Em diagnóstico |
 | Evento | DiagnosticoIniciado | |
-| Comando | IncluirServicos / IncluirPecas | Durante diagnóstico |
+| Comandos | IncluirServicoNaOrdem / IncluirPecaNaOrdem | Em diagnóstico ou Aguardando aprovação |
 | Eventos | ServicosIncluidos / PecasIncluidas | |
-| Política | Quando serviços/peças estabilizados → GerarOrcamento | Automática |
+| Comandos | RemoverServicoDaOrdem / RemoverPecaDaOrdem | Corrigem o orçamento antes da aprovação |
+| Eventos | ItemServicoRemovido / ItemPecaRemovido | |
+| Política | PoliticaDisponibilidadeEstoque | Na inclusão da peça, confere o saldo sem reservar |
+| Comando | GerarOrcamento | Disparado pelo mecânico; exige ao menos um serviço |
+| Política | Orçamento = soma das linhas | O agregado calcula o total (`OrdemDeServico._montar_orcamento`); ninguém digita valor |
 | Evento | OrcamentoGerado | Status → Aguardando aprovação (**pivotal**) |
-| Política | Após OrcamentoGerado → notificar/disponibilizar | |
+| Política | Disponibilizar ao cliente | `OrdemDeServico._publicar_orcamento` registra o evento abaixo |
 | Evento | OrcamentoDisponibilizado | |
-| Read model | DetalheOrcamento / StatusOS | Cliente consulta |
-| Comando | AprovarOrcamento / RejeitarOrcamento | Ator: Cliente |
-| Eventos | OrcamentoAprovado / OrcamentoRejeitado | Aprovado → Em execução; Rejeitado → fim |
+| Modelo de leitura | ConsultarAcompanhamento | Cliente consulta com o id da OS e o documento |
+| Comandos | AprovarOrcamento / RejeitarOrcamento | Ator: Cliente |
+| Eventos | OrcamentoAprovado e ExecucaoIniciada / OrcamentoRejeitado | Aprovado → Em execução; Rejeitado → Rejeitada |
+| Política | PoliticaBaixaEstoque | Na aprovação, baixa o estoque de cada ItemPeca (`Peca.baixar`) na mesma transação |
 
 ### Hotspots
 
@@ -87,11 +93,11 @@ flowchart LR
 2. ◆ Cliente inexistente: criar na hora ou exigir cadastro prévio?
 3. ◆ Orçamento pode ser regenerado após alteração de itens?
 
-**Decisão MVP:** (1) validar disponibilidade na inclusão e **baixar estoque na aprovação**; (2) identificar ou cadastrar na abertura; (3) regenerar enquanto status ∈ {Em diagnóstico, Aguardando aprovação} e resetar aprovação se já estava aguardando.
+**Decisão MVP:** (1) `PoliticaDisponibilidadeEstoque` confere o saldo na inclusão e `PoliticaBaixaEstoque` **baixa o estoque na aprovação**; (2) `AbrirOrdemDeServico` cadastra o cliente se o documento é novo; (3) enquanto a OS aguarda aprovação, incluir ou remover item recalcula o orçamento (`OrdemDeServico._recalcular_se_aguardando`), e `GerarOrcamento` pode ser chamado de novo nesse status.
 
 ### Agregado principal deste fluxo
 
-**OrdemDeServico** — concentra abertura, itens, orçamento e transições até aprovação/rejeição.
+**OrdemDeServico** — concentra abertura, itens, orçamento e transições até aprovação/rejeição. `AbrirOrdemDeServico` também altera **Cliente** e **Veiculo**, e `AprovarOrcamento` altera **Peca**, na mesma transação.
 
 ---
 
@@ -116,17 +122,17 @@ stateDiagram-v2
 |---------|------|--------|-------------------|
 | AbrirOrdemDeServico | Atendente | OrdemDeServicoRecebida | Recebida |
 | IniciarDiagnostico | Mecânico | DiagnosticoIniciado | Em diagnóstico |
-| GerarOrcamento | Política / Mecânico | OrcamentoGerado | Aguardando aprovação |
-| AprovarOrcamento | Cliente | OrcamentoAprovado | Em execução |
+| GerarOrcamento | Mecânico | OrcamentoGerado, OrcamentoDisponibilizado | Aguardando aprovação |
+| AprovarOrcamento | Cliente | OrcamentoAprovado, ExecucaoIniciada | Em execução |
 | RejeitarOrcamento | Cliente | OrcamentoRejeitado | Rejeitada |
 | FinalizarServico | Mecânico | ServicoFinalizado | Finalizada |
 | EntregarVeiculo | Atendente | VeiculoEntregue | Entregue |
-| ConsultarStatusOS | Cliente | (somente leitura) | — |
+| ConsultarAcompanhamento | Cliente | (somente leitura) | — |
 
-**Política:** `Quando OrcamentoAprovado → iniciar execução e baixar estoque das peças`  
-**Política:** `Transições inválidas são rejeitadas pelo agregado` (máquina de estados acima).
+**Política:** `Quando OrcamentoAprovado → ExecucaoIniciada e PoliticaBaixaEstoque baixa as peças, na mesma transação`  
+**Política:** `Transições inválidas são rejeitadas pelo agregado` (`TRANSICOES` e `OrdemDeServico._transicionar`).
 
-**Read models:** `StatusOSView` (cliente), `ListaOSAdmin`, `TempoMedioExecucao` (admin).
+**Modelos de leitura:** `ConsultarAcompanhamento` (cliente), `ListarOrdensDeServico` e `ObterOrdemDeServico` (admin), `CalcularTempoMedioExecucao` (admin).
 
 **Hotspot:** ◆ Cliente consulta por qual chave? **MVP:** id da OS + documento do cliente.
 
@@ -142,21 +148,21 @@ flowchart LR
   C2 --> E2[PecaAtualizada]
   Adm -->|Entrada de estoque| C3[RegistrarEntradaEstoque]
   C3 --> E3[EstoqueIncrementado]
-  Adm -->|Ajuste / baixa manual| C4[AjustarEstoque]
+  Adm -->|Ajuste manual| C4[AjustarEstoque]
   C4 --> E4[EstoqueAjustado]
-  E_OS[OrcamentoAprovado] --> P{{Política: Baixar estoque dos ItemPeca}}
-  P -->|BaixarEstoque| C5[BaixarEstoque]
-  C5 --> E5[EstoqueDecrementado]
-  E5 --> RM[Modelo: Saldo de peças]
+  E_OS[OrcamentoAprovado] --> P{{Política: PoliticaBaixaEstoque}}
+  P -->|Peca.baixar| E5[EstoqueDecrementado]
+  E5 --> RM[Modelo de leitura: ListarPecas e ObterPeca]
   H1{◆ Estoque negativo?}
 ```
 
 | Tipo | Nome |
 |------|------|
-| Comandos | CadastrarPeca, AtualizarPeca, RegistrarEntradaEstoque, AjustarEstoque, BaixarEstoque |
+| Comandos | CadastrarPeca, AtualizarPeca, RegistrarEntradaEstoque, AjustarEstoque |
 | Eventos | PecaCadastrada, PecaAtualizada, EstoqueIncrementado, EstoqueAjustado, EstoqueDecrementado |
-| Política | OrcamentoAprovado → BaixarEstoque para cada ItemPeca |
-| Agregado | **Peca** (controle de quantidade e invariante ≥ 0) |
+| Política | PoliticaBaixaEstoque: OrcamentoAprovado → `Peca.baixar` para cada ItemPeca |
+| Agregado | **Peca** (`quantidade_estoque` ≥ 0) |
+| Hotspot | ◆ Estoque negativo — **MVP:** `Peca.baixar` recusa a baixa e o banco tem `CHECK quantidade_estoque >= 0` |
 | Hotspot | ◆ Baixa na aprovação vs. na finalização — **MVP: na aprovação** (compromete material ao autorizar) |
 
 ---
@@ -194,14 +200,14 @@ flowchart TB
 
 1. ClienteCadastrado / ClienteIdentificado / ClienteAtualizado  
 2. VeiculoRegistrado / VeiculoAtualizado  
-3. ServicoCatalogoCadastrado / Atualizado  
-4. PecaCadastrada / Atualizada / EstoqueIncrementado / EstoqueDecrementado / EstoqueAjustado  
+3. ServicoCatalogoCadastrado / ServicoCatalogoAtualizado  
+4. PecaCadastrada / PecaAtualizada / EstoqueIncrementado / EstoqueDecrementado / EstoqueAjustado  
 5. OrdemDeServicoRecebida  
 6. DiagnosticoIniciado  
-7. ServicosIncluidos / PecasIncluidas  
+7. ServicosIncluidos / PecasIncluidas / ItemServicoRemovido / ItemPecaRemovido  
 8. OrcamentoGerado / OrcamentoDisponibilizado  
 9. OrcamentoAprovado / OrcamentoRejeitado  
-10. ExecucaoIniciada (implícito na aprovação)  
+10. ExecucaoIniciada (registrado junto com OrcamentoAprovado)  
 11. ServicoFinalizado  
 12. VeiculoEntregue  
 
@@ -209,23 +215,27 @@ flowchart TB
 
 | Política | Quando | Então |
 |----------|--------|-------|
-| Gerar orçamento | Itens incluídos / diagnóstico pronto | Comando GerarOrcamento |
-| Disponibilizar orçamento | OrcamentoGerado | Expor read model ao cliente |
-| Baixar estoque | OrcamentoAprovado | BaixarEstoque por ItemPeca |
+| Orçamento = soma das linhas | Mecânico dispara GerarOrcamento | O agregado calcula o total e exige ao menos um serviço |
+| Disponibilizar orçamento | OrcamentoGerado | OrcamentoDisponibilizado e consulta na rota pública |
+| Validar disponibilidade | IncluirPecaNaOrdem | PoliticaDisponibilidadeEstoque confere o saldo, sem reservar |
+| Baixar estoque | OrcamentoAprovado | PoliticaBaixaEstoque chama `Peca.baixar` por ItemPeca |
 | Recusar transição inválida | Qualquer comando de status | Agregado lança erro de domínio |
-| Recalcular orçamento | Itens alterados antes da aprovação | Novo OrcamentoGerado |
+| Recalcular orçamento | Itens alterados em Aguardando aprovação | Novo OrcamentoGerado e OrcamentoDisponibilizado |
 
 ### Atores
 
 - Atendente, Mecânico, Administrador (JWT)  
-- Cliente (consulta + aprovação; no MVP pode ser endpoint com documento + id OS)  
+- Cliente (consulta e decide o orçamento pela rota pública, com o id da OS e o documento, sem JWT)  
 - Sistema (políticas)
 
 ### Relação com o código
 
-Cada comando → Application Service / Command Handler.  
-Cada evento → registrado no agregado e (opcionalmente) publicado internamente.  
-Cada agregado → módulo em `domain/`.  
-Read models → queries na camada de aplicação / projeções simples SQL.
+Os caminhos abaixo são relativos a `backend/app/`.
 
-Artefatos visuais: `event-storming.png` (board sticky-notes) e `event-storming.pdf`.
+Cada comando → handler em `application/commands/`.  
+Cada evento → dataclass em `domain/*/events.py`, registrada no agregado e gravada na tabela `eventos_dominio` na mesma transação do comando.  
+Cada agregado → módulo em `domain/`.  
+Modelos de leitura → consultas em `application/queries/`.  
+Políticas → `domain/services/politica_estoque.py` e métodos de `OrdemDeServico`.
+
+O mapeamento completo está em [`mapeamento-codigo.md`](mapeamento-codigo.md).

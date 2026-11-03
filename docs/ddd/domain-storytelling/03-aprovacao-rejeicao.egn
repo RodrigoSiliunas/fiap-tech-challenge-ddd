@@ -159,7 +159,7 @@
     },
     {
       "type": "domainStory:textAnnotation",
-      "name": "Política: OrcamentoAprovado → BaixarEstoque + Em execução. OrcamentoRejeitado → Rejeitada.",
+      "name": "Política: OrcamentoAprovado → PoliticaBaixaEstoque + Em execução. OrcamentoRejeitado → Rejeitada.",
       "id": "shape_0041",
       "x": 760,
       "y": 290,

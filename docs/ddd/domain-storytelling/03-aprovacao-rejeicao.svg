@@ -72,5 +72,5 @@
               marker-end="url(#m5158893)"/>
     <circle cx="490.0" cy="330.0" r="11" fill="#fff" stroke="#c62828" stroke-width="1.5"/>
         <text x="490.0" y="334.0" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#c62828">5</text><text x="515.0" y="314.0" text-anchor="middle" font-family="Arial" font-size="11" fill="#c62828">marca Rejeitada</text>
-<rect x="760" y="290" width="280" height="80" rx="6" fill="#fff8e1" stroke="#f9a825"/><text x="772" y="312" font-family="Arial" font-size="11" fill="#333">Política: OrcamentoAprovado →</text><text x="772" y="328" font-family="Arial" font-size="11" fill="#333">BaixarEstoque + Em execução.</text><text x="772" y="344" font-family="Arial" font-size="11" fill="#333">OrcamentoRejeitado → Rejeitada.</text>
+<rect x="760" y="290" width="280" height="80" rx="6" fill="#fff8e1" stroke="#f9a825"/><text x="772" y="312" font-family="Arial" font-size="11" fill="#333">Política: OrcamentoAprovado →</text><text x="772" y="328" font-family="Arial" font-size="11" fill="#333">PoliticaBaixaEstoque + Em execução.</text><text x="772" y="344" font-family="Arial" font-size="11" fill="#333">OrcamentoRejeitado → Rejeitada.</text>
 </svg>

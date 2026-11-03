@@ -1,6 +1,7 @@
 # Diagramas DDD — Oficina Mecânica (MVP)
 
-> Diagramas solicitados pela disciplina (Aulas 01, 04, 05 e 06) alinhados à solução a implementar.
+> Diagramas solicitados pela disciplina (Aulas 01, 04, 05 e 06) alinhados à solução implementada em `backend/app/`.
+> Os mesmos diagramas estão no [board do Miro](MIRO_BOARD_URL), e o export fica em `diagramas.pdf`.
 
 ---
 
@@ -88,7 +89,7 @@ flowchart TB
   end
   subgraph AgPeca[Agregado Peca]
     P[RAÍZ: Peca]
-    P -. VO .- QE[QuantidadeEstoque]
+    P -. VO .- QE[Quantidade em estoque]
     P -. VO .- PRECO[Dinheiro]
   end
   subgraph AgServ[Agregado Servico]
@@ -119,10 +120,10 @@ Brief exige CRUD independente. Veículo pode mudar de dono no futuro; placa é i
 
 | Agregado | Invariantes |
 |----------|-------------|
-| **OrdemDeServico** | Transições de status só pelas setas permitidas; orçamento ≥ 0; aprovação/rejeição só em Aguardando aprovação; entrega só após Finalizada; itens só alteráveis antes de Em execução |
+| **OrdemDeServico** | Transições de status só pelas setas permitidas; orçamento ≥ 0 e com ao menos um serviço; aprovação/rejeição só em Aguardando aprovação; entrega só após Finalizada; itens só alteráveis em Em diagnóstico e Aguardando aprovação |
 | **Cliente** | Documento válido (CPF ou CNPJ); documento único no repositório |
 | **Veiculo** | Placa válida e única; ano coerente |
-| **Peca** | QuantidadeEstoque ≥ 0; baixa não pode resultar negativo |
+| **Peca** | `quantidade_estoque` ≥ 0; baixa não pode resultar negativo |
 | **Servico** | Preço ≥ 0; nome obrigatório |
 
 ### 3.5 Entidade vs Objeto de Valor
@@ -163,75 +164,71 @@ Transições **proibidas** (exemplos para defesa): Recebida → Entregue; Em exe
 
 ```mermaid
 flowchart TB
-  UI[Interface / API<br/>FastAPI routers, JWT, Swagger, DTOs]
-  APP[Aplicação<br/>Command handlers, Query services, uow]
-  DOM[Domínio<br/>Agregados, VOs, Eventos, Domínios Services, Ports]
-  INF[Infraestrutura<br/>SQLAlchemy, PostgreSQL, JWT, repos]
+  UI[Interface · api/<br/>routers FastAPI, schemas, JWT, Swagger]
+  APP[Aplicação · application/<br/>commands, queries, transação]
+  DOM[Domínio · domain/<br/>agregados, VOs, eventos, políticas, portas]
+  INF[Infraestrutura · infrastructure/<br/>SQLAlchemy, repositórios, unidade de trabalho, JWT, seed]
+  DB[(PostgreSQL 16)]
   UI --> APP
   APP --> DOM
-  INF --> DOM
   APP --> INF
+  INF -->|implementa as portas| DOM
+  INF --> DB
 ```
 
-### Estrutura de pacotes proposta
+### Estrutura de pacotes
+
+Pacote `app`, em `backend/app/`. O entrypoint é `main.py`.
 
 ```text
-oficina/
-  main.py
-  api/                          # Interface de Usuário (HTTP)
-    deps.py                     # JWT, session
-    routers/
-      auth.py
-      clientes.py
-      veiculos.py
-      servicos.py
-      pecas.py
-      ordens_servico.py
-    schemas/                    # DTOs Pydantic (não são domínio)
-  application/                  # Camada de Aplicação
-    commands/
-      criar_ordem_servico.py
-      aprovar_orcamento.py
-      ...
-    queries/
-      consultar_status_os.py
-      tempo_medio_execucao.py
-    unit_of_work.py             # porta
-  domain/                       # Coração do software
-    shared/
-      value_objects.py          # Dinheiro, Quantidade
-    cliente/
-      aggregate.py
-      documento.py
-      events.py
-      repository.py             # porta (ABC)
-    veiculo/
-      ...
-    servico/
-      ...
-    peca/
-      aggregate.py              # estoque
-      ...
-    ordem_servico/
-      aggregate.py              # OS + itens + orçamento + FSM
-      status.py
-      events.py
-      repository.py
-    services/                   # domain services se necessário
-  infrastructure/
-    db/
-      models.py                 # ORM
-      repositories.py
-      session.py
-    auth/
-      jwt.py
-    unit_of_work.py
+backend/
+  app/
+    main.py                     # create_app(): rotas, erros, lifespan
+    config.py                   # variáveis de ambiente
+    api/                        # Interface (HTTP)
+      deps.py                   # JWT e unidade de trabalho por requisição
+      errors.py                 # DomainError → HTTP
+      schemas.py                # DTOs Pydantic (não são domínio)
+      presenters.py             # domínio → resposta
+      routers/
+        auth.py  clientes.py  veiculos.py  servicos.py  pecas.py
+        ordens_servico.py  publico.py  metricas.py
+    application/                # Camada de Aplicação
+      support.py                # concluir(): grava eventos e faz commit
+      commands/
+        autenticar.py
+        cadastros.py            # CRUD de cliente, veículo, serviço e peça; estoque
+        ordens_servico.py       # AbrirOrdemDeServico ... EntregarVeiculo
+      queries/
+        ordens_servico.py       # listagem, detalhe, ConsultarAcompanhamento
+        tempo_medio_execucao.py
+    domain/                     # Coração do software
+      exceptions.py
+      shared/                   # Dinheiro, Quantidade, RaizAgregado, DomainEvent
+      cliente/                  # aggregate.py, documento.py, events.py, repository.py
+      veiculo/                  # aggregate.py, placa.py, events.py, repository.py
+      servico/                  # aggregate.py, events.py, repository.py
+      peca/                     # aggregate.py, events.py, repository.py
+      ordem_servico/            # aggregate.py (OS, itens, orçamento), status.py, events.py, repository.py
+      services/
+        politica_estoque.py     # PoliticaDisponibilidadeEstoque, PoliticaBaixaEstoque
+    infrastructure/
+      db/
+        models.py               # ORM
+        repositories.py         # adaptadores das portas
+        session.py              # engine, sessão, criação do schema
+      auth/
+        jwt.py
+        passwords.py
+      unit_of_work.py
+      serialization.py          # eventos → JSON
+      seed.py
   tests/
     unit/domain/
     integration/
 ```
 
-**Mapeamento bloco DDD → módulo**
+**Mapeamento bloco DDD → módulo** (caminhos relativos a `backend/app/`)
 
 | Bloco DDD | Onde |
 |-----------|------|
@@ -239,6 +236,7 @@ oficina/
 | Domain Service | `domain/services/` |
 | Repository (porta) | `domain/<bc>/repository.py` |
 | Repository (adaptador) | `infrastructure/db/repositories.py` |
+| Unidade de trabalho | `infrastructure/unit_of_work.py` |
 | Application Service / Command | `application/commands/` |
 | Read model / Query | `application/queries/` |
 | Controllers | `api/routers/` |
@@ -253,7 +251,7 @@ oficina/
 |----------|---------------|
 | Transações ACID | OS + baixa de estoque na aprovação precisam de atomicidade (requisito explícito do brief) |
 | Modelo relacional | Agregados e relacionamentos por id encaixam bem em tabelas |
-| Ecossistema Python | SQLAlchemy 2 + asyncpg maduros; fácil no docker-compose |
+| Ecossistema Python | SQLAlchemy 2 e psycopg 3 maduros; fácil no docker-compose |
 | MVP | Um único banco; schemas/tabelas por módulo se quiser isolar BCs logicamente |
 
 **Alternativas descartadas:**  
@@ -264,11 +262,14 @@ oficina/
 
 ## 7. Relação documentação ↔ implementação
 
+Caminhos relativos a `backend/app/`.
+
 | Artefato | Implementação |
 |----------|---------------|
-| Eventos laranja | Classes/dataclasses em `domain/*/events.py` |
+| Eventos laranja | Dataclasses em `domain/*/events.py`, gravadas na tabela `eventos_dominio` na mesma transação |
 | Comandos azuis | Handlers em `application/commands/` |
-| Políticas roxas | Métodos no agregado + handlers reativos simples |
-| Agregados | Classes raiz com métodos de comando |
-| Linguagem ubíqua | Nomes PT no domínio = este glossário |
-| Máquina de estados | `OrdemDeServico.transicionar()` / mapa de transições |
+| Políticas roxas | `domain/services/politica_estoque.py` e métodos de `OrdemDeServico`, chamados pelos comandos |
+| Agregados | Classes raiz em `domain/*/aggregate.py` |
+| Modelos de leitura verdes | Consultas em `application/queries/` |
+| Linguagem ubíqua | Nomes PT no domínio = glossário |
+| Máquina de estados | `TRANSICOES` em `domain/ordem_servico/status.py` e `OrdemDeServico._transicionar` |

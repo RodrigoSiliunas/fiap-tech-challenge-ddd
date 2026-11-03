@@ -133,7 +133,7 @@
     },
     {
       "type": "domainStory:textAnnotation",
-      "name": "Eventos: ServicoFinalizado, VeiculoEntregue · StatusOSView",
+      "name": "Eventos: ServicoFinalizado, VeiculoEntregue · ConsultarAcompanhamento",
       "id": "shape_0059",
       "x": 40,
       "y": 380,
