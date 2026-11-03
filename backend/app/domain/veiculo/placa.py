@@ -8,6 +8,8 @@ from app.domain.exceptions import DomainError
 
 _ANTIGA = re.compile(r"^[A-Z]{3}[0-9]{4}$")
 _MERCOSUL = re.compile(r"^[A-Z]{3}[0-9][A-Z][0-9]{2}$")
+# Três letras, no máximo um hífen ou espaço, e quatro caracteres: ABC1234, ABC-1234, ABC1D23.
+_FORMATO = re.compile(r"[A-Za-z]{3}[- ]?[A-Za-z0-9]{4}")
 
 
 class PadraoPlaca(str, Enum):
@@ -30,7 +32,8 @@ class Placa:
     def criar(bruto: str) -> "Placa":
         if bruto is None or not str(bruto).strip():
             raise DomainError("Placa é obrigatória", "placa_invalida")
-        normalizada = re.sub(r"[^A-Za-z0-9]", "", str(bruto)).upper()
+        texto = str(bruto).strip()
+        normalizada = re.sub(r"[^A-Za-z0-9]", "", texto).upper() if _FORMATO.fullmatch(texto) else ""
         if _ANTIGA.match(normalizada):
             return Placa(normalizada, PadraoPlaca.ANTIGA)
         if _MERCOSUL.match(normalizada):
