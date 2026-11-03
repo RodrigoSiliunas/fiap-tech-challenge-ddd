@@ -1,53 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1068 300" role="img">
-  <title>Máquina de estados da ordem de serviço</title>
-  <desc>Recebida, Em diagnóstico, Aguardando aprovação, Em execução, Finalizada e Entregue. De Aguardando aprovação também segue para Rejeitada.</desc>
-  <rect width="1068" height="300" fill="#f6f3ec"/>
-  <text x="24" y="34" font-family="sans-serif" font-size="20" font-weight="700" fill="#1e3a5f">Status da ordem de serviço</text>
-  <text x="24" y="56" font-family="sans-serif" font-size="13" fill="#5c6570">Transições aceitas pelo agregado. Entregue e Rejeitada encerram a OS.</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 340" width="1200" height="340" role="img" aria-labelledby="titulo descricao">
+  <title id="titulo">Status da ordem de serviço</title>
+  <desc id="descricao">Recebida, Em diagnóstico, Aguardando aprovação, Em execução, Finalizada e Entregue. De Aguardando aprovação também segue para Rejeitada. Entregue e Rejeitada encerram a OS.</desc>
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a1120"/><stop offset="1" stop-color="#0f1a2e"/>
+    </linearGradient>
+    <linearGradient id="topo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f5a524"/><stop offset=".55" stop-color="#ff7a45"/><stop offset="1" stop-color="#4c9aff"/>
+    </linearGradient>
+    <pattern id="pontos" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="1.5" cy="1.5" r="1.1" fill="#1b2843"/>
+    </pattern>
+    <filter id="sombra" x="-10%" y="-15%" width="120%" height="150%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity=".35"/>
+    </filter>
+    <marker id="seta" viewBox="0 0 10 10" refX="8.6" refY="5" markerWidth="7.5" markerHeight="7.5" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10z" fill="#7385a1"/>
+    </marker>
+  </defs>
+  <style>
+    text { font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+    .k { font-size: 12px; font-weight: 700; letter-spacing: 3px; fill: #f5a524; }
+    .t { font-size: 26px; font-weight: 700; fill: #eef2f8; }
+    .s { font-size: 14px; fill: #a9b7cc; }
+    .bt { font-size: 17px; font-weight: 700; fill: #eef2f8; }
+    .p { font-family: 'Cascadia Code', 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace; font-size: 12.5px; }
+    .d { font-size: 13.5px; fill: #a9b7cc; }
+    .m { font-size: 12.5px; fill: #7385a1; }
+    .lbl { font-size: 11.5px; font-weight: 600; fill: #a9b7cc; }
+    .chip { font-size: 10.5px; font-weight: 700; letter-spacing: 1.5px; }
+    .seta { stroke: #7385a1; stroke-width: 1.8; fill: none; }
+  </style>
+  <rect width="1200" height="340" rx="20" fill="url(#fundo)"/>
+  <rect width="1200" height="340" rx="20" fill="url(#pontos)" opacity=".6"/>
+  <rect x="28" y="0" width="1144" height="3" rx="1.5" fill="url(#topo)"/>
+  <text class="k" x="36" y="42">MÁQUINA DE ESTADOS</text>
+  <text class="t" x="36" y="74">Status da ordem de serviço</text>
+  <text class="s" x="36" y="98">Transições aceitas pelo agregado. Entregue e Rejeitada encerram a OS.</text>
+  <path class="seta" d="M161.5 158.0 H198.5" marker-end="url(#seta)"/>
+  <text class="lbl" x="181.5" y="212" text-anchor="middle">diagnóstico</text>
+  <path class="seta" d="M373.5 158.0 H410.5" marker-end="url(#seta)"/>
+  <text class="lbl" x="393.5" y="212" text-anchor="middle">orçamento</text>
+  <path class="seta" d="M632.5 158.0 H669.5" marker-end="url(#seta)"/>
+  <text class="lbl" x="652.5" y="212" text-anchor="middle">aprovar</text>
+  <path class="seta" d="M820.5 158.0 H857.5" marker-end="url(#seta)"/>
+  <text class="lbl" x="840.5" y="212" text-anchor="middle">finalizar</text>
+  <path class="seta" d="M1000.5 158.0 H1037.5" marker-end="url(#seta)"/>
+  <text class="lbl" x="1020.5" y="212" text-anchor="middle">entregar</text>
+  <rect x="37.5" y="132" width="121" height="52" rx="26.0" fill="#111c31" stroke="#4c9aff" stroke-opacity=".85" stroke-width="1.6" filter="url(#sombra)"/><circle cx="60.5" cy="158.0" r="11" fill="#4c9aff"/><text x="60.5" y="162.3" text-anchor="middle" font-size="12" font-weight="800" fill="#0a1120">1</text><text x="79.5" y="163.0" font-size="14" font-weight="700" fill="#eef2f8">Recebida</text>
+  <rect x="202.5" y="132" width="168" height="52" rx="26.0" fill="#111c31" stroke="#4c9aff" stroke-opacity=".85" stroke-width="1.6" filter="url(#sombra)"/><circle cx="225.5" cy="158.0" r="11" fill="#4c9aff"/><text x="225.5" y="162.3" text-anchor="middle" font-size="12" font-weight="800" fill="#0a1120">2</text><text x="244.5" y="163.0" font-size="14" font-weight="700" fill="#eef2f8">Em diagnóstico</text>
+  <rect x="414.5" y="132" width="215" height="52" rx="26.0" fill="#111c31" stroke="#f5a524" stroke-opacity=".85" stroke-width="1.6" filter="url(#sombra)"/><circle cx="437.5" cy="158.0" r="11" fill="#f5a524"/><text x="437.5" y="162.3" text-anchor="middle" font-size="12" font-weight="800" fill="#0a1120">3</text><text x="456.5" y="163.0" font-size="14" font-weight="700" fill="#eef2f8">Aguardando aprovação</text>
+  <rect x="673.5" y="132" width="144" height="52" rx="26.0" fill="#111c31" stroke="#4c9aff" stroke-opacity=".85" stroke-width="1.6" filter="url(#sombra)"/><circle cx="696.5" cy="158.0" r="11" fill="#4c9aff"/><text x="696.5" y="162.3" text-anchor="middle" font-size="12" font-weight="800" fill="#0a1120">4</text><text x="715.5" y="163.0" font-size="14" font-weight="700" fill="#eef2f8">Em execução</text>
+  <rect x="861.5" y="132" width="136" height="52" rx="26.0" fill="#111c31" stroke="#4c9aff" stroke-opacity=".85" stroke-width="1.6" filter="url(#sombra)"/><circle cx="884.5" cy="158.0" r="11" fill="#4c9aff"/><text x="884.5" y="162.3" text-anchor="middle" font-size="12" font-weight="800" fill="#0a1120">5</text><text x="903.5" y="163.0" font-size="14" font-weight="700" fill="#eef2f8">Finalizada</text>
+  <rect x="1041.5" y="132" width="121" height="52" rx="26.0" fill="#111c31" stroke="#2fd08f" stroke-opacity=".85" stroke-width="1.6" filter="url(#sombra)"/><rect x="1037.5" y="128" width="129" height="60" rx="30.0" fill="none" stroke="#2fd08f" stroke-opacity=".35"/><circle cx="1064.5" cy="158.0" r="11" fill="#2fd08f"/><text x="1064.5" y="162.3" text-anchor="middle" font-size="12" font-weight="800" fill="#0a1120">6</text><text x="1083.5" y="163.0" font-size="14" font-weight="700" fill="#eef2f8">Entregue</text>
+  <path class="seta" d="M522.0 186 V256" marker-end="url(#seta)"/>
+  <text class="lbl" x="534.0" y="227.0">rejeitar</text>
+  <rect x="447.0" y="262" width="150" height="46" rx="23" fill="#111c31" stroke="#ff6b6b" stroke-width="1.6" stroke-opacity=".85" filter="url(#sombra)"/>
+  <rect x="443.0" y="258" width="158" height="54" rx="27" fill="none" stroke="#ff6b6b" stroke-opacity=".35"/>
+  <text x="522.0" y="290" text-anchor="middle" font-size="14" font-weight="700" fill="#eef2f8">Rejeitada</text>
+  <text class="m" x="1164" y="316" text-anchor="end">Contorno duplo: status que encerra a OS. Salto fora das setas: 409 (transição inválida).</text>
 
-  <rect x="16" y="96" width="112" height="50" rx="8" fill="#dbe7f5" stroke="#2c5282" stroke-width="1.5"/>
-  <text x="72" y="126" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1e3a5f">Recebida</text>
-
-  <line x1="128" y1="121" x2="156" y2="121" stroke="#3d4a5c" stroke-width="1.5"/>
-  <polygon points="156,115 156,127 166,121" fill="#3d4a5c"/>
-  <text x="146" y="168" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5c6570">diagnóstico</text>
-
-  <rect x="166" y="96" width="156" height="50" rx="8" fill="#dbe7f5" stroke="#2c5282" stroke-width="1.5"/>
-  <text x="244" y="126" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1e3a5f">Em diagnóstico</text>
-
-  <line x1="322" y1="121" x2="348" y2="121" stroke="#3d4a5c" stroke-width="1.5"/>
-  <polygon points="348,115 348,127 358,121" fill="#3d4a5c"/>
-  <text x="340" y="168" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5c6570">orçamento</text>
-
-  <rect x="358" y="96" width="196" height="50" rx="8" fill="#f8ead2" stroke="#8a5a12" stroke-width="1.5"/>
-  <text x="456" y="126" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#6b4208">Aguardando aprovação</text>
-
-  <line x1="554" y1="121" x2="580" y2="121" stroke="#3d4a5c" stroke-width="1.5"/>
-  <polygon points="580,115 580,127 590,121" fill="#3d4a5c"/>
-  <text x="572" y="168" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5c6570">aprovar</text>
-
-  <rect x="590" y="96" width="140" height="50" rx="8" fill="#dbe7f5" stroke="#2c5282" stroke-width="1.5"/>
-  <text x="660" y="126" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1e3a5f">Em execução</text>
-
-  <line x1="730" y1="121" x2="756" y2="121" stroke="#3d4a5c" stroke-width="1.5"/>
-  <polygon points="756,115 756,127 766,121" fill="#3d4a5c"/>
-  <text x="748" y="168" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5c6570">finalizar</text>
-
-  <rect x="766" y="96" width="124" height="50" rx="8" fill="#dbe7f5" stroke="#2c5282" stroke-width="1.5"/>
-  <text x="828" y="126" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1e3a5f">Finalizada</text>
-
-  <line x1="890" y1="121" x2="916" y2="121" stroke="#3d4a5c" stroke-width="1.5"/>
-  <polygon points="916,115 916,127 926,121" fill="#3d4a5c"/>
-  <text x="908" y="168" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5c6570">entregar</text>
-
-  <rect x="926" y="96" width="118" height="50" rx="8" fill="#e5f0e4" stroke="#2f6b4f" stroke-width="1.5"/>
-  <text x="985" y="126" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#1e4d34">Entregue</text>
-
-  <line x1="456" y1="146" x2="456" y2="204" stroke="#3d4a5c" stroke-width="1.5"/>
-  <polygon points="450,204 462,204 456,214" fill="#3d4a5c"/>
-  <text x="470" y="188" font-family="sans-serif" font-size="11" fill="#5c6570">rejeitar</text>
-
-  <rect x="386" y="214" width="140" height="48" rx="8" fill="#f8e0d8" stroke="#9b3d2f" stroke-width="1.5"/>
-  <text x="456" y="244" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="700" fill="#7a2e24">Rejeitada</text>
 </svg>
