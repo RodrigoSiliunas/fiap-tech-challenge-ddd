@@ -8,15 +8,20 @@ from sqlalchemy.orm import Session, selectinload
 
 from app.domain.cliente.aggregate import Cliente
 from app.domain.cliente.documento import Documento, TipoDocumento
+from app.domain.cliente.repository import ClienteRepository
 from app.domain.exceptions import DomainError
 from app.domain.ordem_servico.aggregate import ItemPeca, ItemServico, Orcamento, OrdemDeServico
+from app.domain.ordem_servico.repository import OrdemDeServicoRepository
 from app.domain.ordem_servico.status import SituacaoOrcamento, StatusOS
 from app.domain.peca.aggregate import Peca
+from app.domain.peca.repository import PecaRepository
 from app.domain.servico.aggregate import Servico
+from app.domain.servico.repository import ServicoRepository
 from app.domain.shared.events import DomainEvent
 from app.domain.shared.value_objects import Dinheiro, Quantidade
 from app.domain.veiculo.aggregate import Veiculo
 from app.domain.veiculo.placa import PadraoPlaca, Placa
+from app.domain.veiculo.repository import VeiculoRepository
 from app.infrastructure.db.models import (
     ClienteModel,
     EventoDominioModel,
@@ -59,7 +64,7 @@ def _bloquear(query, session: Session, lock: bool):
     return query
 
 
-class SqlAlchemyClienteRepository:
+class SqlAlchemyClienteRepository(ClienteRepository):
     def __init__(self, session: Session) -> None:
         self.session = session
 
@@ -101,7 +106,7 @@ class SqlAlchemyClienteRepository:
         flush(self.session)
 
 
-class SqlAlchemyVeiculoRepository:
+class SqlAlchemyVeiculoRepository(VeiculoRepository):
     def __init__(self, session: Session) -> None:
         self.session = session
 
@@ -151,7 +156,7 @@ class SqlAlchemyVeiculoRepository:
         )
 
 
-class SqlAlchemyServicoRepository:
+class SqlAlchemyServicoRepository(ServicoRepository):
     def __init__(self, session: Session) -> None:
         self.session = session
 
@@ -184,7 +189,7 @@ class SqlAlchemyServicoRepository:
         flush(self.session)
 
 
-class SqlAlchemyPecaRepository:
+class SqlAlchemyPecaRepository(PecaRepository):
     def __init__(self, session: Session) -> None:
         self.session = session
 
@@ -219,7 +224,7 @@ class SqlAlchemyPecaRepository:
         flush(self.session)
 
 
-class SqlAlchemyOrdemRepository:
+class SqlAlchemyOrdemRepository(OrdemDeServicoRepository):
     def __init__(self, session: Session) -> None:
         self.session = session
 
