@@ -96,6 +96,9 @@ def test_health_login_e_rotas_protegidas(client):
     assert client.get("/api/v1/clientes").status_code == 401
     assert client.post("/api/v1/auth/login", json={"username": "admin", "password": "errada"}).status_code == 401
     assert client.get("/api/v1/clientes", headers={"Authorization": "Bearer token-invalido"}).status_code == 401
+    respostas = client.get("/openapi.json").json()["paths"]["/api/v1/clientes"]["get"]["responses"]
+    assert {"401", "404", "409", "422"} <= respostas.keys()
+    assert respostas["401"]["content"]["application/json"]["schema"]["$ref"].endswith("/ErroOut")
 
 
 def test_crud_cliente_veiculo_servico_peca(client, auth):

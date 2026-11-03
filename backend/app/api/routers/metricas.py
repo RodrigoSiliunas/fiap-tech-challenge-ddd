@@ -1,13 +1,14 @@
 from fastapi import APIRouter, Depends
 
 from app.api.deps import get_current_user, get_uow
-from app.api.schemas import TempoMedioOut
+from app.api.schemas import TempoMedioOut, respostas_erro
 from app.application.queries.tempo_medio_execucao import CalcularTempoMedioExecucao
 
 router = APIRouter(
     prefix="/metricas",
     tags=["Métricas"],
     dependencies=[Depends(get_current_user)],
+    responses=respostas_erro(401),
 )
 
 

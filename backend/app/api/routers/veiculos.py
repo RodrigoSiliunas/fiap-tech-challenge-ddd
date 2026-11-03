@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Query, Response
 
 from app.api.deps import get_current_user, get_uow
 from app.api.presenters import pagina, veiculo_out
-from app.api.schemas import ListaVeiculosOut, VeiculoIn, VeiculoOut, VeiculoUpdate
+from app.api.schemas import ListaVeiculosOut, VeiculoIn, VeiculoOut, VeiculoUpdate, respostas_erro
 from app.application.commands.cadastros import (
     AtualizarVeiculo,
     CadastrarVeiculo,
@@ -17,6 +17,7 @@ router = APIRouter(
     prefix="/veiculos",
     tags=["Veículos"],
     dependencies=[Depends(get_current_user)],
+    responses=respostas_erro(401, 404, 409, 422),
 )
 
 

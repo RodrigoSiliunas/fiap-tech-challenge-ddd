@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 
 from app.api.deps import get_uow
-from app.api.schemas import LoginIn, TokenOut
+from app.api.schemas import LoginIn, TokenOut, respostas_erro
 from app.application.commands.autenticar import AutenticarUsuario
 
-router = APIRouter(prefix="/auth", tags=["Autenticação"])
+router = APIRouter(prefix="/auth", tags=["Autenticação"], responses=respostas_erro(401, 422))
 
 
 @router.post(

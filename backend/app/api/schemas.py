@@ -1,6 +1,7 @@
 """DTOs HTTP. Não são entidades de domínio."""
 
 from decimal import Decimal
+from typing import Any
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
@@ -332,3 +333,17 @@ class ListaOrdensOut(BaseModel):
 class ErroOut(BaseModel):
     codigo: str
     mensagem: str
+    erros: list[dict[str, Any]] | None = Field(default=None, description="Detalhes por campo, só em erro de validação")
+
+
+_DESCRICOES_ERRO = {
+    401: "Credenciais ou token ausentes, inválidos ou expirados",
+    404: "Registro não encontrado",
+    409: "Conflito com o estado atual: transição inválida, duplicidade, estoque insuficiente ou vínculo existente",
+    422: "Dados inválidos",
+}
+
+
+def respostas_erro(*codigos: int) -> dict[int | str, dict[str, Any]]:
+    """Documenta no OpenAPI as respostas de erro, todas no formato de ErroOut."""
+    return {codigo: {"model": ErroOut, "description": _DESCRICOES_ERRO[codigo]} for codigo in codigos}
