@@ -1,9 +1,19 @@
 """Fluxos principais via API, com transação real (SQLite ou Postgres)."""
 
+import os
+import threading
+import time
 from datetime import datetime, timedelta, timezone
-from uuid import uuid4
+from uuid import UUID, uuid4
 
+import pytest
+from sqlalchemy import select, text, update
+
+from app.application.commands.ordens_servico import IncluirPecaNaOrdem, RejeitarOrcamento
+from app.domain.exceptions import DomainError
 from app.infrastructure.db.models import OrdemModel
+from app.infrastructure.db.repositories import EventoRepository
+from app.infrastructure.unit_of_work import SqlAlchemyUnitOfWork
 
 CPF = "529.982.247-25"
 CPF_2 = "111.444.777-35"
@@ -354,7 +364,7 @@ def test_rejeicao_nao_baixa_estoque_e_permite_nova_os(client, auth):
     _ = item_servico
 
 
-def test_aprovacao_sem_estoque_faz_rollback(client, auth):
+def test_aprovacao_sem_estoque_e_recusada_sem_alterar_a_os(client, auth):
     ordem, _servico, peca, _item = _ate_orcamento(client, auth, placa="QWE1A23", documento=CPF, pecas=1)
     ajuste = client.post(
         f"/api/v1/pecas/{peca['id']}/ajuste-estoque",
@@ -371,6 +381,82 @@ def test_aprovacao_sem_estoque_faz_rollback(client, auth):
     atual = client.get(f"/api/v1/ordens-servico/{ordem['id']}", headers=auth).json()
     assert atual["status"] == "AGUARDANDO_APROVACAO"
     assert client.get(f"/api/v1/pecas/{peca['id']}", headers=auth).json()["quantidade_estoque"] == 0
+
+
+def test_aprovacao_desfaz_status_e_baixa_de_estoque_se_a_transacao_falha(client, auth, monkeypatch):
+    ordem, _servico, peca, _item = _ate_orcamento(client, auth, placa="RTY2B34", documento=CPF, pecas=1)
+
+    def falhar(_self, _eventos):
+        raise DomainError("Falha simulada ao gravar os eventos", "conflito")
+
+    # A falha acontece depois de gravar o novo status e a baixa de estoque, antes do commit.
+    monkeypatch.setattr(EventoRepository, "salvar_todos", falhar)
+    falha = client.post(f"/api/v1/publico/ordens-servico/{ordem['id']}/aprovar", json={"documento": CPF})
+    monkeypatch.undo()
+    assert falha.status_code == 409
+    atual = client.get(f"/api/v1/ordens-servico/{ordem['id']}", headers=auth).json()
+    assert atual["status"] == "AGUARDANDO_APROVACAO"
+    assert client.get(f"/api/v1/pecas/{peca['id']}", headers=auth).json()["quantidade_estoque"] == 5
+
+
+@pytest.mark.skipif(not os.getenv("OFICINA_TEST_DATABASE_URL"), reason="lock de linha só existe no PostgreSQL")
+@pytest.mark.parametrize(
+    ("comando", "codigo"),
+    [
+        (lambda uow, ordem_id, peca_id: RejeitarOrcamento(uow).executar(ordem_id, CPF, None), "transicao_invalida"),
+        (lambda uow, ordem_id, peca_id: IncluirPecaNaOrdem(uow).executar(ordem_id, peca_id, 1), "itens_bloqueados"),
+    ],
+    ids=["rejeitar", "incluir_peca"],
+)
+def test_comando_concorrente_espera_a_aprovacao_e_nao_a_sobrescreve(client, auth, database, comando, codigo):
+    engine, factory = database
+    ordem, _servico, peca, _item = _ate_orcamento(client, auth)
+    # Outra transação aprova a OS e segura o lock da linha até o commit.
+    outra = engine.connect()
+    outra.execute(update(OrdemModel).where(OrdemModel.id == ordem["id"]).values(status="EM_EXECUCAO"))
+    erros: list[Exception] = []
+
+    def executar() -> None:
+        uow = SqlAlchemyUnitOfWork(factory).open()
+        try:
+            comando(uow, UUID(ordem["id"]), UUID(peca["id"]))
+        except Exception as exc:
+            erros.append(exc)
+        finally:
+            uow.rollback()
+            uow.close()
+
+    tarefa = threading.Thread(target=executar)
+    tarefa.start()
+    try:
+        assert _algum_comando_esperando_lock(engine)
+        outra.commit()
+    finally:
+        outra.close()
+        tarefa.join(timeout=10)
+
+    # Sem o lock na leitura, o comando gravaria por cima da aprovação já confirmada.
+    assert [getattr(erro, "codigo", erro) for erro in erros] == [codigo]
+    with engine.connect() as conexao:
+        status = conexao.execute(select(OrdemModel.status).where(OrdemModel.id == ordem["id"])).scalar_one()
+    assert status == "EM_EXECUCAO"
+
+
+def _algum_comando_esperando_lock(engine, limite: float = 5.0) -> bool:
+    fim = time.monotonic() + limite
+    with engine.connect() as conexao:
+        while time.monotonic() < fim:
+            esperando = conexao.execute(
+                text(
+                    "SELECT count(*) FROM pg_stat_activity WHERE wait_event_type = 'Lock' "
+                    "AND datname = current_database() AND pid <> pg_backend_pid()"
+                )
+            ).scalar_one()
+            conexao.rollback()  # pg_stat_activity é um retrato fixo dentro de cada transação
+            if esperando:
+                return True
+            time.sleep(0.05)
+    return False
 
 
 def test_placa_de_outro_cliente_e_cliente_novo_sem_nome(client, auth):

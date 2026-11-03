@@ -52,11 +52,14 @@ class AbrirOrdemDeServico:
         elif veiculo.cliente_id != cliente.id:
             raise DomainError("Placa já cadastrada para outro cliente", "placa_duplicada")
 
+        # O número sai antes da checagem: a sequência fica travada até o commit, então
+        # duas aberturas simultâneas para o mesmo veículo não passam as duas.
+        numero = self.uow.ordens.proximo_numero()
         if self.uow.ordens.existe_nao_encerrada(veiculo.id):
             raise DomainError("Já existe uma ordem de serviço em aberto para este veículo", "conflito")
 
         ordem = OrdemDeServico.abrir(
-            numero=self.uow.ordens.proximo_numero(),
+            numero=numero,
             cliente_id=cliente.id,
             veiculo_id=veiculo.id,
             observacao=dados.observacao,
@@ -171,7 +174,7 @@ class RejeitarOrcamento:
         self.uow = uow
 
     def executar(self, ordem_id: UUID, documento: str, motivo: str | None) -> OrdemDeServico:
-        ordem = _ordem_do_cliente(self.uow, ordem_id, documento)
+        ordem = _ordem_do_cliente(self.uow, ordem_id, documento, lock=True)
         ordem.rejeitar_orcamento(motivo)
         self.uow.ordens.save(ordem)
         concluir(self.uow, ordem)
@@ -202,7 +205,9 @@ class EntregarVeiculo:
         return ordem
 
 
-def _ordem(uow, ordem_id: UUID, *, lock: bool = False) -> OrdemDeServico:
+def _ordem(uow, ordem_id: UUID, *, lock: bool = True) -> OrdemDeServico:
+    # Todo comando que altera a OS trava a linha até o commit (no PostgreSQL). Sem isso,
+    # uma rejeição ou inclusão de item simultânea à aprovação sobrescreveria a aprovação.
     return exigir(uow.ordens.get(ordem_id, lock=lock), "Ordem de serviço não encontrada")
 
 
