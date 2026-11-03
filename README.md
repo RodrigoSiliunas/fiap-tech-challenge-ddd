@@ -137,7 +137,7 @@ Valores só do ambiente local, definidos no `docker-compose.yml` e no `backend/.
 | Usuário admin | `admin` |
 | Senha | `admin123` |
 | Banco | usuário `oficina`, senha `oficina`, database `oficina` |
-| JWT | segredo de desenvolvimento no `docker-compose.yml` |
+| JWT | segredo aleatório gerado a cada subida da API; defina `JWT_SECRET` para fixá-lo |
 
 O login é `POST /api/v1/auth/login`. O token vale para as rotas administrativas. A consulta e a decisão do cliente não usam esse token.
 

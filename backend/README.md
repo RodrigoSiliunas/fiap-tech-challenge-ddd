@@ -53,21 +53,21 @@ pip install -r requirements-dev.txt
 uvicorn app.main:app --reload
 ```
 
-Os padrões de `app/config.py` já apontam para esse banco em `localhost:5432`. Para mudar algum valor, copie `.env.example` para `.env`. O `uvloop` não é instalado no Windows; o Uvicorn usa o loop padrão do asyncio.
+Os padrões de `app/config.py` já apontam para esse banco em `localhost:5432`. Para mudar algum valor, copie `.env.example` para `.env`. Com `--reload`, cada recarga gera um segredo JWT novo e invalida o token anterior; defina `JWT_SECRET` no `.env` para manter o token entre recargas. O `uvloop` não é instalado no Windows; o Uvicorn usa o loop padrão do asyncio.
 
 ## Variáveis de ambiente
 
 | Variável | Padrão | Uso |
 |----------|--------|-----|
 | `DATABASE_URL` | `postgresql+psycopg://oficina:oficina@localhost:5432/oficina` | Banco da API |
-| `JWT_SECRET` | `dev-only-change-me-not-a-real-secret` | Assinatura dos tokens |
+| `JWT_SECRET` | aleatório, gerado a cada subida | Assinatura dos tokens |
 | `JWT_ALGORITHM` | `HS256` | Algoritmo do JWT |
 | `JWT_EXPIRE_MINUTES` | `120` | Validade do token |
 | `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `ADMIN_NOME` | `admin`, `admin123`, `Administrador da Oficina` | Usuário criado pela semente |
 | `OFICINA_SKIP_STARTUP` | não definida | Com `1`, o startup não cria o schema nem a semente (usado nos testes) |
 | `OFICINA_TEST_DATABASE_URL` | não definida | Roda a suíte contra PostgreSQL em vez de SQLite em memória |
 
-Os padrões são só de desenvolvimento. O `docker-compose.yml` da raiz define os mesmos valores para a API no container.
+Os padrões são só de desenvolvimento. O `docker-compose.yml` da raiz define os mesmos valores para a API no container, menos o `JWT_SECRET`, que fica fora do repositório.
 
 ## Testes e cobertura
 

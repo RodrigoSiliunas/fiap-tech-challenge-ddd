@@ -7,7 +7,7 @@ from app.domain.exceptions import DomainError
 from app.domain.shared.clock import now
 from app.infrastructure.auth.jwt import create_token, decode_token
 from app.infrastructure.auth.passwords import hash_password, verify_password
-from app.config import get_settings
+from app.config import Settings, get_settings
 
 
 def test_jwt_redondo_e_senha():
@@ -33,3 +33,11 @@ def test_jwt_invalido_e_expirado():
     with pytest.raises(DomainError) as erro:
         decode_token(expirado)
     assert erro.value.codigo == "nao_autenticado"
+
+
+def test_sem_jwt_secret_cada_subida_gera_um_segredo(monkeypatch):
+    monkeypatch.delenv("JWT_SECRET", raising=False)
+    primeiro = Settings(_env_file=None).jwt_secret
+    segundo = Settings(_env_file=None).jwt_secret
+    assert primeiro != segundo
+    assert len(primeiro) >= 32
