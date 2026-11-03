@@ -9,7 +9,7 @@
 
 Back-end da Fase 1 do Tech Challenge SOAT (FIAP): monólito de uma oficina mecânica, com DDD.
 
-Documentação DDD (Miro ou equivalente): `COLOQUE_AQUI_O_LINK_DO_MIRO`
+Documentação DDD no Miro: [https://miro.com/app/board/uXjVESOKEKE=/](https://miro.com/app/board/uXjVESOKEKE=/)
 
 ## Sumário
 
@@ -231,7 +231,7 @@ Os testes ficam em `backend/tests`, fora da imagem Docker.
 
 ## Documentação DDD
 
-Link do quadro (Miro ou equivalente): `COLOQUE_AQUI_O_LINK_DO_MIRO`
+Board no Miro: [https://miro.com/app/board/uXjVESOKEKE=/](https://miro.com/app/board/uXjVESOKEKE=/)
 
 Arquivos no repositório, em [`docs/ddd/`](docs/ddd/):
 

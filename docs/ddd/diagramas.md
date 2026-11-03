@@ -1,7 +1,7 @@
 # Diagramas DDD — Oficina Mecânica (MVP)
 
 > Diagramas solicitados pela disciplina (Aulas 01, 04, 05 e 06) alinhados à solução implementada em `backend/app/`.
-> Os mesmos diagramas estão no [board do Miro](MIRO_BOARD_URL), e o export fica em `diagramas.pdf`.
+> Os mesmos diagramas estão no [board do Miro](https://miro.com/app/board/uXjVESOKEKE=/), e o export fica em `diagramas.pdf`.
 
 ---
 
@@ -270,6 +270,6 @@ Caminhos relativos a `backend/app/`.
 | Comandos azuis | Handlers em `application/commands/` |
 | Políticas roxas | `domain/services/politica_estoque.py` e métodos de `OrdemDeServico`, chamados pelos comandos |
 | Agregados | Classes raiz em `domain/*/aggregate.py` |
-| Modelos de leitura verdes | Consultas em `application/queries/` |
+| Modelos de leitura verdes | Consultas em `application/queries/`; as de cadastro em `application/commands/cadastros.py` |
 | Linguagem ubíqua | Nomes PT no domínio = glossário |
 | Máquina de estados | `TRANSICOES` em `domain/ordem_servico/status.py` e `OrdemDeServico._transicionar` |

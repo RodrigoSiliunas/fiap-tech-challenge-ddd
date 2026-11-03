@@ -6,7 +6,7 @@
 
 **Domínio:** Sistema Integrado de Atendimento e Execução de Serviços de Oficina Mecânica.  
 **Escopo:** MVP — três fluxos obrigatórios do brief.  
-**Board:** [Miro](MIRO_BOARD_URL), com os mesmos fluxos em sticky notes. Export em `event-storming.pdf` e `event-storming.png`.
+**Board:** [Miro](https://miro.com/app/board/uXjVESOKEKE=/), com os mesmos fluxos em sticky notes. Export em `event-storming.pdf` e `event-storming.png`.
 
 Comandos, eventos, políticas e modelos de leitura têm os nomes do código em `backend/app/`. Quando um passo acontece dentro de outro comando, a tabela indica o método que o executa.
 
@@ -235,7 +235,7 @@ Os caminhos abaixo são relativos a `backend/app/`.
 Cada comando → handler em `application/commands/`.  
 Cada evento → dataclass em `domain/*/events.py`, registrada no agregado e gravada na tabela `eventos_dominio` na mesma transação do comando.  
 Cada agregado → módulo em `domain/`.  
-Modelos de leitura → consultas em `application/queries/`.  
+Modelos de leitura → consultas em `application/queries/`; as de cadastro (`ListarPecas`, `ObterPeca` e afins) ficam em `application/commands/cadastros.py`.  
 Políticas → `domain/services/politica_estoque.py` e métodos de `OrdemDeServico`.
 
 O mapeamento completo está em [`mapeamento-codigo.md`](mapeamento-codigo.md).
