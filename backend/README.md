@@ -27,7 +27,7 @@ backend/
     demo_fluxo.py     # percorre o fluxo da OS contra a API no ar
   docs/
     coverage/         # evidência de cobertura
-    security/         # relatório do pip-audit
+    security/         # análise de vulnerabilidades (pip-audit, Bandit e Trivy)
   Dockerfile          # imagem python:3.12-slim, usuário sem root
   pyproject.toml      # metadados, pytest e coverage
   requirements.txt    # dependências de execução, versões fixas
@@ -77,7 +77,7 @@ pytest --cov=app --cov-report=term-missing --cov-fail-under=80
 
 O atalho é `make test`; `make cov` também grava `coverage.xml`. Abaixo de 80% o pytest falha.
 
-Na última execução, com Python 3.12.16, foram 35 testes. A cobertura de `app` é de 96,13% (2258 de 2349 linhas) e a de `app/domain`, de 94,73% (701 de 740). A saída completa está em [`docs/coverage/coverage-summary.txt`](docs/coverage/coverage-summary.txt).
+Na última execução, com Python 3.12.16, passaram 42 testes e 2 ficaram pulados: os de concorrência, que só rodam contra PostgreSQL. A cobertura de `app` é de 97,97% (2318 de 2366 linhas) e a de `app/domain`, de 98,52% (733 de 744). A saída completa está em [`docs/coverage/coverage-summary.txt`](docs/coverage/coverage-summary.txt).
 
 Os testes usam SQLite em memória, com o mesmo mapeamento SQLAlchemy. Para repetir contra PostgreSQL, crie o database `oficina_test` e exporte a URL:
 
@@ -91,11 +91,20 @@ pytest
 A cobertura e a análise de vulnerabilidades do repositório saem do Python 3.12, o mesmo da imagem e do CI. Com Docker, nesta pasta:
 
 ```bash
-docker run --rm -v "$PWD:/src:ro" python:3.12-slim sh -c "cp -r /src /work && cd /work && pip install -q -r requirements-dev.txt pip-audit && pytest --cov=app --cov-report=term-missing && coverage report --show-missing --include='app/domain/*' && pip-audit -r requirements.txt -r requirements-dev.txt"
+docker run --rm -v "$PWD:/src:ro" python:3.12-slim sh -c "cp -r /src /work && cd /work && pip install -q -r requirements-dev.txt pip-audit bandit && pytest --cov=app --cov-report=term-missing && coverage report --show-missing --include='app/domain/*' && pip-audit -r requirements.txt -r requirements-dev.txt && bandit -r app"
 ```
 
-No PowerShell, troque `$PWD` por `${PWD}`. A saída do pytest e do `coverage report` vai para [`docs/coverage/coverage-summary.txt`](docs/coverage/coverage-summary.txt), e a do `pip-audit` para [`docs/security/vulnerability-report.md`](docs/security/vulnerability-report.md). O `pip-audit` não entra nas dependências do projeto.
+No PowerShell, troque `$PWD` por `${PWD}`. A saída do pytest e do `coverage report` vai para [`docs/coverage/coverage-summary.txt`](docs/coverage/coverage-summary.txt), e as do `pip-audit` e do Bandit para [`docs/security/vulnerability-report.md`](docs/security/vulnerability-report.md).
+
+A imagem é analisada com o Trivy, na raiz do repositório. No Git Bash do Windows, prefixe o `docker run` com `MSYS_NO_PATHCONV=1`.
+
+```bash
+docker compose build --pull api
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy image --scanners vuln fiap-tech-challenge-ddd-api
+```
+
+Nenhuma dessas ferramentas entra nas dependências do projeto.
 
 ## Imagem Docker
 
-O `Dockerfile` usa `python:3.12-slim`, instala só o `requirements.txt`, copia `app/` e roda `uvicorn app.main:app` com um usuário sem privilégio. Os testes, os scripts e a documentação ficam fora da imagem. O `docker-compose.yml` da raiz constrói esta pasta com `build: ./backend`.
+O `Dockerfile` usa `python:3.12-slim`, instala só o `requirements.txt` e remove o pip em seguida, copia `app/` e roda `uvicorn app.main:app` com um usuário sem privilégio. Os testes, os scripts e a documentação ficam fora da imagem. O `docker-compose.yml` da raiz constrói esta pasta com `build: ./backend`.

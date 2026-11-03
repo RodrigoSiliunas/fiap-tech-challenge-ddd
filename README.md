@@ -175,7 +175,7 @@ pytest --cov=app --cov-report=term-missing --cov-fail-under=80
 
 O atalho é `make test`, dentro de `backend/`.
 
-São 35 testes. Com Python 3.12.16, a cobertura de `app` é **96,13%** (2258 de 2349 linhas) e a de `app/domain`, **94,73%** (701 de 740). Abaixo de 80% o pytest falha.
+São 44 testes. Com Python 3.12.16 e SQLite passam 42; os 2 de concorrência só rodam contra PostgreSQL. A cobertura de `app` é **97,97%** (2318 de 2366 linhas) e a de `app/domain`, **98,52%** (733 de 744). Abaixo de 80% o pytest falha.
 
 Relatório: [`backend/docs/coverage/coverage-summary.txt`](backend/docs/coverage/coverage-summary.txt).
 
@@ -215,7 +215,7 @@ backend/
   scripts/                # demo_fluxo.py
   docs/
     coverage/             # saída da cobertura
-    security/             # relatório do pip-audit
+    security/             # análise de vulnerabilidades (pip-audit, Bandit e Trivy)
   Dockerfile
   pyproject.toml
   requirements.txt
@@ -274,7 +274,11 @@ Cinco histórias no formato do Egon, com as sentenças em [`docs/ddd/domain-stor
 
 Relatório em [`backend/docs/security/vulnerability-report.md`](backend/docs/security/vulnerability-report.md).
 
-`pip-audit` 2.10.1 em `backend/requirements.txt` e `backend/requirements-dev.txt`: nenhuma vulnerabilidade conhecida. Não houve achado alto ou crítico para corrigir.
+São três análises:
+
+- Dependências, com `pip-audit` 2.10.1: nenhuma vulnerabilidade conhecida.
+- Código, com Bandit 1.9.4: 3 achados de severidade baixa, avaliados e aceitos.
+- Imagem Docker, com Trivy 0.76.1: nenhuma vulnerabilidade crítica e nenhuma com correção publicada. O pip saiu da imagem, e com ele as CVEs que trazia; as 9 altas restantes estão em pacotes do Debian sem correção publicada.
 
 ## Proteção da branch main
 

@@ -9,7 +9,10 @@ WORKDIR /app
 RUN useradd --create-home --uid 10001 appuser
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# A API não usa o pip em execução. Ele sai da imagem depois de instalar as dependências,
+# junto com as CVEs dele e dos componentes que ele embute.
+RUN pip install --no-cache-dir -r requirements.txt \
+    && pip uninstall -y pip
 
 COPY app ./app
 
