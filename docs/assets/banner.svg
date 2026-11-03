@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 108" role="img">
+  <title>Oficina Mecânica</title>
+  <desc>Cabeçalho: back-end da ordem de serviço, SOAT Tech Challenge, Fase 1.</desc>
+  <rect width="960" height="108" fill="#1e3a5f"/>
+  <rect width="8" height="108" fill="#d4a017"/>
+  <text x="36" y="48" font-family="sans-serif" font-size="28" font-weight="700" fill="#f7f4ee">Oficina Mecânica</text>
+  <text x="36" y="78" font-family="sans-serif" font-size="15" fill="#d5dde8">Back-end da ordem de serviço · SOAT Tech Challenge · Fase 1</text>
+</svg>

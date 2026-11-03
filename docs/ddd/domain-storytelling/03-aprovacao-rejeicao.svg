@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="450" viewBox="0 0 1080 450">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="24" y="30" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="#111">03 — Aprovação ou rejeição do orçamento</text>
+  <text x="24" y="50" font-family="Arial,sans-serif" font-size="11" fill="#666">Domain Storytelling — FIAP TC Fase 1 · Oficina Mecânica MVP</text>
+  <rect x="20" y="65" width="980" height="175" rx="8" fill="#fff" stroke="#2e7d32" stroke-width="1.6"/>
+    <text x="36" y="87" font-family="Arial" font-size="13" font-weight="bold" fill="#2e7d32">Caminho feliz — aprovação</text>
+<rect x="20" y="265" width="720" height="150" rx="8" fill="#fff" stroke="#c62828" stroke-width="1.6"/>
+    <text x="36" y="287" font-family="Arial" font-size="13" font-weight="bold" fill="#c62828">Caminho alternativo — rejeição</text>
+<g transform="translate(50,110)">
+      <circle cx="30" cy="18" r="12" fill="#2e7d32"/>
+      <path d="M10 55c0-14 9-22 20-22s20 8 20 22" fill="#2e7d32"/>
+      <text x="30" y="78" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#222">Cliente</text>
+    </g>
+<g transform="translate(220,110)"><circle cx="30" cy="28" r="22" fill="none" stroke="#f9a825" stroke-width="2.5"/><text x="30" y="36" text-anchor="middle" font-size="28" font-family="Arial" fill="#f9a825">€</text><text x="30" y="74" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#222">Orçamento</text></g>
+<g transform="translate(400,110)">
+      <rect x="5" y="8" width="50" height="32" rx="3" fill="none" stroke="#6a1b9a" stroke-width="3"/>
+      <rect x="0" y="45" width="60" height="6" rx="1" fill="#6a1b9a"/>
+      <text x="30" y="78" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#222">Sistema</text>
+    </g>
+<g transform="translate(580,110)"><path d="M8 20l22-10 22 10v24l-22 10-22-10z" fill="none" stroke="#455a64" stroke-width="2.5"/><path d="M8 20l22 10 22-10M30 30v24" stroke="#455a64" stroke-width="2"/><text x="30" y="74" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#222">Estoque</text></g>
+<g transform="translate(800,110)"><rect x="12" y="2" width="36" height="48" rx="2" fill="none" stroke="#bf360c" stroke-width="2.5"/><path d="M18 14h24M18 22h24M18 30h16" stroke="#bf360c" stroke-width="2"/><text x="30" y="74" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#222">OS</text><text x="30" y="88" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#222">(Em execução)</text></g>
+<defs><marker id="m2613933" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#2e7d32"/></marker></defs>
+    <polyline points="110,140 220,140" fill="none" stroke="#2e7d32" stroke-width="1.8"
+              marker-end="url(#m2613933)"/>
+    <circle cx="137.5" cy="140.0" r="11" fill="#fff" stroke="#2e7d32" stroke-width="1.5"/>
+        <text x="137.5" y="144.0" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#2e7d32">1</text><text x="170.5" y="124.0" text-anchor="middle" font-family="Arial" font-size="11" fill="#2e7d32">aprova</text>
+<defs><marker id="m7874691" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#2e7d32"/></marker></defs>
+    <polyline points="280,140 400,140" fill="none" stroke="#2e7d32" stroke-width="1.8"
+              marker-end="url(#m7874691)"/>
+    
+<defs><marker id="m7974649" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#2e7d32"/></marker></defs>
+    <polyline points="460,135 580,140" fill="none" stroke="#2e7d32" stroke-width="1.8"
+              marker-end="url(#m7974649)"/>
+    <circle cx="496.0" cy="136.5" r="11" fill="#fff" stroke="#2e7d32" stroke-width="1.5"/>
+        <text x="496.0" y="140.5" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#2e7d32">2</text><text x="526.0" y="121.75" text-anchor="middle" font-family="Arial" font-size="11" fill="#2e7d32">baixa</text>
+<defs><marker id="m3702355" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#2e7d32"/></marker></defs>
+    <polyline points="455,165 520,205 610,210 810,180 820,165" fill="none" stroke="#2e7d32" stroke-width="1.8"
+              marker-end="url(#m3702355)"/>
+    <circle cx="514.2844701026977" cy="201.48275083242936" r="11" fill="#fff" stroke="#2e7d32" stroke-width="1.5"/>
+        <text x="514.2844701026977" y="205.48275083242936" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#2e7d32">3</text><text x="695.7271026818273" y="217.1409345977259" text-anchor="middle" font-family="Arial" font-size="11" fill="#2e7d32">inicia execução</text>
+<g transform="translate(50,300)">
+      <circle cx="30" cy="18" r="12" fill="#2e7d32"/>
+      <path d="M10 55c0-14 9-22 20-22s20 8 20 22" fill="#2e7d32"/>
+      <text x="30" y="78" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#222">Cliente</text>
+    </g>
+<g transform="translate(220,300)"><circle cx="30" cy="28" r="22" fill="none" stroke="#f9a825" stroke-width="2.5"/><text x="30" y="36" text-anchor="middle" font-size="28" font-family="Arial" fill="#f9a825">€</text><text x="30" y="74" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#222">Orçamento</text></g>
+<g transform="translate(400,300)">
+      <rect x="5" y="8" width="50" height="32" rx="3" fill="none" stroke="#6a1b9a" stroke-width="3"/>
+      <rect x="0" y="45" width="60" height="6" rx="1" fill="#6a1b9a"/>
+      <text x="30" y="78" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#222">Sistema</text>
+    </g>
+<g transform="translate(560,300)"><path d="M14 8v48M14 8h32l-8 10 8 10H14" fill="none" stroke="#c62828" stroke-width="2.5"/><text x="30" y="74" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#222">OS</text><text x="30" y="88" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#222">(Rejeitada)</text></g>
+<defs><marker id="m5753302" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#c62828"/></marker></defs>
+    <polyline points="110,330 220,330" fill="none" stroke="#c62828" stroke-width="1.8"
+              marker-end="url(#m5753302)"/>
+    <circle cx="137.5" cy="330.0" r="11" fill="#fff" stroke="#c62828" stroke-width="1.5"/>
+        <text x="137.5" y="334.0" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#c62828">4</text><text x="170.5" y="314.0" text-anchor="middle" font-family="Arial" font-size="11" fill="#c62828">rejeita</text>
+<defs><marker id="m1106197" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#c62828"/></marker></defs>
+    <polyline points="280,330 400,330" fill="none" stroke="#c62828" stroke-width="1.8"
+              marker-end="url(#m1106197)"/>
+    
+<defs><marker id="m5158893" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#c62828"/></marker></defs>
+    <polyline points="460,330 560,330" fill="none" stroke="#c62828" stroke-width="1.8"
+              marker-end="url(#m5158893)"/>
+    <circle cx="490.0" cy="330.0" r="11" fill="#fff" stroke="#c62828" stroke-width="1.5"/>
+        <text x="490.0" y="334.0" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#c62828">5</text><text x="515.0" y="314.0" text-anchor="middle" font-family="Arial" font-size="11" fill="#c62828">marca Rejeitada</text>
+<rect x="760" y="290" width="280" height="80" rx="6" fill="#fff8e1" stroke="#f9a825"/><text x="772" y="312" font-family="Arial" font-size="11" fill="#333">Política: OrcamentoAprovado →</text><text x="772" y="328" font-family="Arial" font-size="11" fill="#333">BaixarEstoque + Em execução.</text><text x="772" y="344" font-family="Arial" font-size="11" fill="#333">OrcamentoRejeitado → Rejeitada.</text>
+</svg>

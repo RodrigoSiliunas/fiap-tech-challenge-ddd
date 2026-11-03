@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" role="img">
+  <title>Arquitetura em camadas</title>
+  <desc>Interface chama a aplicação. A aplicação chama o domínio e a infraestrutura. A infraestrutura implementa as portas do domínio e grava no PostgreSQL.</desc>
+  <rect width="960" height="560" fill="#f6f3ec"/>
+  <text x="40" y="40" font-family="sans-serif" font-size="20" font-weight="700" fill="#1e3a5f">Arquitetura em camadas</text>
+  <text x="40" y="64" font-family="sans-serif" font-size="13" fill="#5c6570">Monólito em um processo. A seta aponta para quem é chamado.</text>
+
+  <rect x="230" y="86" width="500" height="70" rx="8" fill="#dbe7f5" stroke="#2c5282" stroke-width="1.5"/>
+  <text x="250" y="114" font-family="sans-serif" font-size="16" font-weight="700" fill="#1e3a5f">Interface</text>
+  <text x="250" y="138" font-family="sans-serif" font-size="13" fill="#243044">oficina/api · FastAPI, DTOs, JWT e Swagger</text>
+
+  <line x1="480" y1="156" x2="480" y2="178" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="474,178 486,178 480,188" fill="#3d4a5c"/>
+
+  <rect x="230" y="188" width="500" height="70" rx="8" fill="#e5f0e4" stroke="#2f6b4f" stroke-width="1.5"/>
+  <text x="250" y="216" font-family="sans-serif" font-size="16" font-weight="700" fill="#1e4d34">Aplicação</text>
+  <text x="250" y="240" font-family="sans-serif" font-size="13" fill="#243044">oficina/application · comandos, consultas e transação</text>
+
+  <line x1="230" y1="258" x2="230" y2="286" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="224,286 236,286 230,296" fill="#3d4a5c"/>
+  <line x1="730" y1="258" x2="730" y2="286" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="724,286 736,286 730,296" fill="#3d4a5c"/>
+
+  <rect x="40" y="296" width="380" height="124" rx="8" fill="#f8ead2" stroke="#8a5a12" stroke-width="1.5"/>
+  <text x="60" y="326" font-family="sans-serif" font-size="16" font-weight="700" fill="#6b4208">Domínio</text>
+  <text x="60" y="350" font-family="sans-serif" font-size="13" fill="#243044">oficina/domain</text>
+  <text x="60" y="374" font-family="sans-serif" font-size="13" fill="#243044">Agregados, entidades e value objects</text>
+  <text x="60" y="396" font-family="sans-serif" font-size="13" fill="#243044">Eventos de domínio e políticas</text>
+
+  <rect x="540" y="296" width="380" height="124" rx="8" fill="#ece7f6" stroke="#5b4b8a" stroke-width="1.5"/>
+  <text x="560" y="326" font-family="sans-serif" font-size="16" font-weight="700" fill="#3d3470">Infraestrutura</text>
+  <text x="560" y="350" font-family="sans-serif" font-size="13" fill="#243044">oficina/infrastructure</text>
+  <text x="560" y="374" font-family="sans-serif" font-size="13" fill="#243044">SQLAlchemy, repositórios e seed</text>
+  <text x="560" y="396" font-family="sans-serif" font-size="13" fill="#243044">JWT e PostgreSQL</text>
+
+  <line x1="532" y1="358" x2="430" y2="358" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="430,352 430,364 420,358" fill="#3d4a5c"/>
+  <text x="480" y="348" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5c6570">implementa</text>
+  <text x="480" y="376" text-anchor="middle" font-family="sans-serif" font-size="11" fill="#5c6570">as portas</text>
+
+  <line x1="730" y1="420" x2="730" y2="452" stroke="#3d4a5c" stroke-width="1.5"/>
+  <polygon points="724,452 736,452 730,462" fill="#3d4a5c"/>
+
+  <rect x="610" y="462" width="240" height="48" rx="8" fill="#e8eef2" stroke="#3d4f5f" stroke-width="1.5"/>
+  <text x="730" y="492" text-anchor="middle" font-family="sans-serif" font-size="15" font-weight="700" fill="#1e3a5f">PostgreSQL 16</text>
+
+  <text x="40" y="538" font-family="sans-serif" font-size="13" fill="#3f3a32">A aplicação usa o domínio e a infraestrutura. O domínio não importa framework nem o banco.</text>
+</svg>

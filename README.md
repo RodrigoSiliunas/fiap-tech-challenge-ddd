@@ -1,53 +1,84 @@
-# Oficina Mecânica — SOAT Tech Challenge Fase 1
+# Oficina Mecânica — Tech Challenge Fase 1
 
+![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.162-009688?logo=fastapi&logoColor=white)
+![PostgreSQL 16](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
 ![cobertura](https://img.shields.io/badge/cobertura-96%25-brightgreen)
 
-MVP do back-end do **Sistema Integrado de Atendimento e Execução de Serviços** de uma oficina mecânica. Monólito em camadas, com Domain-Driven Design, PostgreSQL e autenticação JWT nas APIs administrativas.
+<img src="docs/assets/banner.svg" alt="Oficina Mecânica. Back-end da ordem de serviço, SOAT Tech Challenge, Fase 1." width="960">
 
-- Documentação DDD (Miro ou equivalente): `COLOQUE_AQUI_O_LINK_DO_MIRO`
-- Vídeo da entrega (YouTube, público, até 15 minutos): `COLOQUE_AQUI_O_LINK_DO_YOUTUBE`
+Back-end da Fase 1 do Tech Challenge SOAT (FIAP): monólito de uma oficina mecânica, com DDD.
 
-Os artefatos de DDD exportados estão em [`docs/ddd/`](docs/ddd/). O vínculo com o código está em [`docs/ddd/mapeamento-codigo.md`](docs/ddd/mapeamento-codigo.md).
+Documentação DDD (Miro ou equivalente): `COLOQUE_AQUI_O_LINK_DO_MIRO`
+
+## Sumário
+
+- [Objetivo](#objetivo)
+- [Descrição](#descrição)
+- [Arquitetura](#arquitetura)
+- [Tecnologias](#tecnologias)
+- [Justificativa do banco](#justificativa-do-banco)
+- [Pré-requisitos](#pré-requisitos)
+- [Execução](#execução)
+- [Credenciais de demonstração](#credenciais-de-demonstração)
+- [Swagger](#swagger)
+- [Testes](#testes)
+- [Estrutura de diretórios](#estrutura-de-diretórios)
+- [Documentação DDD](#documentação-ddd)
+  - [Domain Storytelling](#domain-storytelling)
+- [Vídeo](#vídeo)
+- [Análise de vulnerabilidades](#análise-de-vulnerabilidades)
+- [Proteção da branch main](#proteção-da-branch-main)
 
 ## Objetivo
 
-Substituir anotações e planilhas por um fluxo único de atendimento: identificar o cliente, registrar o veículo, montar a ordem de serviço com serviços, peças e insumos, gerar o orçamento, registrar a aprovação ou a rejeição e acompanhar o status até a entrega. O cliente consulta o andamento por API. A equipe interna opera as rotas administrativas.
+Registrar o atendimento da oficina em um fluxo só: identificar o cliente, cadastrar o veículo, montar a ordem de serviço, calcular o orçamento, guardar a aprovação ou a rejeição e acompanhar o status até a entrega.
 
-## Descrição da solução
+## Descrição
 
-A ordem de serviço nasce em **Recebida**. O diagnóstico libera a inclusão de serviços e peças. O orçamento é calculado pelo sistema (soma dos preços fotografados na inclusão) e a OS passa a **Aguardando aprovação**. O cliente aprova ou rejeita informando o CPF/CNPJ. A aprovação muda o status para **Em execução** e baixa o estoque na mesma transação. Em seguida a equipe finaliza e entrega o veículo.
+A abertura da OS identifica o cliente pelo CPF ou CNPJ e registra o veículo com placa, marca, modelo e ano. Se o documento já existe, o cadastro é reaproveitado. A placa existente do mesmo cliente também é reaproveitada. Placa e documento não mudam depois do cadastro.
 
-Status controlados pelo agregado, sem endpoint para alterar o status à mão:
+A OS entra em **Recebida**. O diagnóstico libera a inclusão de serviços e de peças/insumos (os dois usam o agregado `Peca`). O orçamento é a soma dos preços gravados nas linhas, não um valor digitado. Para gerá-lo é preciso ao menos um serviço. A OS passa a **Aguardando aprovação**.
 
-`Recebida → Em diagnóstico → Aguardando aprovação → Em execução → Finalizada → Entregue`
+O cliente consulta e decide sem JWT, com o id da OS e o documento. Documento errado ou OS inexistente devolvem o mesmo 404. A aprovação vai para **Em execução** e baixa o estoque na mesma transação. A rejeição encerra em **Rejeitada**. A equipe então finaliza e entrega.
 
-A rejeição encerra em `Rejeitada`. Transições fora dessa máquina são recusadas.
+O agregado recusa transição fora da máquina abaixo. Não há rota para alterar o status direto.
+
+<img src="docs/assets/status-os.svg" alt="Máquina de estados: Recebida, Em diagnóstico, Aguardando aprovação, Em execução, Finalizada e Entregue. De Aguardando aprovação também segue para Rejeitada." width="1068">
+
+<img src="docs/assets/fluxo-os.svg" alt="Fluxo da OS: abrir com cliente e veículo, diagnóstico, itens, orçamento, consulta pública, aprovar com baixa de estoque ou rejeitar, finalizar e entregar." width="860">
+
+Itens só podem ser alterados em Em diagnóstico e em Aguardando aprovação. Nesse segundo status, incluir ou remover item recalcula o orçamento. A inclusão de peça confere o saldo disponível e não reserva; a baixa ocorre na aprovação. Um veículo não abre outra OS enquanto a atual não estiver Entregue ou Rejeitada.
+
+CPF, CNPJ e placa são validados no domínio. A placa aceita o padrão antigo (`ABC1234`) e o Mercosul (`ABC1D23`).
+
+O tempo médio de execução é a média de `finalizada_em - execucao_iniciada_em` nas OS Finalizada ou Entregue.
 
 ## Arquitetura
 
-Monólito em quatro camadas, no mesmo deploy:
+Quatro camadas no mesmo deploy. O domínio não depende de FastAPI nem de SQLAlchemy.
 
-| Camada | Pasta | O que faz |
-|--------|-------|-----------|
-| Interface | `oficina/api` | FastAPI, DTOs, Swagger, JWT |
-| Aplicação | `oficina/application` | Comandos, consultas, transação |
-| Domínio | `oficina/domain` | Agregados, objetos de valor, eventos, políticas |
-| Infraestrutura | `oficina/infrastructure` | SQLAlchemy, PostgreSQL, repositórios, semente |
+<img src="docs/assets/arquitetura-camadas.svg" alt="Camadas do monólito: Interface, Aplicação, Domínio e Infraestrutura, com PostgreSQL. A aplicação depende do domínio e da infraestrutura. A infraestrutura implementa as portas do domínio." width="960">
 
-Bounded contexts lógicos, não microsserviços:
+| Camada | Pasta | Função |
+|--------|-------|--------|
+| Interface | `oficina/api` | FastAPI, DTOs, JWT, Swagger |
+| Aplicação | `oficina/application` | Comandos, consultas, uma transação por comando |
+| Domínio | `oficina/domain` | Agregados, entidades, value objects, eventos, políticas |
+| Infraestrutura | `oficina/infrastructure` | SQLAlchemy, repositórios, JWT, seed |
 
-- **Atendimento / OS** (núcleo): `OrdemDeServico`, itens, orçamento e status
-- **Cadastro**: `Cliente` e `Veiculo`
-- **Catálogo**: `Servico`
-- **Estoque**: `Peca`
-- **Identidade**: JWT, subdomínio genérico
+Os contextos abaixo são módulos, não serviços separados. O orçamento é entidade da `OrdemDeServico`. Cliente, veículo, serviço e peça são agregados próprios, citados por id.
 
-O orçamento vive dentro da ordem de serviço. Cliente e veículo são agregados separados, referenciados por id. A linguagem de domínio no código está em português (`OrdemDeServico`, `OrcamentoAprovado`, `Placa`), alinhada ao glossário.
+<img src="docs/assets/contextos.svg" alt="Contextos: Atendimento/OS no núcleo; Cadastro, Catálogo e Estoque referenciados por id; Identidade com JWT à parte." width="960">
+
+Os nomes de domínio no código estão em português, como no glossário (`OrdemDeServico`, `OrcamentoAprovado`, `Placa`). Pastas técnicas ficam em inglês.
+
+O mapeamento comando a comando está em [`docs/ddd/mapeamento-codigo.md`](docs/ddd/mapeamento-codigo.md).
 
 ## Tecnologias
 
 - Python 3.12
-- FastAPI e Uvicorn
+- FastAPI 0.162 e Uvicorn
 - Pydantic v2
 - SQLAlchemy 2
 - PostgreSQL 16
@@ -56,20 +87,18 @@ O orçamento vive dentro da ordem de serviço. Cliente e veículo são agregados
 - Docker Compose
 - GitHub Actions
 
-A escolha acompanha o desenho em [`docs/ddd/diagramas.md`](docs/ddd/diagramas.md): um monólito em camadas com portas de repositório e handlers de comando.
+O desenho das camadas segue [`docs/ddd/diagramas.md`](docs/ddd/diagramas.md).
 
-## Banco de dados
+## Justificativa do banco
 
-**PostgreSQL.**
+PostgreSQL é o banco da aplicação. A aprovação do orçamento e a baixa de estoque precisam confirmar juntas: se a baixa falha, o status não muda. O modelo é relacional, com unicidade de CPF/CNPJ e de placa e com saldo que não pode ficar negativo. Transação, constraints e o serviço no Docker Compose cobrem isso.
 
-A aprovação do orçamento e a baixa de estoque precisam ser atômicas. O modelo é relacional (agregados ligados por id, unicidade de CPF/CNPJ e de placa, saldo que não pode ficar negativo). PostgreSQL entrega transação ACID, constraints e um fluxo simples no Docker Compose. Os testes automatizados usam SQLite em memória para rodar sem subir o banco; o schema é o mesmo SQLAlchemy. Há também a variável `OFICINA_TEST_DATABASE_URL` para repetir a suíte contra PostgreSQL.
-
-MongoDB foi descartado porque o fluxo crítico cruza dois agregados na mesma transação. SQLite serve ao teste, mas não demonstra concorrência nem é o banco do ambiente executável.
+Os testes usam SQLite em memória, com o mesmo mapeamento SQLAlchemy, para rodar sem subir o Postgres. `OFICINA_TEST_DATABASE_URL` repete a suíte contra PostgreSQL.
 
 ## Pré-requisitos
 
-- Docker e Docker Compose
-- Python 3.12, só se for rodar os testes ou a API fora do container
+- Docker e Docker Compose, para subir a API e o banco
+- Python 3.12, só para testes ou para rodar a API fora do container
 
 ## Execução
 
@@ -79,36 +108,34 @@ Na raiz do repositório:
 docker compose up --build
 ```
 
-A API sobe em `http://localhost:8000`. O schema é criado na subida e a semente de demonstração é inserida se ainda não existir.
-
-Para encerrar:
+A API fica em `http://localhost:8000`. Na subida o schema é criado e a semente entra se o catálogo ainda estiver vazio.
 
 ```bash
 docker compose down
 ```
 
-O volume `pgdata` guarda o banco entre as subidas. `docker compose down -v` apaga esse volume.
+O volume `pgdata` mantém os dados. `docker compose down -v` apaga o volume.
 
-### Credenciais de demonstração
+Para percorrer o fluxo com um cliente e uma placa novos, com a API no ar:
 
-Somente para o ambiente local. Não são segredo de produção.
+```bash
+python scripts/demo_fluxo.py
+```
+
+A semente inclui Troca de óleo, Alinhamento, Balanceamento, Óleo 5W30, Filtro de óleo e Pastilha de freio.
+
+## Credenciais de demonstração
+
+Valores só do ambiente local, definidos no `docker-compose.yml` e no `.env.example`.
 
 | Uso | Valor |
 |-----|--------|
 | Usuário admin | `admin` |
 | Senha | `admin123` |
 | Banco | usuário `oficina`, senha `oficina`, database `oficina` |
-| JWT | segredo de desenvolvimento definido no `docker-compose.yml` |
+| JWT | segredo de desenvolvimento no `docker-compose.yml` |
 
-O login é `POST /api/v1/auth/login`. O token Bearer vale para as rotas administrativas. O cliente não usa JWT: consulta e decide o orçamento com o id da OS e o CPF ou CNPJ.
-
-Catálogo semeado na primeira subida: Troca de óleo, Alinhamento, Balanceamento, Óleo 5W30, Filtro de óleo e Pastilha de freio.
-
-Para repetir o fluxo feliz com um cliente e uma placa novos:
-
-```bash
-python scripts/demo_fluxo.py
-```
+O login é `POST /api/v1/auth/login`. O token vale para as rotas administrativas. A consulta e a decisão do cliente não usam esse token.
 
 ## Swagger
 
@@ -116,11 +143,9 @@ Com a API no ar:
 
 - Swagger UI: `http://localhost:8000/docs`
 - ReDoc: `http://localhost:8000/redoc`
-- OpenAPI JSON: `http://localhost:8000/openapi.json`
+- OpenAPI: `http://localhost:8000/openapi.json`
 
-No Swagger, use **Authorize** com o `access_token` do login (sem o prefixo `Bearer`; a interface acrescenta).
-
-Rotas principais:
+Em **Authorize**, cole o `access_token` sem o prefixo `Bearer`.
 
 | Ação | Método e caminho |
 |------|------------------|
@@ -134,11 +159,7 @@ Rotas principais:
 | Aprovar ou rejeitar | `POST /api/v1/publico/ordens-servico/{id}/aprovar` e `/rejeitar` |
 | Tempo médio de execução | `GET /api/v1/metricas/tempo-medio-execucao` |
 
-O tempo médio é a média, em segundos e horas, entre o início da execução (aprovação) e a finalização, nas OS `Finalizada` ou `Entregue`.
-
-CPF, CNPJ e placa (padrão antigo `ABC1234` e Mercosul `ABC1D23`) são validados no domínio.
-
-## Testes e cobertura
+## Testes
 
 ```bash
 python -m venv .venv
@@ -147,29 +168,29 @@ pip install -r requirements-dev.txt
 pytest --cov=oficina --cov-report=term-missing --cov-fail-under=80
 ```
 
-Ou `make test`.
+O atalho é `make test`.
 
-Evidência desta entrega: **96,17%** de cobertura de linhas no pacote `oficina` (2257 de 2347). O domínio, em `oficina/domain`, fica em **95%** (740 statements). Os agregados de OS, cliente, veículo, serviço, peça e as políticas de estoque estão cobertos por testes de unidade; os fluxos de API, inclusive o rollback quando o estoque não fecha na aprovação, estão nos testes de integração.
+São 35 testes. Cobertura em `oficina`: **96,17%** (2257 de 2347 linhas). Em `oficina/domain`: **95%** (701 de 740). Abaixo de 80% o pytest falha.
 
 Relatório: [`docs/coverage/coverage-summary.txt`](docs/coverage/coverage-summary.txt).
 
-O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda a mesma suíte em todo push e pull request e falha se a cobertura ficar abaixo de 80%.
+O workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) roda a suíte em push e pull request, com o mesmo limite de 80%, e publica o `coverage.xml`.
 
-Para repetir a suíte contra PostgreSQL:
+Para repetir contra PostgreSQL, crie o database `oficina_test` e exporte a URL antes do pytest:
 
 ```bash
 export OFICINA_TEST_DATABASE_URL=postgresql+psycopg://oficina:oficina@localhost:5432/oficina_test
 pytest
 ```
 
-Crie o database `oficina_test` antes. A suíte recria o schema nesse banco.
+A suíte recria o schema nesse banco.
 
 ## Estrutura de diretórios
 
 ```text
 oficina/
   main.py                 # FastAPI, lifespan, rotas
-  api/                    # routers, schemas, apresentadores
+  api/                    # routers, schemas, erros
   application/
     commands/             # abrir OS, aprovar, CRUD, estoque
     queries/              # listagem, acompanhamento, tempo médio
@@ -182,45 +203,70 @@ oficina/
     auth/                 # JWT e bcrypt
     seed.py
 tests/
-  unit/                   # domínio e JWT
-  integration/            # API e semente
+  unit/
+  integration/
 docs/
-  ddd/                    # Event Storming, diagramas, glossário, mapeamento
+  assets/                 # diagramas SVG deste README
+  ddd/                    # Event Storming, diagramas, glossário, domain storytelling, mapeamento
   security/               # relatório do pip-audit
   coverage/               # saída da cobertura
 ```
 
-Os testes ficam na raiz, fora da imagem Docker, no lugar que o pytest espera. O diagrama de pacotes os mostra junto do código; a separação evita publicá-los na imagem.
+Os testes ficam na raiz, fora da imagem Docker.
+
+## Documentação DDD
+
+Link do quadro (Miro ou equivalente): `COLOQUE_AQUI_O_LINK_DO_MIRO`
+
+Arquivos no repositório, em [`docs/ddd/`](docs/ddd/):
+
+- [`event-storming.md`](docs/ddd/event-storming.md) e [`event-storming.pdf`](docs/ddd/event-storming.pdf)
+- [`event-storming.png`](docs/ddd/event-storming.png)
+- [`diagramas.md`](docs/ddd/diagramas.md) e [`diagramas.pdf`](docs/ddd/diagramas.pdf)
+- [`linguagem-ubiqua.md`](docs/ddd/linguagem-ubiqua.md)
+- [`mapeamento-codigo.md`](docs/ddd/mapeamento-codigo.md) — contextos, agregados, eventos e comandos ligados ao código
+- [`domain-storytelling/`](docs/ddd/domain-storytelling/) — histórias em `.egn`, SVG e PNG
+
+### Domain Storytelling
+
+Cinco histórias no formato do Egon, com as sentenças em [`docs/ddd/domain-storytelling/domain-storytelling.md`](docs/ddd/domain-storytelling/domain-storytelling.md). Os arquivos `.egn` importam em [https://egon.io/app/](https://egon.io/app/).
+
+**1. Abertura da ordem de serviço**
+
+<img src="docs/ddd/domain-storytelling/01-abertura-os.svg" alt="História 1: o atendente identifica o documento, registra o veículo e abre a ordem de serviço em Recebida." width="980">
+
+**2. Diagnóstico e orçamento**
+
+<img src="docs/ddd/domain-storytelling/02-diagnostico-orcamento.svg" alt="História 2: o mecânico inicia o diagnóstico, inclui serviços e peças, e o sistema gera o orçamento." width="1120">
+
+**3. Aprovação ou rejeição**
+
+<img src="docs/ddd/domain-storytelling/03-aprovacao-rejeicao.svg" alt="História 3: o cliente aprova o orçamento, com baixa de estoque e status Em execução, ou rejeita e a OS vai para Rejeitada." width="1080">
+
+**4. Execução e entrega**
+
+<img src="docs/ddd/domain-storytelling/04-execucao-entrega.svg" alt="História 4: execução, finalização, entrega do veículo e consulta do status pelo cliente." width="1160">
+
+**5. Gestão de estoque e catálogo**
+
+<img src="docs/ddd/domain-storytelling/05-gestao-estoque.svg" alt="História 5: o administrador cadastra peça e serviço e registra entrada ou ajuste de estoque." width="920">
+
+## Vídeo
+
+`COLOQUE_AQUI_O_LINK_DO_YOUTUBE`
 
 ## Análise de vulnerabilidades
 
 Relatório em [`docs/security/vulnerability-report.md`](docs/security/vulnerability-report.md).
 
-`pip-audit` 2.10.1 sobre `requirements.txt` e `requirements-dev.txt`: **nenhuma vulnerabilidade conhecida**. Não houve achado alto ou crítico para corrigir.
+`pip-audit` 2.10.1 em `requirements.txt` e `requirements-dev.txt`: nenhuma vulnerabilidade conhecida. Não houve achado alto ou crítico para corrigir.
 
 ## Proteção da branch main
 
-A `main` deve aceitar mudança só por pull request.
+A `main` deve receber mudança só por pull request.
 
-No GitHub: **Settings → Branches → Add branch protection rule** para `main`.
+No GitHub: **Settings → Branches → Add branch protection rule**, branch `main`.
 
 - Require a pull request before merging
-- Require status checks to pass before merging, marcando o check `tests` do workflow CI
+- Require status checks to pass before merging, com o check `tests` do workflow CI
 - Do not allow bypassing the above settings
-
-Nada deve ser enviado direto à `main`.
-
-## Roteiro sugerido do vídeo (até 15 minutos)
-
-1. Proposta: dores da oficina e o que o MVP cobre.
-2. Arquitetura em camadas e os bounded contexts no monólito. Justificar PostgreSQL.
-3. Event Storming (`docs/ddd/event-storming.png`) e a máquina de estados.
-4. Agregados, objetos de valor e eventos, com o glossário ao lado do código.
-5. Subir `docker compose up` e abrir o Swagger.
-6. Login JWT e uma chamada administrativa sem token (401).
-7. Abrir uma OS por CPF ou CNPJ, registrar o veículo, incluir serviço e peça.
-8. Gerar o orçamento, consultar pela rota pública e aprovar. Mostrar a baixa de estoque.
-9. Finalizar, entregar e o tempo médio de execução.
-10. Rejeição em outra OS, ou uma transição inválida.
-11. Testes (`pytest`) e o relatório de cobertura.
-12. Relatório de vulnerabilidades e os nomes de quem apresenta.
